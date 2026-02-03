@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class PatientDTO {
+public class RequestSampleResponseDTO {
 
     @ApiModelProperty(value = "产品套餐编号")
     private String productNo;
