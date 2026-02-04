@@ -10,6 +10,7 @@ import org.xinrui.exception.BusinessException;
 import org.xinrui.mapper.SampleInfoMapper;
 import org.xinrui.service.RequestSampleService;
 import org.xinrui.util.BeanConvertUtil;
+import org.xinrui.util.RequestSampleUtil;
 
 @Slf4j
 @Service
@@ -17,6 +18,9 @@ public class RequestSampleServiceImpl implements RequestSampleService {
 
     @Autowired
     private SampleInfoMapper sampleInfoMapper;
+
+    @Autowired
+    private RequestSampleUtil requestSampleUtil;
 
     @Override
     @Transactional(readOnly = true)
@@ -41,12 +45,10 @@ public class RequestSampleServiceImpl implements RequestSampleService {
         }
 
         // 4. 转换为响应DTO
-        RequestSampleResponseDTO responseDTO = BeanConvertUtil.convert(sampleInfo, RequestSampleResponseDTO.class);
+        RequestSampleResponseDTO responseDTO = requestSampleUtil.convertToDTO(sampleInfo);
 
-        // 5. 敏感信息脱敏（按需）
-        // if (responseDTO.getPatientIdCard() != null) {
-        //     responseDTO.setPatientIdCard(IdCardUtil.desensitize(responseDTO.getPatientIdCard()));
-        // }
+        //5.属性的校验，确保部分字段的必填以及数值的规定
+        requestSampleUtil.RequestSampleValidate(responseDTO);
 
         log.info("样本信息查询成功，样本编号: {}", responseDTO.getSampleId());
         return responseDTO;

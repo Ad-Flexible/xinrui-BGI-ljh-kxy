@@ -13,6 +13,8 @@ import org.xinrui.mapper.ResultInfoMapper;
 import org.xinrui.mapper.SampleInfoMapper;
 import org.xinrui.service.PushResultService;
 import org.xinrui.util.BeanConvertUtil;
+import org.xinrui.util.PushResultUtil;
+import org.xinrui.util.RequestSampleUtil;
 
 @Slf4j
 @Service
@@ -23,6 +25,9 @@ public class PushResultServiceImpl implements PushResultService {
 
     @Autowired
     private SampleInfoMapper sampleInfoMapper;
+
+    @Autowired
+    private  PushResultUtil pushResultUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -57,7 +62,10 @@ public class PushResultServiceImpl implements PushResultService {
             }
 
             // 3. 转换并保存结果
-            ResultInfo resultInfo = BeanConvertUtil.convert(requestDTO, ResultInfo.class);
+            ResultInfo resultInfo = pushResultUtil.convertToEntity(requestDTO);
+            //
+            //后续操作均为假设
+            //
             resultInfo.setPushStatus(1); // 1-推送成功
             resultInfo.setOldSampleNum(sampleInfo.getOldSampleNum()); // 确保冗余字段一致
 

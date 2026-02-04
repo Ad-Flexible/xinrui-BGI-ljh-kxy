@@ -15,7 +15,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.stream.Collectors;
 
 /**
- * 全局异常处理器
+ * 全局异常处理器(仍需完善)
  * 使用@ControllerAdvice注解标记此类为全局异常处理类
  * 用于统一处理应用程序中抛出的各种异常
  */
