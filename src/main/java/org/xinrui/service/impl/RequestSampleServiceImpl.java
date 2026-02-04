@@ -28,9 +28,9 @@ public class RequestSampleServiceImpl implements RequestSampleService {
         log.info("查询样本信息，原样本编号: {}", oldSampleNum);
 
         // 1. 参数校验（已在Controller层校验，此处可省略）
-        if (oldSampleNum == null || oldSampleNum.trim().isEmpty()) {
-            throw new BusinessException("100909140", "原样本编号不能为空");
-        }
+//        if (oldSampleNum == null || oldSampleNum.trim().isEmpty()) {
+//            throw new BusinessException("100909140", "原样本编号不能为空");
+//        }
 
         // 2. 查询数据库（优先使用唯一索引字段）
         SampleInfo sampleInfo = sampleInfoMapper.selectByOldSampleNum(oldSampleNum);

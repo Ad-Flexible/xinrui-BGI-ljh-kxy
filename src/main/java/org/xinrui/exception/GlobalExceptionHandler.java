@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
                 .map(FieldError::getDefaultMessage)
                 .collect(Collectors.joining("; "));
         log.warn("参数校验失败: {}", errorMsg);
-        return ApiResponse.fail(100909140, "参数错误: " + errorMsg);
+        return ApiResponse.fail(-1, "请求失败");
     }
 
     // PathVariable校验异常（@NotBlank等）
