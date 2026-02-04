@@ -15,7 +15,7 @@ public class TestController {
 
     /**
      * 1. 无参 GET 请求：返回欢迎消息
-     * 访问路径：GET http://localhost:8080/api/test/hello
+     * 访问路径：GET http://localhost:8030/api/test/hello
      */
     @GetMapping("/hello")
     public String hello() {
@@ -24,7 +24,7 @@ public class TestController {
 
     /**
      * 2. 带路径参数的 GET 请求：根据 ID 查询信息
-     * 访问路径：GET http://localhost:8080/api/test/user/123
+     * 访问路径：GET http://localhost:8030/api/test/user/123
      */
     @GetMapping("/user/{userId}")
     public Map<String, Object> getUserById(@PathVariable Long userId) { // @PathVariable 绑定路径参数
@@ -43,7 +43,7 @@ public class TestController {
 
     /**
      * 3. 带请求参数的 GET 请求：分页查询
-     * 访问路径：GET http://localhost:8080/api/test/users?page=1&size=10
+     * 访问路径：GET http://localhost:8030/api/test/users?page=1&size=10
      */
     @GetMapping("/users")
     public Map<String, Object> getUsers(
@@ -65,7 +65,7 @@ public class TestController {
 
     /**
      * 4. POST 请求：接收 JSON 请求体，返回处理结果
-     * 访问路径：POST http://localhost:8080/api/test/create
+     * 访问路径：POST http://localhost:8030/api/test/create
      * 请求体示例：{"name":"张三","age":28,"email":"zhangsan@example.com"}
      */
     @PostMapping("/create")
