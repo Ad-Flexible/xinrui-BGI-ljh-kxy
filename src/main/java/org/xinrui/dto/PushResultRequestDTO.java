@@ -425,7 +425,7 @@ public class PushResultRequestDTO {
 
     @ApiModelProperty(value = "报告 无检出CNV表格信息")
     @JsonProperty("${diseaseDescCenterNegative}")
-    private List<String> reportDiseaseDescCenterNegative;
+    private List<DescCenterNegativeItem> reportDiseaseDescCenterNegative;
 
     @ApiModelProperty(value = "报告 遗传咨询意见")
     @JsonProperty("${geneticCounseling}")
