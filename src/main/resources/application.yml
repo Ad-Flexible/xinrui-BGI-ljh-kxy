@@ -8,4 +8,11 @@ spring:
     password: 750418
     driver-class-name: com.mysql.jdbc.Driver
 
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB   # 单文件最大100MB
+      max-request-size: 100MB # 单次请求最大100MB
+      file-size-threshold: 2KB # 超过2KB写入临时文件
+
 #仅为了启动程序进行单元测试使用，后续添加真正数据库配置内容

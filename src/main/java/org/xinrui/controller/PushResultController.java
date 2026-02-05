@@ -3,14 +3,12 @@ package org.xinrui.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.xinrui.dto.ApiResponse;
 import org.xinrui.dto.PushResultRequestDTO;
 import org.xinrui.service.PushResultService;
-
+import org.xinrui.util.FileUtil;
 import javax.validation.Valid;
 
 
@@ -44,7 +42,52 @@ public class PushResultController {
 //            return ApiResponse.fail(-1, e.getMessage());
 //        }
 
+
         //目前能成功接收到都视为可以响应成功，利用@Valid去作校验若传入请求体数据不规范会被全局异常处理器捕捉并返回ApiResponse.fail
         return ApiResponse.success();
     }
+
+    /**
+     * 接收Halos推送的PDF报告文件（multipart/form-data）
+     * POST /his/V3/sample/pushPdfReport
+     *
+     * 约定：
+     * 1. Content-Type: multipart/form-data
+     * 2. 文件字段名: file
+     * 3. 文件名由Halos系统通过"报告命名"功能生成，HIS通过文件名匹配样本
+     */
+    @PostMapping("/pushPdfReport")
+    public ApiResponse<Void> pushPdfReport(@RequestParam("file") MultipartFile file) {
+        FileUtil.validateFile(file, "PDF");
+
+        String filename = file.getOriginalFilename();
+        log.info("✅ 接收PDF报告文件成功 | 文件名: {} | 大小: {} bytes",
+                filename, file.getSize());
+
+        // TODO: 后续扩展（当前按需求：接收到即视为成功）
+        // pushResultService.saveReportFile(file, "PDF");
+
+        return ApiResponse.success();
+    }
+
+    /**
+     * 接收Halos推送的WORD报告文件（multipart/form-data）
+     * POST /his/V3/sample/pushWordReport
+     *
+     * 约定同PDF接口
+     */
+    @PostMapping("/pushWordReport")
+    public ApiResponse<Void> pushWordReport(@RequestParam("file") MultipartFile file) {
+        FileUtil.validateFile(file, "WORD");
+
+        String filename = file.getOriginalFilename();
+        log.info("✅ 接收WORD报告文件成功 | 文件名: {} | 大小: {} bytes",
+                filename, file.getSize());
+
+        // TODO: 后续扩展
+        // pushResultService.saveReportFile(file, "WORD");
+
+        return ApiResponse.success();
+    }
+
 }

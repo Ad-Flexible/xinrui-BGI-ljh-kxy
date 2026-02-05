@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.stream.Collectors;
@@ -52,6 +54,13 @@ public class GlobalExceptionHandler {
         log.warn("路径参数校验失败: {}", errorMsg);
         return ApiResponse.fail(-1, "请求失败");
         //目前只有对于RequestSampleController中getSampleInfo方法可能出现该异常，即确保请求参数不为空
+    }
+
+    // Spring 文件上传异常（如文件超限）
+    @ExceptionHandler(org.springframework.web.multipart.MaxUploadSizeExceededException.class)
+    public ApiResponse<Void> handleMaxSize(Exception ex, HttpServletRequest req) {
+        log.error("文件超过大小限制", ex);
+        return ApiResponse.fail(-1, "请求失败");
     }
 
     // 系统异常
