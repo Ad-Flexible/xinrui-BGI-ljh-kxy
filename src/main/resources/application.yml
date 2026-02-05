@@ -1,2 +1,11 @@
 server:
   port: 8030
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_user?useSSL=false
+    username: root
+    password: 750418
+    driver-class-name: com.mysql.jdbc.Driver
+
+#仅为了启动程序进行单元测试使用，后续添加真正数据库配置内容

@@ -38,8 +38,9 @@ public class RequestSampleController {
             RequestSampleResponseDTO result = requestSampleService.getSampleInfo(oldSampleNum);
             return ApiResponse.success(result);
         } catch (Exception e) {
+            //先使用catch捕获全部exception,相当后面的所有异常都统一处理了不受GlobalExceptionHandler处理
             log.error("查询样本信息异常，原样本编号: {}", oldSampleNum, e);
-            return ApiResponse.fail(-1, e.getMessage());
+            return ApiResponse.fail(-1, "请求失败");
         }
     }
 }

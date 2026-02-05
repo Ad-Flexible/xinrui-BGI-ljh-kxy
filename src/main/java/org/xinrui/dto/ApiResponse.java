@@ -16,8 +16,16 @@ public class ApiResponse<T> implements Serializable {
     public static <T> ApiResponse<T> success(T data) {
         ApiResponse<T> response = new ApiResponse<>();
         response.setRetCode(0);
-        response.setRetInfo("success");
+        response.setRetInfo("请求成功");
         response.setResult(data);
+        return response;
+    }
+
+    public static  ApiResponse success() {
+        ApiResponse response = new ApiResponse<>();
+        response.setRetCode(0);
+        response.setRetInfo("请求成功");
+        // result 默认为 null，JSON 序列化时通常会被忽略
         return response;
     }
 

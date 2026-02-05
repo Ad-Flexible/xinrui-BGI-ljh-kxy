@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
                 .map(FieldError::getDefaultMessage)
                 .collect(Collectors.joining("; "));
         log.warn("参数校验失败: {}", errorMsg);
-        return ApiResponse.fail(100909140, "参数错误: " + errorMsg);
+        return ApiResponse.fail(-1, "请求失败");
     }
 
     // PathVariable校验异常（@NotBlank等）
@@ -50,7 +50,8 @@ public class GlobalExceptionHandler {
                 .map(ConstraintViolation::getMessage)
                 .collect(Collectors.joining("; "));
         log.warn("路径参数校验失败: {}", errorMsg);
-        return ApiResponse.fail(100909140, "参数错误: " + errorMsg);
+        return ApiResponse.fail(-1, "请求失败");
+        //目前只有对于RequestSampleController中getSampleInfo方法可能出现该异常，即确保请求参数不为空
     }
 
     // 系统异常
