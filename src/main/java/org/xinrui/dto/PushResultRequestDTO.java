@@ -1,6 +1,8 @@
 package org.xinrui.dto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.xinrui.dto.resultRequest.*;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -261,4 +263,215 @@ public class PushResultRequestDTO {
     private LaneQcInfo laneQc;
 
 
+    @ApiModelProperty(value = "报告 送检单位/部门")
+    @JsonProperty("${hospitalName}")
+    private String reportHospitalName;
+
+    @ApiModelProperty(value = "报告 住院/门诊号")
+    @JsonProperty("${clinicNum}")
+    private String reportClinicNum;
+
+    @ApiModelProperty(value = "报告 样本编号")
+    @JsonProperty("${sampleId}")
+    private String reportSampleId;
+
+    @ApiModelProperty(value = "报告 采集时间")
+    @JsonProperty("${collectDate}")
+    private String reportCollectDate;
+
+    @ApiModelProperty(value = "报告 孕妇姓名")
+    @JsonProperty("${patientName}")
+    private String reportPatientName;
+
+    @ApiModelProperty(value = "报告 孕妇年龄")
+    @JsonProperty("${patientAge}")
+    private String reportPatientAge;
+
+    @ApiModelProperty(value = "报告 孕妇孕周")
+    @JsonProperty("${gestationalWeeks}")
+    private String reportGestationalWeeks;
+
+    @ApiModelProperty(value = "报告 孕妇末次月经")
+    @JsonProperty("${lastMenstrualPeriod}")
+    private String reportLastMenstrualPeriod;
+
+    @ApiModelProperty(value = "报告 胎儿类型")
+    @JsonProperty("${fetusType}")
+    private String reportFetusType;
+
+    @ApiModelProperty(value = "报告 是否体外受精-胚胎移植妊娠")
+    @JsonProperty("${ivfFlag}")
+    private String reportIvfFlag;
+
+    @ApiModelProperty(value = "报告 接收时间")
+    @JsonProperty("${receivedDate}")
+    private String reportReceivedDate;
+
+    @ApiModelProperty(value = "报告 孕产史")
+    @JsonProperty("${gestationChildbirth}")
+    private String reportGestationChildbirth;
+
+    @ApiModelProperty(value = "报告 样本类型")
+    @JsonProperty("${sampleType}")
+    private String reportSampleType;
+
+    @ApiModelProperty(value = "报告 状态")
+    @JsonProperty("${status}")
+    private String reportStatus;
+
+    @ApiModelProperty(value = "报告 送检医师")
+    @JsonProperty("${doctorName}")
+    private String reportDoctorName;
+
+    @ApiModelProperty(value = "报告 临床诊断")
+    @JsonProperty("${clinicalDiagnosis}")
+    private String reportClinicalDiagnosis;
+
+    @ApiModelProperty(value = "报告 建库操作人")
+    @JsonProperty("${poolingCreator}")
+    private String reportPoolingCreator;
+
+    @ApiModelProperty(value = "报告 测序操作人")
+    @JsonProperty("${seqOperator}")
+    private String reportSeqOperator;
+
+    @ApiModelProperty(value = "报告 原样本编号")
+    @JsonProperty("${oldSampleNum}")
+    private String reportOldSampleNum;
+
+    @ApiModelProperty(value = "报告 13 三体 风险值")
+    @JsonProperty("${riskIndex13}")
+    private String reportRiskIndex13;
+
+    @ApiModelProperty(value = "报告 18 三体 风险值")
+    @JsonProperty("${riskIndex18}")
+    private String reportRiskIndex18;
+
+    @ApiModelProperty(value = "报告 21 三体 风险值")
+    @JsonProperty("${riskIndex21}")
+    private String reportRiskIndex21;
+
+    @ApiModelProperty(value = "报告 13 三体 检测值")
+    @JsonProperty("${zChr13}")
+    private String reportZChr13;
+
+    @ApiModelProperty(value = "报告 18 三体 检测值")
+    @JsonProperty("${zChr18}")
+    private String reportZChr18;
+
+    @ApiModelProperty(value = "报告 21 三体 检测值")
+    @JsonProperty("${zChr21}")
+    private String reportZChr21;
+
+    @ApiModelProperty(value = "报告 13 三体 高风险/低风险")
+    @JsonProperty("${testChr13}")
+    private String reportTestChr13;
+
+    @ApiModelProperty(value = "报告 18 三体 高风险/低风险")
+    @JsonProperty("${testChr18}")
+    private String reportTestChr18;
+
+    @ApiModelProperty(value = "报告 21 三体 高风险/低风险")
+    @JsonProperty("${testChr21}")
+    private String reportTestChr21;
+
+    @ApiModelProperty(value = "报告 是否有附加报告")
+    @JsonProperty("${attachedReport}")
+    private String reportAttachedReport;
+
+    @ApiModelProperty(value = "报告 性染色体非整倍体")
+    @JsonProperty("${chrSex}")
+    private String reportChrSex;
+
+    @ApiModelProperty(value = "报告 其他染色体非整倍体")
+    @JsonProperty("${chrOther}")
+    private String reportChrOther;
+
+    @ApiModelProperty(value = "报告 CNV")
+    @JsonProperty("${cnv}")
+    private String reportCnv;
+
+    @ApiModelProperty(value = "报告 疾病描述")
+    @JsonProperty("${diseaseDesc}")
+    private String reportDiseaseDesc;
+
+    @ApiModelProperty(value = "报告 正式报告遗传咨询意见")
+    @JsonProperty("${niftyMainGeneticCounseling}")
+    private String reportNiftyMainGeneticCounseling;
+
+    @ApiModelProperty(value = "报告 附加报告遗传咨询意见")
+    @JsonProperty("${niftyAdditionalGeneticCounseling}")
+    private String reportNiftyAdditionalGeneticCounseling;
+
+    @ApiModelProperty(value = "报告 是否有附加报告")
+    @JsonProperty("${isNeedAffix}")
+    private Boolean reportIsNeedAffix;
+
+    @ApiModelProperty(value = "报告 性染色体非整倍体")
+    @JsonProperty("${chrSexCenter}")
+    private String reportChrSexCenter;
+
+    @ApiModelProperty(value = "报告 其他染色体非整倍体")
+    @JsonProperty("${chrOtherCenter}")
+    private String reportChrOtherCenter;
+
+    @ApiModelProperty(value = "报告 染色体缺失/重复综合征")
+    @JsonProperty("${diseaseDescCenterPositive}")
+    private List<ChromosomeAbnormality> reportDiseaseDescCenterPositive;
+
+    @ApiModelProperty(value = "报告 疾病描述")
+    @JsonProperty("${diseaseDescCenterPositiveDetailText}")
+    private String reportDiseaseDescCenterPositiveDetailText;
+
+    @ApiModelProperty(value = "报告 无检出CNV表格信息")
+    @JsonProperty("${diseaseDescCenterNegative}")
+    private List<String> reportDiseaseDescCenterNegative;
+
+    @ApiModelProperty(value = "报告 遗传咨询意见")
+    @JsonProperty("${geneticCounseling}")
+    private String reportGeneticCounseling;
+
+    @ApiModelProperty(value = "报告 是否有附加报告")
+    @JsonProperty("${attachedReportCenter}")
+    private Boolean reportAttachedReportCenter;
+
+    @ApiModelProperty(value = "报告 性染色体非整倍体")
+    @JsonProperty("${chrSexPro}")
+    private String reportChrSexPro;
+
+    @ApiModelProperty(value = "报告 其他染色体非整倍体")
+    @JsonProperty("${chrOtherPro}")
+    private String reportChrOtherPro;
+
+    @ApiModelProperty(value = "报告 染色体缺失/重复综合征")
+    @JsonProperty("${diseaseDescPro}")
+    private List<ChromosomeAbnormality> reportDiseaseDescPro;
+
+    @ApiModelProperty(value = "报告 疾病描述")
+    @JsonProperty("${diseaseDescProDetailText}")
+    private String reportDiseaseDescProDetailText;
+
+    @ApiModelProperty(value = "报告 遗传咨询意见")
+    @JsonProperty("${niftyProMainGeneticCounseling}")
+    private String reportNiftyProMainGeneticCounseling;
+
+    @ApiModelProperty(value = "报告 Turner综合征-检测结果和结果描述")
+    @JsonProperty("${turnerResult}")
+    private String reportTurnerResult;
+
+    @ApiModelProperty(value = "报告 Klinefelter综合征-检测结果和结果描述")
+    @JsonProperty("${klinefelterResult}")
+    private String reportKlinefelterResult;
+
+    @ApiModelProperty(value = "报告 遗传咨询意见")
+    @JsonProperty("${mainGeneticCounseling}")
+    private String reportMainGeneticCounseling;
+
+    @ApiModelProperty(value = "报告 审核日期/发放日期")
+    @JsonProperty("${reportCreateTime}")
+    private String rReportCreateTime;
+
+    @ApiModelProperty(value = "报告 检测日期")
+    @JsonProperty("${testTime}")
+    private String reportTestTime;
 }

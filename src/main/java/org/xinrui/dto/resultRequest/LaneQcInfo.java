@@ -1,4 +1,4 @@
-package org.xinrui.dto;
+package org.xinrui.dto.resultRequest;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
