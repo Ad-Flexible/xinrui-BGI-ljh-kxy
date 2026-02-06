@@ -16,3 +16,27 @@ spring:
       file-size-threshold: 2KB # 超过2KB写入临时文件
 
 #仅为了启动程序进行单元测试使用，后续添加真正数据库配置内容
+
+# Halos系统对接配置
+halos:
+  app:
+    app-id: "your_halos_app_id"      # Halos提供的appId
+    app-key: "your_halos_app_key"    # Halos提供的appKey
+
+  api:
+    token-url: "http://halos-ip:port/his/open/app/token"       # Halos的token接口,待修改成真实的ip:端口号
+    push-sample-url: "http://halos-ip:port/return/his/his/open/push/sample" # Halos接收样本接口，待修改成真实的ip:端口号
+    connect-timeout: 3000   # 连接超时(毫秒)
+    read-timeout: 5000      # 读取超时(毫秒)
+
+  auth:
+    type: "fixed"           # 鉴权方式: fixed(固定鉴权) / header(请求头鉴权)
+
+  token:
+    refresh-advance: 60000  # token提前60秒刷新
+
+# RestTemplate配置
+rest:
+  template:
+    connect-timeout: 3000
+    read-timeout: 5000

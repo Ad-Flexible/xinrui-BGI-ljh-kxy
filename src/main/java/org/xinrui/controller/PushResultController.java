@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @Slf4j
 @Validated
 @RestController
-@RequestMapping("/his/V3/sample")
+@RequestMapping("/his/V3/result")
 public class PushResultController {
 
     @Autowired
