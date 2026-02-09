@@ -25,22 +25,14 @@ public class HalosTokenController {
      * 注意：业务流程中无需调用此接口，SamplePushService会自动获取有效Token
      *
      * @return ApiResponse<String>
-     *         retCode: 0=成功, -1=失败
-     *         result: 有效Token字符串
+     * retCode: 0=成功, -1=失败
+     * result: 有效Token字符串
      */
     @GetMapping("/current")
     public ApiResponse<String> getCurrentToken() {
-        try {
-            String token = tokenService.getValidToken();
-            log.info("Token获取成功（测试接口）");
-            return ApiResponse.success(token);
-        } catch (HalosApiException e) {
-            log.error("获取Token失败 | Halos错误码: {}, 信息: {}", e.getHalosCode(), e.getMessage());
-            return ApiResponse.fail(-1, "获取Token失败: " + e.getMessage());
-        } catch (Exception e) {
-            log.error("获取Token系统异常", e);
-            return ApiResponse.fail(-1, "系统异常: " + e.getMessage());
-        }
+        String token = tokenService.getValidToken();
+        log.info("Token获取成功（测试接口）");
+        return ApiResponse.success(token);
     }
 
     /**
@@ -48,25 +40,14 @@ public class HalosTokenController {
      */
     @PostMapping("/refresh")
     public ApiResponse<Void> refreshToken() {
-        try {
-            tokenService.refreshToken();
-            log.info("Token已强制刷新");
-            return ApiResponse.success();
-        } catch (Exception e) {
-            log.error("刷新Token异常", e);
-            return ApiResponse.fail(-1, "刷新Token失败: " + e.getMessage());
-        }
+        tokenService.refreshToken();
+        log.info("Token已强制刷新");
+        return ApiResponse.success();
     }
 
     @PostMapping("/token")
     public ApiResponse<String> getToken() {
-        try {
-            String token = tokenService.getValidToken();
-            return ApiResponse.success(token);
-        } catch (HalosApiException e) {
-            return ApiResponse.fail(e.getHalosCode(), "获取Token失败: " + e.getMessage());
-        } catch (Exception e) {
-            return ApiResponse.fail(-1, "系统异常: " + e.getMessage());
-        }
+        String token = tokenService.getValidToken();
+        return ApiResponse.success(token);
     }
 }

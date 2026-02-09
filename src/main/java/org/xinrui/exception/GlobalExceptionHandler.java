@@ -70,4 +70,12 @@ public class GlobalExceptionHandler {
         log.error("系统异常", e);
         return ApiResponse.fail(-1, "系统繁忙，请稍后再试");
     }
+
+    @ExceptionHandler(HalosApiException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<Void> handleHalosApiException(HalosApiException e) {
+        log.error("Halos API异常: [{}] {}", e.getHalosCode(), e.getMessage());
+        return ApiResponse.fail(e.getHalosCode(), "获取Token失败: " + e.getMessage());
+    }
+
 }
