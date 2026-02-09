@@ -76,24 +76,24 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public String getValidToken() {
         // 双重检查锁：避免高并发下重复刷新
-    // 第一次检查：在加锁前先检查，减少不必要的锁竞争
+        // 第一次检查：在加锁前先检查，减少不必要的锁竞争
         if (isTokenValid()) {
             return cachedToken;
         }
 
-    // 加锁，确保线程安全
+        // 加锁，确保线程安全
         lock.lock();
         try {
-        // 第二次检查：在加锁后再次检查，防止其他线程已经刷新了token
+            // 第二次检查：在加锁后再次检查，防止其他线程已经刷新了token
             if (isTokenValid()) {
                 return cachedToken;
             }
-        // 如果token无效，则刷新token
+            // 如果token无效，则刷新token
             refreshInternal();
-        // 返回刷新后的token
+            // 返回刷新后的token
             return cachedToken;
         } finally {
-        // 确保锁一定会被释放，防止死锁
+            // 确保锁一定会被释放，防止死锁
             lock.unlock();
         }
     }
@@ -135,31 +135,31 @@ public class TokenServiceImpl implements TokenService {
     // 记录开始刷新token的日志
         log.info("开始刷新Halos token...");
         try {
-        // 创建HalosTokenDTO对象，用于封装请求参数
+            // 创建HalosTokenDTO对象，用于封装请求参数
             HalosTokenDTO request = new HalosTokenDTO();
-        // 设置应用ID
+            // 设置应用ID
             request.setAppId(appId);
-        // 设置应用密钥
+            // 设置应用密钥
             request.setAppKey(appKey);
 
-        // 创建HTTP请求头，设置内容类型为JSON
+            // 创建HTTP请求头，设置内容类型为JSON
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-        // 创建HTTP实体，包含请求体和请求头
+            // 创建HTTP实体，包含请求体和请求头
             HttpEntity<HalosTokenDTO> entity = new HttpEntity<>(request, headers);
 
-        // 发送POST请求获取token，并指定响应类型为ApiResponse
+            // 发送POST请求获取token，并指定响应类型为ApiResponse
             ResponseEntity<ApiResponse> response =
                     restTemplate.postForEntity(tokenUrl, entity, ApiResponse.class);
 
-        // 处理API响应
+            // 处理API响应
             handleResponse(response);
-        // 记录token刷新成功的日志，包含有效期信息
+            // 记录token刷新成功的日志，包含有效期信息
             log.info("Halos token刷新成功，有效期至: {}", expireTimestamp);
         } catch (Exception e) {
-        // 记录异常日志
+            // 记录异常日志
             log.error("刷新Halos token异常", e);
-        // 抛出带有错误信息的自定义异常
+            // 抛出带有错误信息的自定义异常
             throw new HalosApiException(-1, "获取token失败: " + e.getMessage());
         }
     }
@@ -199,7 +199,7 @@ public class TokenServiceImpl implements TokenService {
     // 检查token是否已过期
         if (System.currentTimeMillis() >= expireTimestamp) {
         // 如果token已过期，抛出异常
-            throw new HalosApiException(-1, "获取到的token已过期");
+            throw new HalosApiException(100510108, "获取到的token已过期");
         }
     }
 }

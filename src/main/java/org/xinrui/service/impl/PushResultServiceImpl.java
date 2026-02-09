@@ -40,6 +40,7 @@ public class PushResultServiceImpl implements PushResultService {
                     Wrappers.lambdaQuery(SampleInfo.class)
                             .eq(SampleInfo::getSampleId, requestDTO.getSampleId())
                             .or()
+                            //todo 旧样本号是否可以匹配
                             .eq(SampleInfo::getOldSampleNum, requestDTO.getOldSampleNum())
             );
 

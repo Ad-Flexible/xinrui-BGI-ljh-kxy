@@ -12,7 +12,8 @@ import org.xinrui.service.TokenService;
 
 @Slf4j
 @RestController
-@RequestMapping("/his/V3/HalosToken")
+//@RequestMapping("/his/V3/HalosToken")测试时使用
+@RequestMapping("/his/open/app")
 public class HalosTokenController {
 
     @Autowired
@@ -54,6 +55,18 @@ public class HalosTokenController {
         } catch (Exception e) {
             log.error("刷新Token异常", e);
             return ApiResponse.fail(-1, "刷新Token失败: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/token")
+    public ApiResponse<String> getToken() {
+        try {
+            String token = tokenService.getValidToken();
+            return ApiResponse.success(token);
+        } catch (HalosApiException e) {
+            return ApiResponse.fail(e.getHalosCode(), "获取Token失败: " + e.getMessage());
+        } catch (Exception e) {
+            return ApiResponse.fail(-1, "系统异常: " + e.getMessage());
         }
     }
 }

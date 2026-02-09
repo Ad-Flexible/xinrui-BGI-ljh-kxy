@@ -63,6 +63,7 @@ public class SamplePushServiceImpl implements SamplePushService {
             String token = tokenService.getValidToken();
 
             // 2. 构建请求（动态选择鉴权方式）
+            //todo 鉴权方式采用header是否会较好
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             String finalUrl = buildRequestUrl(token, headers);
