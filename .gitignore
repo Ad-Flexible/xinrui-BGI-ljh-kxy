@@ -4,6 +4,7 @@ target/
 !**/src/test/**/target/
 .kotlin
 
+!document/数据库设计.md
 document/
 
 ### IntelliJ IDEA ###
