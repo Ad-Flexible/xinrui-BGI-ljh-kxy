@@ -4,12 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.xinrui.dto.RequestSampleResponseDTO;
+import org.xinrui.dto.SampleDto;
 import org.xinrui.entity.SampleInfo;
 import org.xinrui.exception.BusinessException;
 import org.xinrui.mapper.SampleInfoMapper;
 import org.xinrui.service.RequestSampleService;
-import org.xinrui.util.BeanConvertUtil;
 import org.xinrui.util.RequestSampleUtil;
 
 @Slf4j
@@ -24,7 +23,7 @@ public class RequestSampleServiceImpl implements RequestSampleService {
 
     @Override
     @Transactional(readOnly = true)
-    public RequestSampleResponseDTO getSampleInfo(String oldSampleNum) {
+    public SampleDto getSampleInfo(String oldSampleNum) {
         log.info("查询样本信息，原样本编号: {}", oldSampleNum);
 
         // 1. 参数校验（已在Controller层校验，此处可省略）
@@ -45,7 +44,7 @@ public class RequestSampleServiceImpl implements RequestSampleService {
         }
 
         // 4. 转换为响应DTO
-        RequestSampleResponseDTO responseDTO = requestSampleUtil.convertToDTO(sampleInfo);
+        SampleDto responseDTO = requestSampleUtil.convertToDTO(sampleInfo);
 
         //5.属性的校验，确保部分字段的必填以及数值的规定
         requestSampleUtil.RequestSampleValidate(responseDTO);

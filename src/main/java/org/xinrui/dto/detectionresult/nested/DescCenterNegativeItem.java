@@ -1,10 +1,12 @@
-package org.xinrui.dto.resultRequest;
+package org.xinrui.dto.detectionresult.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-//PushResultRequestDTO的嵌套类定义
+/**
+ * DetectionResultDto的嵌套类定义
+ */
 @Data
 public class DescCenterNegativeItem {
 

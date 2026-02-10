@@ -1,6 +1,6 @@
 package org.xinrui.service;
 
-import org.xinrui.dto.RequestModifyDTO;
+import org.xinrui.dto.SampleModifyDto;
 
 public interface SamplePushService {
     /**
@@ -9,5 +9,5 @@ public interface SamplePushService {
      * @return true-推送成功
      * @throws //HalosApiException 推送失败时抛出（含Halos返回的错误码）
      */
-    boolean pushSampleToHalos(RequestModifyDTO requestModifyDTO);
+    boolean pushSampleToHalos(SampleModifyDto requestModifyDTO);
 }

@@ -1,15 +1,17 @@
-package org.xinrui.dto;
+package org.xinrui.dto.detectionresult;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.xinrui.dto.resultRequest.*;
+import org.xinrui.dto.detectionresult.nested.*;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
-
+/**
+ * Halos推送过来的检测结果数据dto
+ */
 @Data
-public class PushResultRequestDTO {
+public class DetectionResultDto {
 
     @NotBlank(message = "样本编号不能为空")
     @ApiModelProperty(value = "样本编号", required = true, example = "17B1234567")
@@ -251,16 +253,16 @@ public class PushResultRequestDTO {
 
     // 嵌套对象
     @ApiModelProperty(value = "疾病表型列表")
-    private List<DiseaseItem> diseaseList;
+    private List<DetectionCnv> diseaseList;
 
     @ApiModelProperty(value = "其他疾病列表")
-    private List<OtherDiseaseItem> otherDiseaseList;
+    private List<DiseaseInfo> otherDiseaseList;
 
     @ApiModelProperty(value = "样本质控信息")
-    private SampleQcInfo sampleQc;
+    private SampleQc sampleQc;
 
     @ApiModelProperty(value = "Lane质控信息")
-    private LaneQcInfo laneQc;
+    private LaneQc laneQc;
 
 
     @ApiModelProperty(value = "报告 送检单位/部门")

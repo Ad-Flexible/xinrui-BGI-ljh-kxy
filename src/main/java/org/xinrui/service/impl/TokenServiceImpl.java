@@ -10,10 +10,10 @@ import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.xinrui.dto.ApiResponse;
-import org.xinrui.dto.TokenResultDTO;
+import org.xinrui.dto.TokenResultDto;
 import org.xinrui.exception.HalosApiException;
 import org.xinrui.service.TokenService;
-import org.xinrui.dto.HalosTokenDTO;
+import org.xinrui.dto.HalosTokenDto;
 
 import javax.annotation.PostConstruct;
 import java.util.concurrent.locks.ReentrantLock;
@@ -136,7 +136,7 @@ public class TokenServiceImpl implements TokenService {
         log.info("开始刷新Halos token...");
         try {
             // 创建HalosTokenDTO对象，用于封装请求参数
-            HalosTokenDTO request = new HalosTokenDTO();
+            HalosTokenDto request = new HalosTokenDto();
             // 设置应用ID
             request.setAppId(appId);
             // 设置应用密钥
@@ -146,7 +146,7 @@ public class TokenServiceImpl implements TokenService {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             // 创建HTTP实体，包含请求体和请求头
-            HttpEntity<HalosTokenDTO> entity = new HttpEntity<>(request, headers);
+            HttpEntity<HalosTokenDto> entity = new HttpEntity<>(request, headers);
 
             // 发送POST请求获取token，并指定响应类型为ApiResponse
             ResponseEntity<ApiResponse> response =
@@ -190,7 +190,7 @@ public class TokenServiceImpl implements TokenService {
         }
 
     // 从响应结果中提取TokenResultDTO对象
-        TokenResultDTO tokenResult = (TokenResultDTO) halosResp.getResult();
+        TokenResultDto tokenResult = (TokenResultDto) halosResp.getResult();
     // 缓存获取到的token
         this.cachedToken = tokenResult.getToken();
     // 设置token的过期时间戳

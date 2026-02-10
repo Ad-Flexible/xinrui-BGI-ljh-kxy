@@ -1,6 +1,6 @@
 package org.xinrui.service;
 
-import org.xinrui.dto.PushResultRequestDTO;
+import org.xinrui.dto.detectionresult.DetectionResultDto;
 
 /**
  * Halos推送结果数据服务接口
@@ -13,5 +13,5 @@ public interface PushResultService {
      * @param requestDTO 推送数据
      * @return 处理结果（true-成功 false-失败）
      */
-    boolean handlePushResult(PushResultRequestDTO requestDTO);
+    boolean handlePushResult(DetectionResultDto requestDTO);
 }

@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.xinrui.dto.ApiResponse;
-import org.xinrui.dto.RequestModifyDTO;
-import org.xinrui.exception.HalosApiException;
+import org.xinrui.dto.SampleModifyDto;
 import org.xinrui.service.SamplePushService;
 
 import javax.validation.Valid;
@@ -35,7 +34,7 @@ public class SamplePushController {
      *
      */
     @PostMapping("/push")
-    public ApiResponse<Boolean> pushSample(@Valid @RequestBody RequestModifyDTO request) {
+    public ApiResponse<Boolean> pushSample(@Valid @RequestBody SampleModifyDto request) {
         boolean success = samplePushService.pushSampleToHalos(request);
         log.info("样本推送成功 | 样本编号: {}", request.getSampleId());
         return ApiResponse.success();

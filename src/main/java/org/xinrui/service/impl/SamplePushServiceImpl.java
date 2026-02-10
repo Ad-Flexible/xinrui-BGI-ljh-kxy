@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.xinrui.dto.ApiResponse;
-import org.xinrui.dto.RequestModifyDTO;
+import org.xinrui.dto.SampleModifyDto;
 import org.xinrui.exception.HalosApiException;
 import org.xinrui.service.SamplePushService;
 import org.xinrui.service.TokenService;
@@ -51,7 +51,7 @@ public class SamplePushServiceImpl implements SamplePushService {
     }
 
     @Override
-    public boolean pushSampleToHalos(@Valid @NotNull RequestModifyDTO request) {
+    public boolean pushSampleToHalos(@Valid @NotNull SampleModifyDto request) {
         String sampleId = request.getSampleId();
         String oldSampleNum = StringUtils.hasText(request.getOldSampleNum())
                 ? request.getOldSampleNum() : "N/A";
@@ -68,7 +68,7 @@ public class SamplePushServiceImpl implements SamplePushService {
             headers.setContentType(MediaType.APPLICATION_JSON);
             String finalUrl = buildRequestUrl(token, headers);
 
-            HttpEntity<RequestModifyDTO> entity = new HttpEntity<>(request, headers);
+            HttpEntity<SampleModifyDto> entity = new HttpEntity<>(request, headers);
 
             // 3. 调用Halos接口（带超时控制）
             ResponseEntity<ApiResponse> response =

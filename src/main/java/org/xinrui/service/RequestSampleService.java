@@ -1,6 +1,6 @@
 package org.xinrui.service;
 
-import org.xinrui.dto.RequestSampleResponseDTO;
+import org.xinrui.dto.SampleDto;
 
 /**
  * RequestSampleService接口
@@ -14,5 +14,5 @@ public interface RequestSampleService {
      * @return 样本信息DTO
      * @throws org.xinrui.exception.BusinessException 业务异常
      */
-    RequestSampleResponseDTO getSampleInfo(String oldSampleNum);
+    SampleDto getSampleInfo(String oldSampleNum);
 }

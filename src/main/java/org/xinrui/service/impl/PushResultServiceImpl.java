@@ -5,16 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.xinrui.dto.PushResultRequestDTO;
-import org.xinrui.entity.ResultInfo;
+import org.xinrui.dto.detectionresult.DetectionResultDto;
+import org.xinrui.entity.DetectionResultInfo;
 import org.xinrui.entity.SampleInfo;
 import org.xinrui.exception.BusinessException;
 import org.xinrui.mapper.ResultInfoMapper;
 import org.xinrui.mapper.SampleInfoMapper;
 import org.xinrui.service.PushResultService;
-import org.xinrui.util.BeanConvertUtil;
 import org.xinrui.util.PushResultUtil;
-import org.xinrui.util.RequestSampleUtil;
 
 @Slf4j
 @Service
@@ -31,7 +29,7 @@ public class PushResultServiceImpl implements PushResultService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean handlePushResult(PushResultRequestDTO requestDTO) {
+    public boolean handlePushResult(DetectionResultDto requestDTO) {
         log.info("处理Halos推送结果，样本编号: {}", requestDTO.getSampleId());
 
         try {
@@ -49,10 +47,10 @@ public class PushResultServiceImpl implements PushResultService {
             }
 
             // 2. 检查是否已存在结果（避免重复推送覆盖）
-            ResultInfo existResult = resultInfoMapper.selectOne(
-                    Wrappers.lambdaQuery(ResultInfo.class)
-                            .eq(ResultInfo::getSampleId, requestDTO.getSampleId())
-                            .orderByDesc(ResultInfo::getCreateTime)
+            DetectionResultInfo existResult = resultInfoMapper.selectOne(
+                    Wrappers.lambdaQuery(DetectionResultInfo.class)
+                            .eq(DetectionResultInfo::getSampleId, requestDTO.getSampleId())
+                            .orderByDesc(DetectionResultInfo::getCreateTime)
                             .last("LIMIT 1")
             );
 
@@ -63,7 +61,7 @@ public class PushResultServiceImpl implements PushResultService {
             }
 
             // 3. 转换并保存结果
-            ResultInfo resultInfo = pushResultUtil.convertToEntity(requestDTO);
+            DetectionResultInfo resultInfo = pushResultUtil.convertToEntity(requestDTO);
             //
             //后续操作均为假设
             //

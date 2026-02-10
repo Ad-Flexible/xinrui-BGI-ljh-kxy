@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xinrui.dto.ApiResponse;
-import org.xinrui.dto.PushResultRequestDTO;
+import org.xinrui.dto.detectionresult.DetectionResultDto;
 import org.xinrui.service.PushResultService;
 import org.xinrui.util.FileUtil;
 import javax.validation.Valid;
@@ -30,7 +30,7 @@ public class PushResultController {
      * POST /his/V3/sample/pushResult
      */
     @PostMapping("/pushResult")
-    public ApiResponse<Void> pushResult(@Valid @RequestBody PushResultRequestDTO requestDTO) {
+    public ApiResponse<Void> pushResult(@Valid @RequestBody DetectionResultDto requestDTO) {
 
 //        try {
 //            boolean success = pushResultService.handlePushResult(requestDTO);

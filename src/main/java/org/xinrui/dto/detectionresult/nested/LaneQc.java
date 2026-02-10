@@ -1,10 +1,13 @@
-package org.xinrui.dto.resultRequest;
+package org.xinrui.dto.detectionresult.nested;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-// PushResultRequestDTO的嵌套类定义
+/**
+ * lane质控信息
+ * PushResultRequestDTO的嵌套类定义
+ */
 @Data
-public class LaneQcInfo {
+public class LaneQc {
     @ApiModelProperty(value = "lane质控", allowableValues = "通过,不通过")
     private String laneQcResult;
 

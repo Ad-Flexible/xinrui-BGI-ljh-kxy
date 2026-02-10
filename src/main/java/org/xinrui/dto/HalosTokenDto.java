@@ -7,7 +7,7 @@ import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class HalosTokenDTO implements Serializable {
+public class HalosTokenDto implements Serializable {
     @NotBlank(message = "appId不能为空")
     @ApiModelProperty(value = "Halos提供的appId", required = true)
     private String appId;

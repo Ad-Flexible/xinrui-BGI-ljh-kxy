@@ -1,11 +1,13 @@
-package org.xinrui.dto.resultRequest;
+package org.xinrui.dto.detectionresult.nested;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-// PushResultRequestDTO的嵌套类定义
+/**
+ * 样本质控信息
+ * PushResultRequestDTO的嵌套类定义
+ */
 @Data
-public  class SampleQcInfo {
+public  class SampleQc {
     //todo 用double还是String
     @ApiModelProperty(value = "样本GC含量(%)", example = "40.45")
     private Double sampleGc;

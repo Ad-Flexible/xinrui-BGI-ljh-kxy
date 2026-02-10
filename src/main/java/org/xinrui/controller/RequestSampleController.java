@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.xinrui.dto.ApiResponse;
-import org.xinrui.dto.RequestSampleResponseDTO;
+import org.xinrui.dto.SampleDto;
 import org.xinrui.service.RequestSampleService;
 
 import javax.validation.constraints.NotBlank;
@@ -31,9 +31,9 @@ public class RequestSampleController {
      * GET /his/V3/sample/get/{oldSampleNum}
      */
     @GetMapping("/get/{oldSampleNum}")
-    public ApiResponse<RequestSampleResponseDTO> getSampleInfo(
+    public ApiResponse<SampleDto> getSampleInfo(
             @PathVariable @NotBlank(message = "原样本编号不能为空") String oldSampleNum) {
-        RequestSampleResponseDTO result = requestSampleService.getSampleInfo(oldSampleNum);
+        SampleDto result = requestSampleService.getSampleInfo(oldSampleNum);
         return ApiResponse.success(result);
 
     }
