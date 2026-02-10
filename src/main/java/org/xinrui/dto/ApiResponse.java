@@ -1,5 +1,6 @@
 package org.xinrui.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.Map;
  * 统一API响应封装
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> implements Serializable {
 
     private Integer retCode;  // 0-成功 非0-失败
