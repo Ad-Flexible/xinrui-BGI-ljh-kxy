@@ -4,10 +4,9 @@ target/
 !**/src/test/**/target/
 .kotlin
 
-# 忽略 document 目录下的所有内容
-document/*
-# 然后重新包含特定文件
-!document/数据库设计.md
+
+document(old)/
+
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
