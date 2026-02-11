@@ -18,6 +18,10 @@ import org.xinrui.dto.HalosTokenDto;
 import javax.annotation.PostConstruct;
 import java.util.concurrent.locks.ReentrantLock;
 
+/*
+ * 预备删除
+ */
+
 /**
  * Token服务实现类
  * 使用@Service注解标记为Spring服务组件

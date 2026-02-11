@@ -2,6 +2,9 @@ package org.xinrui.service;
 
 import org.xinrui.dto.SampleModifyDto;
 
+/*
+ * 预备删除
+ */
 public interface UpdateSampleService {
     /**
      * 推送样本信息到Halos系统

@@ -10,6 +10,10 @@ import org.xinrui.dto.ApiResponse;
 import org.xinrui.exception.HalosApiException;
 import org.xinrui.service.TokenService;
 
+/*
+ * 预备删除
+ */
+
 @Slf4j
 @RestController
 //@RequestMapping("/his/V3/HalosToken")测试时使用

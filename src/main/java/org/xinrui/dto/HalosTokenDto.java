@@ -6,6 +6,10 @@ import lombok.Data;
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 
+/*
+ * 预备删除
+ */
+
 @Data
 public class HalosTokenDto implements Serializable {
     @NotBlank(message = "appId不能为空")

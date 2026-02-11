@@ -19,6 +19,10 @@ import org.springframework.http.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+/*
+ * 预备删除
+ */
+
 /**
  * 示例推送服务实现类
  * 实现了SamplePushService接口，负责将样本数据推送到Halos系统

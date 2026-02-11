@@ -13,6 +13,10 @@ import org.xinrui.service.UpdateSampleService;
 
 import javax.validation.Valid;
 
+/*
+ * 预备删除
+ */
+
 @Slf4j
 @Validated
 @RestController

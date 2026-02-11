@@ -1,5 +1,8 @@
 package org.xinrui.service;
 
+/*
+ * 预备删除
+ */
 public interface TokenService {
     /**
      * 获取有效Halos token（自动缓存+刷新）

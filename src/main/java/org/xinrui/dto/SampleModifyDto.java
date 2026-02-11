@@ -9,6 +9,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+/*
+ * 预备删除
+ */
 /**
  * his中样本信息修改后的推送dto
  */
