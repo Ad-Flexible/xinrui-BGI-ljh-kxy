@@ -6,7 +6,7 @@ import org.xinrui.dto.detectionresult.DetectionResultDto;
  * Halos推送结果数据服务接口
  * 该接口定义了处理推送结果相关的方法
  */
-public interface PushResultService {
+public interface DetectionResultService {
 
     /**
      * 处理Halos推送的检测结果

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.xinrui.dto.ApiResponse;
 import org.xinrui.dto.SampleDto;
-import org.xinrui.service.RequestSampleService;
+import org.xinrui.service.SampleService;
 
 import javax.validation.constraints.NotBlank;
 
@@ -21,10 +21,10 @@ import javax.validation.constraints.NotBlank;
 @Validated
 @RestController
 @RequestMapping("/his/V3/sample")
-public class RequestSampleController {
+public class SampleController {
 
     @Autowired
-    private RequestSampleService requestSampleService;
+    private SampleService requestSampleService;
 
     /**
      * Halos请求样本信息接口

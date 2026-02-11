@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xinrui.dto.ApiResponse;
 import org.xinrui.dto.detectionresult.DetectionResultDto;
-import org.xinrui.service.PushResultService;
+import org.xinrui.service.DetectionResultService;
 import org.xinrui.util.FileUtil;
 import javax.validation.Valid;
 
@@ -20,10 +20,10 @@ import javax.validation.Valid;
 @Validated
 @RestController
 @RequestMapping("/his/V3/result")
-public class PushResultController {
+public class DetectionResultController {
 
     @Autowired
-    private PushResultService pushResultService;
+    private DetectionResultService pushResultService;
 
     /**
      * Halos推送JSON结果数据接口

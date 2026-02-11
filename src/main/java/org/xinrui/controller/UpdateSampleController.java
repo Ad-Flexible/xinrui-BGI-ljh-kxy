@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.xinrui.dto.ApiResponse;
 import org.xinrui.dto.SampleModifyDto;
-import org.xinrui.service.SamplePushService;
+import org.xinrui.service.UpdateSampleService;
 
 import javax.validation.Valid;
 
@@ -17,10 +17,10 @@ import javax.validation.Valid;
 @Validated
 @RestController
 @RequestMapping("/his/V3/sample")
-public class SamplePushController {
+public class UpdateSampleController {
 
     @Autowired
-    private SamplePushService samplePushService;
+    private UpdateSampleService samplePushService;
 
     /**
      * 推送样本信息至Halos系统

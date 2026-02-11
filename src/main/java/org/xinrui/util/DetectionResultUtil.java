@@ -8,12 +8,12 @@ import javax.validation.Validator;
 
 
 @Component
-public class PushResultUtil {
+public class DetectionResultUtil {
 
     private final Validator validator;
 
     // 构造器注入 Validator
-    public PushResultUtil(Validator validator) {
+    public DetectionResultUtil(Validator validator) {
         this.validator = validator;
     }
 

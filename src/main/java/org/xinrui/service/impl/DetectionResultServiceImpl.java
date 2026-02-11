@@ -9,23 +9,23 @@ import org.xinrui.dto.detectionresult.DetectionResultDto;
 import org.xinrui.entity.DetectionResultInfo;
 import org.xinrui.entity.SampleInfo;
 import org.xinrui.exception.BusinessException;
-import org.xinrui.mapper.ResultInfoMapper;
+import org.xinrui.mapper.DetectionResultInfoMapper;
 import org.xinrui.mapper.SampleInfoMapper;
-import org.xinrui.service.PushResultService;
-import org.xinrui.util.PushResultUtil;
+import org.xinrui.service.DetectionResultService;
+import org.xinrui.util.DetectionResultUtil;
 
 @Slf4j
 @Service
-public class PushResultServiceImpl implements PushResultService {
+public class DetectionResultServiceImpl implements DetectionResultService {
 
     @Autowired
-    private ResultInfoMapper resultInfoMapper;
+    private DetectionResultInfoMapper resultInfoMapper;
 
     @Autowired
     private SampleInfoMapper sampleInfoMapper;
 
     @Autowired
-    private  PushResultUtil pushResultUtil;
+    private DetectionResultUtil pushResultUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)

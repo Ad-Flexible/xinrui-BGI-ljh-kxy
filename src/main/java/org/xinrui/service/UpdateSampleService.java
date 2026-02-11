@@ -2,7 +2,7 @@ package org.xinrui.service;
 
 import org.xinrui.dto.SampleModifyDto;
 
-public interface SamplePushService {
+public interface UpdateSampleService {
     /**
      * 推送样本信息到Halos系统
      * @param //request 样本数据（必填字段需校验）

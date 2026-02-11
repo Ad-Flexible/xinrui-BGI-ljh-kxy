@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import org.xinrui.dto.ApiResponse;
 import org.xinrui.dto.SampleModifyDto;
 import org.xinrui.exception.HalosApiException;
-import org.xinrui.service.SamplePushService;
+import org.xinrui.service.UpdateSampleService;
 import org.xinrui.service.TokenService;
 
 import org.springframework.http.*;
@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
  */
 @Slf4j
 @Service
-public class SamplePushServiceImpl implements SamplePushService {
+public class UpdateSampleServiceImpl implements UpdateSampleService {
 
     // 推送样本到Halos的API URL配置
     @Value("${halos.api.push-sample-url}")
@@ -45,7 +45,7 @@ public class SamplePushServiceImpl implements SamplePushService {
     private final RestTemplate restTemplate;
     private final TokenService tokenService;
 
-    public SamplePushServiceImpl(RestTemplate restTemplate, TokenService tokenService) {
+    public UpdateSampleServiceImpl(RestTemplate restTemplate, TokenService tokenService) {
         this.restTemplate = restTemplate;
         this.tokenService = tokenService;
     }

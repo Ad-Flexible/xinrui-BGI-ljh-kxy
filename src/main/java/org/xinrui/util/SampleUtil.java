@@ -15,12 +15,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component // 建议交给Spring管理，以便注入Validator；如果必须是纯静态工具类，请看下文说明
-public class RequestSampleUtil {
+public class SampleUtil {
 
     private final Validator validator;
 
     // 构造器注入 Validator
-    public RequestSampleUtil(Validator validator) {
+    public SampleUtil(Validator validator) {
         this.validator = validator;
     }
 

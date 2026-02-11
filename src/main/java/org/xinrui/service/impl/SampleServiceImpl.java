@@ -8,18 +8,18 @@ import org.xinrui.dto.SampleDto;
 import org.xinrui.entity.SampleInfo;
 import org.xinrui.exception.BusinessException;
 import org.xinrui.mapper.SampleInfoMapper;
-import org.xinrui.service.RequestSampleService;
-import org.xinrui.util.RequestSampleUtil;
+import org.xinrui.service.SampleService;
+import org.xinrui.util.SampleUtil;
 
 @Slf4j
 @Service
-public class RequestSampleServiceImpl implements RequestSampleService {
+public class SampleServiceImpl implements SampleService {
 
     @Autowired
     private SampleInfoMapper sampleInfoMapper;
 
     @Autowired
-    private RequestSampleUtil requestSampleUtil;
+    private SampleUtil requestSampleUtil;
 
     @Override
     @Transactional(readOnly = true)
