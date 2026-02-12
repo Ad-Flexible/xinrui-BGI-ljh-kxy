@@ -6,8 +6,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xinrui.dto.ApiResponse;
-import org.xinrui.dto.detectionresult.DetectionResultDto;
-import org.xinrui.service.DetectionResultService;
+import org.xinrui.dto.testresult.TestResultDto;
+import org.xinrui.service.TestResultService;
 import org.xinrui.util.FileUtil;
 import javax.validation.Valid;
 
@@ -20,17 +20,17 @@ import javax.validation.Valid;
 @Validated
 @RestController
 @RequestMapping("/his/V3/result")
-public class DetectionResultController {
+public class TestResultController {
 
     @Autowired
-    private DetectionResultService pushResultService;
+    private TestResultService pushResultService;
 
     /**
      * Halos推送JSON结果数据接口
      * POST /his/V3/sample/pushResult
      */
     @PostMapping("/pushResult")
-    public ApiResponse<Void> pushResult(@Valid @RequestBody DetectionResultDto requestDTO) {
+    public ApiResponse<Void> pushResult(@Valid @RequestBody TestResultDto requestDTO) {
 
 //        try {
 //            boolean success = pushResultService.handlePushResult(requestDTO);

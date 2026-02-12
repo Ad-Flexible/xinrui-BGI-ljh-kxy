@@ -1,19 +1,19 @@
 package org.xinrui.util;
 
 import org.springframework.stereotype.Component;
-import org.xinrui.dto.detectionresult.DetectionResultDto;
+import org.xinrui.dto.testresult.TestResultDto;
 import org.xinrui.entity.*;
 
 import javax.validation.Validator;
 
 
 @Component
-public class DetectionResultUtil {
+public class TestResultUtil {
 
     private final Validator validator;
 
     // 构造器注入 Validator
-    public DetectionResultUtil(Validator validator) {
+    public TestResultUtil(Validator validator) {
         this.validator = validator;
     }
 
@@ -21,7 +21,7 @@ public class DetectionResultUtil {
      * DTO 转 entity
      * 复用 BeanConvertUtil 简化代码
      */
-    public TestResultInfo convertToEntity(DetectionResultDto pushResultRequestDTO) {
+    public TestResultInfo convertToEntity(TestResultDto pushResultRequestDTO) {
         if (pushResultRequestDTO == null) {
             return null;
         }

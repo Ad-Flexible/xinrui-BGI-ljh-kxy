@@ -5,31 +5,31 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.xinrui.dto.detectionresult.DetectionResultDto;
+import org.xinrui.dto.testresult.TestResultDto;
 import org.xinrui.entity.*;
 import org.xinrui.entity.SampleInfo;
 import org.xinrui.exception.BusinessException;
-import org.xinrui.mapper.DetectionResultInfoMapper;
+import org.xinrui.mapper.TestResultInfoMapper;
 import org.xinrui.mapper.SampleInfoMapper;
-import org.xinrui.service.DetectionResultService;
-import org.xinrui.util.DetectionResultUtil;
+import org.xinrui.service.TestResultService;
+import org.xinrui.util.TestResultUtil;
 
 @Slf4j
 @Service
-public class DetectionResultServiceImpl implements DetectionResultService {
+public class TestResultServiceImpl implements TestResultService {
 
     @Autowired
-    private DetectionResultInfoMapper resultInfoMapper;
+    private TestResultInfoMapper resultInfoMapper;
 
     @Autowired
     private SampleInfoMapper sampleInfoMapper;
 
     @Autowired
-    private DetectionResultUtil pushResultUtil;
+    private TestResultUtil pushResultUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean handlePushResult(DetectionResultDto requestDTO) {
+    public boolean handlePushResult(TestResultDto requestDTO) {
         log.info("处理Halos推送结果，样本编号: {}", requestDTO.getSampleId());
 
         try {

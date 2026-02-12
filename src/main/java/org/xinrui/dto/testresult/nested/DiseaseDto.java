@@ -1,4 +1,4 @@
-package org.xinrui.dto.detectionresult.nested;
+package org.xinrui.dto.testresult.nested;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.Data;
  * 通用疾病信息类
  */
 @Data
-public class DiseaseInfo {
+public class DiseaseDto {
     @ApiModelProperty(value = "区带信息", example = "del(1p36.33-p35.3,28.39M)")
     private String cytoband;
 
