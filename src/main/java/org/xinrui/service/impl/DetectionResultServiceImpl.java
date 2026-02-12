@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xinrui.dto.detectionresult.DetectionResultDto;
-import org.xinrui.entity.DetectionResultInfo;
+import org.xinrui.entity.*;
 import org.xinrui.entity.SampleInfo;
 import org.xinrui.exception.BusinessException;
 import org.xinrui.mapper.DetectionResultInfoMapper;
@@ -47,10 +47,10 @@ public class DetectionResultServiceImpl implements DetectionResultService {
             }
 
             // 2. 检查是否已存在结果（避免重复推送覆盖）
-            DetectionResultInfo existResult = resultInfoMapper.selectOne(
-                    Wrappers.lambdaQuery(DetectionResultInfo.class)
-                            .eq(DetectionResultInfo::getSampleId, requestDTO.getSampleId())
-                            .orderByDesc(DetectionResultInfo::getCreateTime)
+            TestResultInfo existResult = resultInfoMapper.selectOne(
+                    Wrappers.lambdaQuery(TestResultInfo.class)
+                            .eq(TestResultInfo::getSampleId, requestDTO.getSampleId())
+                            .orderByDesc(TestResultInfo::getCreateTime)
                             .last("LIMIT 1")
             );
 
@@ -61,7 +61,7 @@ public class DetectionResultServiceImpl implements DetectionResultService {
             }
 
             // 3. 转换并保存结果
-            DetectionResultInfo resultInfo = pushResultUtil.convertToEntity(requestDTO);
+            TestResultInfo resultInfo = pushResultUtil.convertToEntity(requestDTO);
             //
             //后续操作均为假设
             //
