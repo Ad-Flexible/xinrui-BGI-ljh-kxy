@@ -61,6 +61,7 @@ public class DetectionResultController {
         FileUtil.validateFile(file, "PDF");
 
         String filename = file.getOriginalFilename();
+        //前提是获得的file名可以与样本做关联，例如文件名是sample_id那就知道是哪个样本的word文件
         log.info("✅ 接收PDF报告文件成功 | 文件名: {} | 大小: {} bytes",
                 filename, file.getSize());
 
@@ -81,6 +82,7 @@ public class DetectionResultController {
         FileUtil.validateFile(file, "WORD");
 
         String filename = file.getOriginalFilename();
+        //前提是获得的file名可以与样本做关联，例如文件名是sample_id那就知道是哪个样本的word文件
         log.info("✅ 接收WORD报告文件成功 | 文件名: {} | 大小: {} bytes",
                 filename, file.getSize());
 
