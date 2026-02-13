@@ -10,7 +10,7 @@ import org.xinrui.entity.*;
 import org.xinrui.entity.SampleInfo;
 import org.xinrui.exception.BusinessException;
 import org.xinrui.mapper.TestResultInfoMapper;
-import org.xinrui.mapper.SampleInfoMapper;
+import org.xinrui.mapper.SampleMapper;
 import org.xinrui.service.TestResultService;
 import org.xinrui.util.TestResultUtil;
 
@@ -22,7 +22,7 @@ public class TestResultServiceImpl implements TestResultService {
     private TestResultInfoMapper resultInfoMapper;
 
     @Autowired
-    private SampleInfoMapper sampleInfoMapper;
+    private SampleMapper sampleMapper;
 
     @Autowired
     private TestResultUtil pushResultUtil;
@@ -34,7 +34,7 @@ public class TestResultServiceImpl implements TestResultService {
 
         try {
             // 1. 验证样本是否存在
-            SampleInfo sampleInfo = sampleInfoMapper.selectOne(
+            SampleInfo sampleInfo = sampleMapper.selectOne(
                     Wrappers.lambdaQuery(SampleInfo.class)
                             .eq(SampleInfo::getSampleId, requestDTO.getSampleId())
                             .or()
@@ -70,7 +70,7 @@ public class TestResultServiceImpl implements TestResultService {
 
             // 4. 更新样本状态为"已完成"
             sampleInfo.setStatus(2); // 2-已完成
-            sampleInfoMapper.updateById(sampleInfo);
+            sampleMapper.updateById(sampleInfo);
 
             // 5. 保存/更新结果
             if (existResult != null) {

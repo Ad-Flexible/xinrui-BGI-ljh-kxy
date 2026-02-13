@@ -1,8 +1,6 @@
 package org.xinrui.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.xinrui.dto.SampleDto;
-import org.xinrui.entity.SampleInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,7 +12,7 @@ import org.apache.ibatis.annotations.Param;
 public interface SampleMapper {
 
     /**
-     * 根据样本编号查询（唯一索引）
+     * 根据原样本编号查询（唯一索引）
      */
-    SampleDto selectBySampleNum(@Param("sampleNum") String sampleNum);
+    SampleDto selectByOldSampleNum(@Param("oldSampleNum") String oldSampleNum);
 }

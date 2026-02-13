@@ -3,7 +3,7 @@
 <mapper namespace="org.xinrui.mapper.SampleMapper">
 
     <!-- 仅查询需要的字段，精确匹配SampleDto -->
-    <select id="selectBySampleNum" resultType="org.xinrui.dto.SampleDto">
+    <select id="selectByOldSampleNum" resultType="org.xinrui.dto.SampleDto">
         SELECT
             -- SampleInfo (datetime -> long)
             UNIX_TIMESTAMP(si.collect_date) * 1000 AS collectDate,
@@ -63,6 +63,6 @@
                  LEFT JOIN t_mchi_patient pi ON si.patient_oid = pi.oid
                  LEFT JOIN t_lis_examination ei ON si.oid = ei.sample_oid
                  LEFT JOIN t_lis_test_result tr ON si.oid = tr.sample_oid
-        WHERE si.sample_id = #{sampleNum}
+        WHERE si.old_sample_num = #{oldSampleNum}
     </select>
 </mapper>

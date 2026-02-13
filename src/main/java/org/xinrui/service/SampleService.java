@@ -10,9 +10,9 @@ public interface SampleService {
 
     /**
      * 根据原样本编号查询样本信息
-     * @param sampleNum 样本编号
+     * @param oldSampleNum 样本编号
      * @return 样本信息DTO
      * @throws org.xinrui.exception.BusinessException 业务异常
      */
-    SampleDto getSample(String sampleNum);
+    SampleDto getSample(String oldSampleNum);
 }
