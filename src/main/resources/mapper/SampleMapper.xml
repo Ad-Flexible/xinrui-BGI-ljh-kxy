@@ -9,19 +9,14 @@
             UNIX_TIMESTAMP(si.collect_date) * 1000 AS collectDate,
             UNIX_TIMESTAMP(si.received_date) * 1000 AS receivedDate,
 
-            -- PatientInfo (datetime -> long)
-            UNIX_TIMESTAMP(pi.patient_birthday) * 1000 AS patientBirthday,
-
-            -- ExaminationInfo (date -> String 毫秒)
-            CAST(UNIX_TIMESTAMP(ei.patient_edd) * 1000 AS CHAR) AS patientEdd,
-            CAST(UNIX_TIMESTAMP(ei.last_menstrual_period) * 1000 AS CHAR) AS lastMenstrualPeriod,
-
             -- 数值转换
             ROUND(ei.patient_height) AS patientHeight,  -- 四舍五入转整数
             CAST(ei.patient_weight AS CHAR) AS patientWeight,
 
             -- 计算字段 (gestational_weeks * 7 + gestational_days)
             (IFNULL(ei.gestational_weeks, 0) * 7 + IFNULL(ei.gestational_days, 0)) AS gestationalWeeks,
+
+            CONCAT(IFNULL(pi.current_address, ''), IFNULL(pi.current_address_detail, '')) AS patientAddress,
 
             -- 其他字段 (直接映射)
             si.product_no AS productNo,
@@ -35,14 +30,14 @@
             si.clinic_num AS clinicNum,
             si.hospital_name AS hospitalName,
             si.doctor_name AS doctorName,
-            pi.patient_name AS patientName,
-            pi.patient_id_card AS patientIdCard,
-            pi.patient_mobile AS patientMobile,
+            pi.name AS patientName,
+            pi.identity AS patientIdCard,
+            pi.phone AS patientMobile,
             pi.patient_tel AS patientTel,
-            pi.patient_address AS patientAddress,
-            pi.emergent_name AS emergentName,
+            pi.emergency_contact AS emergentName,
             pi.emergent_relation AS emergentRelation,
-            pi.emergent_tel AS emergentTel,
+            pi.emergency_contact_phone AS emergentTel,
+            pi.birthday AS patientBirthday,
             ei.fetus_type AS fetusType,
             ei.patient_age AS patientAge,
             ei.chorion_type AS chorion,
@@ -58,11 +53,13 @@
             ei.illness_history_allergy AS illnessHistoryAllergy,
             ei.illness_history_genetic AS illnessHistoryGenetic,
             ei.patient_remark AS patientRemark,
+            ei.patient_edd AS patientEdd,
+            ei.last_menstrual_period AS lastMenstrualPeriod,
             tr.down_screening_result AS downScreening
         FROM t_lis_sample si
-                 LEFT JOIN t_mchi_patient pi ON si.patient_oid = pi.oid
-                 LEFT JOIN t_lis_examination ei ON si.oid = ei.sample_oid
-                 LEFT JOIN t_lis_test_result tr ON si.oid = tr.sample_oid
+            LEFT JOIN t_mchi_patient pi ON si.patient_oid = pi.oid
+            LEFT JOIN t_lis_examination ei ON si.oid = ei.sample_oid
+            LEFT JOIN t_lis_test_result tr ON si.oid = tr.sample_oid
         WHERE si.old_sample_num = #{oldSampleNum}
     </select>
 </mapper>

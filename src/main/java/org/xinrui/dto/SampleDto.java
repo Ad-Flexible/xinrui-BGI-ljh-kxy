@@ -1,5 +1,6 @@
 package org.xinrui.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -7,6 +8,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+
 /**
  * HIS数据库中的样本信息推送dto
  *
@@ -66,8 +69,9 @@ public class SampleDto {
     @ApiModelProperty(value = "身份证号")
     private String patientIdCard;
 
-    @ApiModelProperty(value = "出生日期，单位：毫秒")
-    private long patientBirthday;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "出生日期")
+    private LocalDate patientBirthday;
 
     @ApiModelProperty(value = "年龄[0,100]，其中0为空")
     @Min(value = 0,message = "年龄最小为0")
@@ -109,11 +113,13 @@ public class SampleDto {
     @ApiModelProperty(value = "联系人电话")
     private String emergentTel;
 
-    @ApiModelProperty(value = "预产期，单位：毫秒")
-    private String patientEdd;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "预产期")
+    private LocalDate patientEdd;
 
-    @ApiModelProperty(value = "末次月经，单位：毫秒")
-    private String lastMenstrualPeriod;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "末次月经")
+    private LocalDate lastMenstrualPeriod;
 
     @ApiModelProperty(value = "绒毛膜，其中0为空")
     private int chorion;
