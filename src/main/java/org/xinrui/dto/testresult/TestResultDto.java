@@ -93,6 +93,7 @@ public class TestResultDto {
     @ApiModelProperty(value = "联系地址", example = "北京市西城区XX街道XX号")
     private String patientAddress;
 
+
     @ApiModelProperty(value = "手机号码", example = "15012341234")
     private String patientMobile;
 

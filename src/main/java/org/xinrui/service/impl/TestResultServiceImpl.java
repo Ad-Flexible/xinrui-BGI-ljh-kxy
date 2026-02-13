@@ -9,6 +9,7 @@ import org.xinrui.dto.testresult.TestResultDto;
 import org.xinrui.entity.*;
 import org.xinrui.exception.BusinessException;
 import org.xinrui.mapper.*;
+import org.xinrui.util.DetectionResultUtil.*;
 import org.xinrui.service.TestResultService;
 import org.xinrui.util.BuildUtil;
 import org.xinrui.util.UpdateUtil;

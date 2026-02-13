@@ -48,7 +48,8 @@ public class TestResultInfo implements Serializable {
     @TableField("report_create_time")
     private LocalDateTime reportCreateTime;
 
-    @ApiModelProperty(value = "唐筛结果", example = "1")
+    @ApiModelProperty(value = "唐筛结果：13-三体，低风险、13-三体，中风险、13-三体，高风险、18-三体，低风险、18-三体，中风险、18-三体，高风险、\n" +
+            "21-三体，低风险、21-三体，中风险、21-三体，高风险", example = "1")
     @TableField("down_screening_result")
     private Integer downScreeningResult;
 

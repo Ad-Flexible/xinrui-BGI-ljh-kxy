@@ -48,7 +48,7 @@ public class ExaminationInfo implements Serializable {
     @TableField("patient_edd")
     private LocalDate patientEdd;
 
-    @ApiModelProperty(value = "胎儿类型代码", example = "1")
+    @ApiModelProperty(value = "胎儿类型代码:1. 单胎、2. 双胎", example = "1")
     @TableField("fetus_type")
     private Integer fetusType;
 
@@ -64,7 +64,7 @@ public class ExaminationInfo implements Serializable {
     @TableField("last_menstrual_period")
     private LocalDate lastMenstrualPeriod;
 
-    @ApiModelProperty(value = "绒毛膜类型", example = "2")
+    @ApiModelProperty(value = "绒毛膜类型:1. DC、2. DA、4. MC、8. DCDA、16. MCMA、32. MCDA", example = "2")
     @TableField("chorion_type")
     private Integer chorionType;
 
@@ -76,7 +76,7 @@ public class ExaminationInfo implements Serializable {
     @TableField("ivf_flag")
     private Integer ivfFlag;
 
-    @ApiModelProperty(value = "受孕方式", example = "3")
+    @ApiModelProperty(value = "受孕方式：1. 自然受孕、2. IUI、4. IVF-ET", example = "3")
     @TableField("conception_method")
     private Integer conceptionMethod;
 

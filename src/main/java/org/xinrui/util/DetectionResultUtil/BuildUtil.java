@@ -2,6 +2,8 @@ package org.xinrui.util;
 
 import org.xinrui.dto.detectionresult.DetectionResultDto;
 import org.xinrui.dto.testresult.TestResultDto;
+import org.xinrui.dto.testresult.nested.LaneQcDto;
+import org.xinrui.dto.testresult.nested.SampleQcDto;
 import org.xinrui.dto.testresult.nested.TestCnvDto;
 import org.xinrui.entity.*;
 import java.math.BigDecimal;
@@ -14,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 public class BuildUtil {
 
     private static final Long UPDATED_BY = 1L; // 固定更新人ID
+    private static final Long CREATE_BY = 2L; // 固定创建人ID
     private static final int INVERT = 1; //固定更新版本值为1
 
     public static SampleInfo buildSampleInfo(TestResultDto dto) {
@@ -53,23 +56,52 @@ public class BuildUtil {
 
     public static PatientInfo buildPatientInfo(TestResultDto dto) {
         PatientInfo info = new PatientInfo();
-        info.setPatientName(dto.getPatientName());
-        info.setPatientAge(dto.getPatientAge());
-        info.setPatientSex(dto.getPatientSex());
-        info.setPatientPhone(dto.getPatientPhone());
-        info.setPatientAddress(dto.getPatientAddress());
-        info.setPatientRemark(dto.getPatientRemark());
-        info.setUpdatedBy(UPDATED_BY);
-        info.setUpdatedOn(LocalDateTime.now());
+        info.setName(dto.getPatientName());
+        info.setPhone(dto.getPatientMobile());
+        info.setPatientTel(null);
+        info.setSex("女");  //因为是孕检相关所以统一设置为女
+        info.setBirthday(null);
+        info.setIdentity(dto.getPatientIdCard());
+        info.setIncome(null);
+        info.setPermanentAddress(null);
+        info.setPermanentAddressDetail(null);
+        info.setCurrentAddress(null);
+        info.setCurrentAddressDetail(dto.getPatientAddress());
+        info.setEmergencyContact(null); // 紧急联系人
+        info.setEmergentRelation(null); // 与紧急联系人关系
+        info.setEmergencyContactPhone(null); // 紧急联系人电话
+        info.setEnable(1); // 默认有效
+        info.setIntver(INVERT); // 版本号初始为0
+        info.setCreatedBy(UPDATED_BY); // 创建人
+        info.setCreatedOn(LocalDateTime.now()); // 创建时间
+        info.setUpdatedBy(UPDATED_BY); // 更新人
+        info.setUpdatedOn(LocalDateTime.now()); // 更新时间
         return info;   //待完善
     }
 
-    public static ExaminationInfo buildExaminationInfo(DetectionResultDto dto, SampleInfo sampleInfo) {
+    public static ExaminationInfo buildExaminationInfo(TestResultDto dto, SampleInfo sampleInfo) {
         ExaminationInfo exam = new ExaminationInfo();
         exam.setSampleOid(sampleInfo.getOid());
+
+        // 设置患者年龄
         exam.setPatientAge(dto.getPatientAge());
+        exam.setPatientHeight(null);
+        exam.setPatientWeight(null);
+        exam.setPatientEdd(null);
+
+        // 处理孕周（TestResultDto中的gestationalWeeks是"周,天"格式的字符串）
+        if (dto.getGestationalWeeks() != null && dto.getGestationalWeeks().contains(",")) {
+            String[] weeksAndDays = dto.getGestationalWeeks().split(",");
+            if (weeksAndDays.length >= 1) {
+                exam.setGestationalWeeks(Integer.parseInt(weeksAndDays[0].trim()));
+            }
+            if (weeksAndDays.length >= 2) {
+                exam.setGestationalDays(Integer.parseInt(weeksAndDays[1].trim()));
+            }
+        }
+
+        // 转换其他字段
         exam.setFetusType(convertFetusType(dto.getFetusType()));
-        exam.setGestationalWeeks(convertGestationalWeeks(dto.getGestationalWeeks()));
         exam.setLastMenstrualPeriod(convertDate(dto.getLastMenstrualPeriod()));
         exam.setChorionType(convertChorion(dto.getChorion()));
         exam.setBUltrasonography(convertBUltrasonography(dto.getBUltrasonography()));
@@ -84,76 +116,113 @@ public class BuildUtil {
         exam.setIllnessHistoryAllergy(dto.getIllnessHistoryAllergy());
         exam.setIllnessHistoryGenetic(dto.getIllnessHistoryGenetic());
         exam.setPatientRemark(dto.getPatientRemark());
+
+        // 设置审计字段
+        exam.setIntver(INVERT);
         exam.setUpdatedBy(UPDATED_BY);
         exam.setUpdatedOn(LocalDateTime.now());
+
+
         return exam;
     }
 
-    public static SampleQcInfo buildSampleQcInfo(DetectionResultDto dto, SampleInfo sampleInfo) {
+    public static SampleQcInfo buildSampleQcInfo(TestResultDto dto, SampleInfo sampleInfo) {
         SampleQcInfo qc = new SampleQcInfo();
         qc.setSampleOid(sampleInfo.getOid());
+
+        // 设置样本质控结果
         qc.setSampleQcResult(dto.getSampleQcResult());
-        qc.setSampleGc(convertBigDecimal(dto.getSampleQc().getSampleGc()));
-        qc.setUniqueReads(convertBigDecimal(dto.getSampleQc().getUniqueReads()));
-        qc.setReadsNum(convertBigDecimal(dto.getSampleQc().getReadsNum()));
-        qc.setDuplicationRate(convertBigDecimal(dto.getSampleQc().getDuplicationRate()));
-        qc.setMapRate(convertBigDecimal(dto.getSampleQc().getMapRate()));
+
+        // 设置样本质控详细指标
+        if (dto.getSampleQc() != null) {
+            SampleQcDto sampleQcDto = dto.getSampleQc();
+            qc.setSampleGc(convertBigDecimal(sampleQcDto.getSampleGc()));
+            qc.setUniqueReads(convertBigDecimal(sampleQcDto.getUniqueReads()));
+            qc.setReadsNum(convertBigDecimal(sampleQcDto.getReadsNum()));
+            qc.setDuplicationRate(convertBigDecimal(sampleQcDto.getDuplicationRate()));
+            qc.setMapRate(convertBigDecimal(sampleQcDto.getMapRate()));
+        }
+
+        // 设置审计字段
+        qc.setIntver(INVERT);
         qc.setUpdatedBy(UPDATED_BY);
         qc.setUpdatedOn(LocalDateTime.now());
+
         return qc;
     }
 
-    public static LaneQcInfo buildLaneQcInfo(DetectionResultDto dto, SampleInfo sampleInfo) {
+    public static LaneQcInfo buildLaneQcInfo(TestResultDto dto, SampleInfo sampleInfo) {
         LaneQcInfo qc = new LaneQcInfo();
         qc.setSampleOid(sampleInfo.getOid());
+
+        // 设置lane质控结果
         qc.setLaneQcResult(dto.getLaneQcResult());
         qc.setLaneQcReason(dto.getLaneQcReason());
-        qc.setLaneReadsMean(convertBigDecimal(dto.getLaneQc().getReadsNum()));
-        qc.setLaneMapRate(convertBigDecimal(dto.getLaneQc().getMapRate()));
-        qc.setTotalDecodeRate(convertBigDecimal(dto.getLaneQc().getTotalDecodeRate()));
-        qc.setLaneDuplicateRate(convertBigDecimal(dto.getLaneQc().getDuplicateRate()));
-        qc.setFailSampleRate(convertBigDecimal(dto.getLaneQc().getFailSampleRate()));
-        qc.setLaneGcMean(convertBigDecimal(dto.getLaneQc().getLaneGc()));
-        qc.setTotalReads(convertBigDecimal(dto.getLaneQc().getTotalReads()));
-        qc.setQ20(convertBigDecimal(dto.getLaneQc().getQ20()));
-        qc.setDimRate(convertBigDecimal(dto.getLaneQc().getDimRate()));
+
+        // 设置lane质控详细指标
+        if (dto.getLaneQc() != null) {
+            LaneQcDto laneQcDto = dto.getLaneQc();
+            qc.setLaneReadsMean(convertBigDecimal(laneQcDto.getReadsNum()));
+            qc.setLaneMapRate(convertBigDecimal(laneQcDto.getMapRate()));
+            qc.setTotalDecodeRate(convertBigDecimal(laneQcDto.getTotalDecodeRate()));
+            qc.setLaneDuplicateRate(convertBigDecimal(laneQcDto.getDuplicateRate()));
+            qc.setFailSampleRate(convertBigDecimal(laneQcDto.getFailSampleRate()));
+            qc.setLaneGcMean(convertBigDecimal(laneQcDto.getLaneGc()));
+            qc.setTotalReads(convertBigDecimal(laneQcDto.getTotalReads()));
+            qc.setQ20(convertBigDecimal(laneQcDto.getQ20()));
+            qc.setDimRate(convertBigDecimal(laneQcDto.getDimRate()));
+        }
+
+        // 设置审计字段
+        qc.setIntver(INVERT);
         qc.setUpdatedBy(UPDATED_BY);
         qc.setUpdatedOn(LocalDateTime.now());
+
         return qc;
+
     }
 
-    public static TestResultInfo buildTestResultInfo(DetectionResultDto dto, SampleInfo sampleInfo) {
-        TestResultInfo result = new TestResultInfo();
-        result.setSampleOid(sampleInfo.getOid());
-        result.setTestTime(convertDateTime(dto.getTestTime()));
-        result.setTestResult(dto.getDetectionResult());
-        result.setReportType(dto.getReportType());
-        result.setReportCreateTime(convertDateTime(dto.getReportCreateTime()));
-        result.setDownScreeningResult(convertDownScreening(dto.getDownScreening()));
-        result.setZChr13(convertBigDecimal(dto.getZChr13()));
-        result.setZChr18(convertBigDecimal(dto.getZChr18()));
-        result.setZChr21(convertBigDecimal(dto.getZChr21()));
-        result.setTestChr13(dto.getTestChr13());
-        result.setTestChr18(dto.getTestChr18());
-        result.setTestChr21(dto.getTestChr21());
-        result.setTestChrSex(dto.getTestChrSex());
-        result.setAbnormalChrX(dto.getAbnormalChrX());
-        result.setFracAbs(convertBigDecimal(dto.getFracAbs()));
-        result.setFetalFaction(convertBigDecimal(dto.getFetalFraction()));
-        result.setChildLvChr13(convertBigDecimal(dto.getChildLvChr13()));
-        result.setChildLvChr18(convertBigDecimal(dto.getChildLvChr18()));
-        result.setChildLvChr21(convertBigDecimal(dto.getChildLvChr21()));
-        result.setRiskIndex13(dto.getRiskIndex13());
-        result.setRiskIndex18(dto.getRiskIndex18());
-        result.setRiskIndex21(dto.getRiskIndex21());
-        result.setTestDeletionDuplication(dto.getTestDeletionDuplication());
-        result.setTestChrOther(dto.getTestChrOther());
-        result.setAbnormalChrNum(dto.getAbnormalChrNum());
-        result.setRecommendedOperation(dto.getRecommendedOperation());
-        result.setDoctorOpinion(dto.getDoctorOpinion());
-        result.setUpdatedBy(UPDATED_BY);
-        result.setUpdatedOn(LocalDateTime.now());
-        return result;
+    public static TestResultInfo buildTestResultInfo(TestResultDto dto, SampleInfo sampleInfo) {
+            TestResultInfo result = new TestResultInfo();
+            result.setSampleOid(sampleInfo.getOid());
+
+            // 设置检测基本信息
+            result.setTestTime(convertDateTime(dto.getTestTime()));
+            result.setTestResult(dto.getDetectionResult());
+            result.setReportType(dto.getReportType());
+            result.setReportCreateTime(convertDateTime(dto.getReportCreateTime()));
+            result.setDownScreeningResult(convertDownScreening(dto.getDownScreening()));
+
+            // 设置染色体相关数据
+            result.setZChr13(convertBigDecimal(dto.getZChr13()));
+            result.setZChr18(convertBigDecimal(dto.getZChr18()));
+            result.setZChr21(convertBigDecimal(dto.getZChr21()));
+            result.setTestChr13(dto.getTestChr13());
+            result.setTestChr18(dto.getTestChr18());
+            result.setTestChr21(dto.getTestChr21());
+            result.setTestChrSex(dto.getTestChrSex());
+            result.setAbnormalChrX(dto.getAbnormalChrX());
+            result.setFracAbs(convertBigDecimal(dto.getFracAbs()));
+            result.setFetalFaction(convertBigDecimal(dto.getFetalFraction()));
+            result.setChildLvChr13(convertBigDecimal(dto.getChildLvChr13()));
+            result.setChildLvChr18(convertBigDecimal(dto.getChildLvChr18()));
+            result.setChildLvChr21(convertBigDecimal(dto.getChildLvChr21()));
+            result.setRiskIndex13(dto.getRiskIndex13());
+            result.setRiskIndex18(dto.getRiskIndex18());
+            result.setRiskIndex21(dto.getRiskIndex21());
+            result.setTestDeletionDuplication(dto.getTestDeletionDuplication());
+            result.setTestChrOther(dto.getTestChrOther());
+            result.setAbnormalChrNum(dto.getAbnormalChrNum());
+            result.setExtraInformation(dto.getChrN());
+            result.setRecommendedOperation(dto.getRecommendedOperation());
+            result.setDoctorOpinion(dto.getDoctorOpinion());
+
+            // 设置审计字段
+            result.setIntver(INVERT);
+            result.setUpdatedBy(UPDATED_BY);
+            result.setUpdatedOn(LocalDateTime.now());
+
+            return result;
     }
 
 
