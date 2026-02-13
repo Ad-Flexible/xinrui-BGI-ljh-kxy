@@ -1,15 +1,22 @@
 package org.xinrui.util;
 
 import org.xinrui.dto.detectionresult.DetectionResultDto;
+import org.xinrui.dto.testresult.TestResultDto;
+import org.xinrui.dto.testresult.nested.TestCnvDto;
 import org.xinrui.entity.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+
+
 public class BuildUtil {
 
-    public static SampleInfo buildSampleInfo(DetectionResultDto dto) {
+    private static final Long UPDATED_BY = 1L; // 固定更新人ID
+    private static final int INVERT = 1; //固定更新版本值为1
+
+    public static SampleInfo buildSampleInfo(TestResultDto dto) {
         SampleInfo info = new SampleInfo();
         info.setSampleId(dto.getSampleId());
         info.setPoolingSubId(dto.getPoolingSubId());
@@ -21,17 +28,30 @@ public class BuildUtil {
         info.setTubeType(convertTubeType(dto.getTubeType()));
         info.setCollectDate(convertDateTime(dto.getCollectDate()));
         info.setReceivedDate(convertDateTime(dto.getReceivedDate()));
-        info.setGestationalWeeks(convertGestationalWeeks(dto.getGestationalWeeks()));
-        info.setFetusType(convertFetusType(dto.getFetusType()));
         info.setAdditionalReportFlag(dto.getAdditionalReportFlag());
         info.setOldSampleNum(dto.getOldSampleNum());
         info.setRepeatCount(dto.getRepeatCount());
+        // 设置缺失字段 - 从diseaseList获取产品信息
+        if (dto.getDiseaseList() != null && !dto.getDiseaseList().isEmpty()) {
+            TestCnvDto firstTestCnv = dto.getDiseaseList().get(0);
+            info.setProductNo(firstTestCnv.getProductNo());
+            info.setProductName(firstTestCnv.getProductName());
+        } else {
+            // 如果diseaseList为空，可以设置为默认值
+            info.setProductNo(null);
+            info.setProductName(null);
+        }
+        info.setClinicNum(dto.getClinicNum());
+        info.setHospitalName(dto.getHospitalName());
+        info.setDepartmentName(null);
+        info.setDoctorName(dto.getDoctorName());
+        info.setIntver(INVERT);
         info.setUpdatedBy(UPDATED_BY);
         info.setUpdatedOn(LocalDateTime.now());
         return info;
     }
 
-    public static PatientInfo buildPatientInfo(DetectionResultDto dto) {
+    public static PatientInfo buildPatientInfo(TestResultDto dto) {
         PatientInfo info = new PatientInfo();
         info.setPatientName(dto.getPatientName());
         info.setPatientAge(dto.getPatientAge());
@@ -136,8 +156,5 @@ public class BuildUtil {
         return result;
     }
 
-    // 保持原有转换方法（与原util相同）
-    private static Integer convertSampleType(String type) { /* ... */ }
-    private static Integer convertShipmentCondition(String condition) { /* ... */ }
-    // ... 其他转换方法保持不变
+
 }

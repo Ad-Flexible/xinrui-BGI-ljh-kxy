@@ -52,15 +52,15 @@ public class SampleInfo implements Serializable {
     @TableField("dnb_id")
     private String dnbId;
 
-    @ApiModelProperty(value = "样本类型代码", example = "1")
+    @ApiModelProperty(value = "样本类型代码：1. 全血、2. 血浆、4. DNA", example = "1")
     @TableField("sample_type")
     private Integer sampleType;
 
-    @ApiModelProperty(value = "运输条件", example = "2")
+    @ApiModelProperty(value = "运输条件：1. 4°C、2. 6~35°C、4. dry ice", example = "1")
     @TableField("shipment_condition")
     private Integer shipmentCondition;
 
-    @ApiModelProperty(value = "采血管类型代码", example = "3")
+    @ApiModelProperty(value = "采血管类型代码：1. Streck管、2. EDTA管、4. K管、8. G管、16. X管", example = "1")
     @TableField("tube_type")
     private Integer tubeType;
 

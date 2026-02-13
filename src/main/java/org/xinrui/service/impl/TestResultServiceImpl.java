@@ -9,7 +9,6 @@ import org.xinrui.dto.testresult.TestResultDto;
 import org.xinrui.entity.*;
 import org.xinrui.exception.BusinessException;
 import org.xinrui.mapper.*;
-import org.xinrui.service.DetectionResultService;
 import org.xinrui.service.TestResultService;
 import org.xinrui.util.BuildUtil;
 import org.xinrui.util.UpdateUtil;
@@ -45,11 +44,11 @@ public class TestResultServiceImpl implements TestResultService {
     @Autowired
     private TestCnvInfoMapper testCnvInfoMapper;
 
-    private static final Long UPDATED_BY = 1L; // 固定更新人ID
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean handlePushResult(DetectionResultDto requestDTO) {
+    public boolean handlePushResult(TestResultDto requestDTO) {
         log.info("开始处理Halos推送结果，样本编号: {}", requestDTO.getSampleId());
 
         // 1. 处理样本信息（t_lis_sample）
@@ -79,7 +78,7 @@ public class TestResultServiceImpl implements TestResultService {
 
     // ==================== 核心处理方法 ====================
 
-    private SampleInfo handleSampleInfo(DetectionResultDto dto) {
+    private SampleInfo handleSampleInfo(TestResultDto dto) {
         // 通过sample_id和old_sample_num查询
         SampleInfo sampleInfo = sampleInfoMapper.selectOne(
                 Wrappers.<SampleInfo>lambdaQuery()
@@ -97,7 +96,7 @@ public class TestResultServiceImpl implements TestResultService {
         return sampleInfo;
     }
 
-    private void handlePatientInfo(DetectionResultDto dto, SampleInfo sampleInfo) {
+    private void handlePatientInfo(TestResultDto dto, SampleInfo sampleInfo) {
         // 通过身份证号查询患者
         PatientInfo patientInfo = patientInfoMapper.selectOne(
                 Wrappers.<PatientInfo>lambdaQuery()
@@ -118,7 +117,7 @@ public class TestResultServiceImpl implements TestResultService {
         sampleInfoMapper.updateById(sampleInfo); // 更新样本关联患者ID
     }
 
-    private void handleExaminationInfo(DetectionResultDto dto, SampleInfo sampleInfo) {
+    private void handleExaminationInfo(TestResultDto dto, SampleInfo sampleInfo) {
         // 通过sample_oid查询检查信息
         ExaminationInfo exam = examinationInfoMapper.selectOne(
                 Wrappers.<ExaminationInfo>lambdaQuery()
@@ -134,7 +133,7 @@ public class TestResultServiceImpl implements TestResultService {
         }
     }
 
-    private void handleSampleQcInfo(DetectionResultDto dto, SampleInfo sampleInfo) {
+    private void handleSampleQcInfo(TestResultDto dto, SampleInfo sampleInfo) {
         if (dto.getSampleQc() == null) return;
 
         // 通过sample_oid查询样本质控
@@ -152,7 +151,7 @@ public class TestResultServiceImpl implements TestResultService {
         }
     }
 
-    private void handleLaneQcInfo(DetectionResultDto dto, SampleInfo sampleInfo) {
+    private void handleLaneQcInfo(TestResultDto dto, SampleInfo sampleInfo) {
         if (dto.getLaneQc() == null) return;
 
         // 通过sample_oid查询Lane质控
@@ -170,7 +169,7 @@ public class TestResultServiceImpl implements TestResultService {
         }
     }
 
-    private Long handleTestResultInfo(DetectionResultDto dto, SampleInfo sampleInfo) {
+    private Long handleTestResultInfo(TestResultDto dto, SampleInfo sampleInfo) {
         // 通过sample_oid查询检测结果
         TestResultInfo result = testResultInfoMapper.selectOne(
                 Wrappers.<TestResultInfo>lambdaQuery()
@@ -187,7 +186,7 @@ public class TestResultServiceImpl implements TestResultService {
         return result.getOid();
     }
 
-    private void handleTestCnvInfo(DetectionResultDto dto, Long testResultOid) {
+    private void handleTestCnvInfo(TestResultDto dto, Long testResultOid) {
         // CNV信息无需查询，直接批量插入
         if (dto.getDiseaseList() != null) {
             List<TestCnvInfo> cnvList = dto.getDiseaseList().stream()
