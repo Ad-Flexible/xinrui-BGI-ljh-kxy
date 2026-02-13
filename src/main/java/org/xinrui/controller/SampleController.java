@@ -24,7 +24,7 @@ import javax.validation.constraints.NotBlank;
 public class SampleController {
 
     @Autowired
-    private SampleService requestSampleService;
+    private SampleService sampleService;
 
     /**
      * Halos请求样本信息接口
@@ -33,7 +33,7 @@ public class SampleController {
     @GetMapping("/get/{oldSampleNum}")
     public ApiResponse<SampleDto> getSampleInfo(
             @PathVariable @NotBlank(message = "原样本编号不能为空") String oldSampleNum) {
-        SampleDto result = requestSampleService.getSampleInfo(oldSampleNum);
+        SampleDto result = sampleService.getSample(oldSampleNum);
         return ApiResponse.success(result);
 
     }

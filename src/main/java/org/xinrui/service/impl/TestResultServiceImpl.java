@@ -5,11 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.xinrui.dto.detectionresult.DetectionResultDto;
+import org.xinrui.dto.testresult.TestResultDto;
 import org.xinrui.entity.*;
 import org.xinrui.exception.BusinessException;
 import org.xinrui.mapper.*;
 import org.xinrui.service.DetectionResultService;
+import org.xinrui.service.TestResultService;
 import org.xinrui.util.BuildUtil;
 import org.xinrui.util.UpdateUtil;
 
@@ -18,9 +19,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Slf4j
 @Service
-public class DetectionResultServiceImpl implements DetectionResultService {
+public class TestResultServiceImpl implements TestResultService {
 
     @Autowired
     private SampleInfoMapper sampleInfoMapper;

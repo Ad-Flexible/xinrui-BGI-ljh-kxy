@@ -1,4 +1,4 @@
-package org.xinrui.dto.detectionresult.nested;
+package org.xinrui.dto.testresult.nested;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -8,9 +8,9 @@ import lombok.Data;
  * 疾病表型列表
  */
 @Data
-public  class DetectionCnv {
+public  class TestCnvDto {
 
-    private DiseaseInfo diseaseInfo;
+    private DiseaseDto diseaseDto;
 
     @ApiModelProperty(value = "产品套餐编号", example = "DX0558")
     private String productNo;
