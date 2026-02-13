@@ -32,19 +32,12 @@ public class DetectionResultController {
     @PostMapping("/pushResult")
     public ApiResponse<Void> pushResult(@Valid @RequestBody DetectionResultDto requestDTO) {
 
-//        try {
-//            boolean success = pushResultService.handlePushResult(requestDTO);
-//            return success ?
-//                    ApiResponse.success() : // 调用无参 success
-//                    ApiResponse.fail("请求失败");
-//        } catch (Exception e) {
-//            log.error("推送结果处理异常，样本编号: {}", requestDTO.getSampleId(), e);
-//            return ApiResponse.fail(-1, e.getMessage());
-//        }
+            boolean success = pushResultService.handlePushResult(requestDTO);
+            return success ?
+                    ApiResponse.success() : // 调用无参 success
+                    ApiResponse.fail("请求失败");
 
 
-        //目前能成功接收到都视为可以响应成功，利用@Valid去作校验若传入请求体数据不规范会被全局异常处理器捕捉并返回ApiResponse.fail
-        return ApiResponse.success();
     }
 
     /**

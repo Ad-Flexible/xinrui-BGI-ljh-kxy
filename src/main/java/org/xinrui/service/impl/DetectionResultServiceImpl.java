@@ -7,89 +7,230 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xinrui.dto.detectionresult.DetectionResultDto;
 import org.xinrui.entity.*;
-import org.xinrui.entity.SampleInfo;
 import org.xinrui.exception.BusinessException;
-import org.xinrui.mapper.DetectionResultInfoMapper;
-import org.xinrui.mapper.SampleInfoMapper;
+import org.xinrui.mapper.*;
 import org.xinrui.service.DetectionResultService;
-import org.xinrui.util.DetectionResultUtil;
+import org.xinrui.util.BuildUtil;
+import org.xinrui.util.UpdateUtil;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class DetectionResultServiceImpl implements DetectionResultService {
 
     @Autowired
-    private DetectionResultInfoMapper resultInfoMapper;
-
-    @Autowired
     private SampleInfoMapper sampleInfoMapper;
 
     @Autowired
-    private DetectionResultUtil pushResultUtil;
+    private PatientInfoMapper patientInfoMapper;
+
+    @Autowired
+    private ExaminationInfoMapper examinationInfoMapper;
+
+    @Autowired
+    private SampleQcInfoMapper sampleQcInfoMapper;
+
+    @Autowired
+    private LaneQcInfoMapper laneQcInfoMapper;
+
+    @Autowired
+    private TestResultInfoMapper testResultInfoMapper;
+
+    @Autowired
+    private TestCnvInfoMapper testCnvInfoMapper;
+
+    private static final Long UPDATED_BY = 1L; // 固定更新人ID
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean handlePushResult(DetectionResultDto requestDTO) {
-        log.info("处理Halos推送结果，样本编号: {}", requestDTO.getSampleId());
+        log.info("开始处理Halos推送结果，样本编号: {}", requestDTO.getSampleId());
 
-        try {
-            // 1. 验证样本是否存在
-            SampleInfo sampleInfo = sampleInfoMapper.selectOne(
-                    Wrappers.lambdaQuery(SampleInfo.class)
-                            .eq(SampleInfo::getSampleId, requestDTO.getSampleId())
-                            .or()
-                            //todo 旧样本号是否可以匹配
-                            .eq(SampleInfo::getOldSampleNum, requestDTO.getOldSampleNum())
-            );
+        // 1. 处理样本信息（t_lis_sample）
+        SampleInfo sampleInfo = handleSampleInfo(requestDTO);
 
-            if (sampleInfo == null) {
-                throw new BusinessException("200909140", "样本信息不存在，无法保存结果");
-            }
+        // 2. 处理患者信息（t_mchi_patient）
+        handlePatientInfo(requestDTO, sampleInfo);
 
-            // 2. 检查是否已存在结果（避免重复推送覆盖）
-            TestResultInfo existResult = resultInfoMapper.selectOne(
-                    Wrappers.lambdaQuery(TestResultInfo.class)
-                            .eq(TestResultInfo::getSampleId, requestDTO.getSampleId())
-                            .orderByDesc(TestResultInfo::getCreateTime)
-                            .last("LIMIT 1")
-            );
+        // 3. 处理检查信息（t_lis_examination）
+        handleExaminationInfo(requestDTO, sampleInfo);
 
-            if (existResult != null && "1".equals(existResult.getPushStatus().toString())) {
-                log.warn("检测结果已存在且已推送成功，样本编号: {}", requestDTO.getSampleId());
-                // 根据业务需求决定：覆盖/忽略/报错
-                // 此处选择更新（保留最新结果）
-            }
+        // 4. 处理样本质控（t_lis_sample_qc）
+        handleSampleQcInfo(requestDTO, sampleInfo);
 
-            // 3. 转换并保存结果
-            TestResultInfo resultInfo = pushResultUtil.convertToEntity(requestDTO);
-            //
-            //后续操作均为假设
-            //
-            resultInfo.setPushStatus(1); // 1-推送成功
-            resultInfo.setOldSampleNum(sampleInfo.getOldSampleNum()); // 确保冗余字段一致
+        // 5. 处理Lane质控（t_lis_lane_qc）
+        handleLaneQcInfo(requestDTO, sampleInfo);
 
-            // 4. 更新样本状态为"已完成"
-            sampleInfo.setStatus(2); // 2-已完成
+        // 6. 处理检测结果（t_lis_test_result）
+        Long testResultOid = handleTestResultInfo(requestDTO, sampleInfo);
+
+        // 7. 处理CNV信息（t_lis_test_cnv）
+        handleTestCnvInfo(requestDTO, testResultOid);
+
+        log.info("Halos推送结果处理成功，样本编号: {}", requestDTO.getSampleId());
+        return true;
+    }
+
+    // ==================== 核心处理方法 ====================
+
+    private SampleInfo handleSampleInfo(DetectionResultDto dto) {
+        // 通过sample_id和old_sample_num查询
+        SampleInfo sampleInfo = sampleInfoMapper.selectOne(
+                Wrappers.<SampleInfo>lambdaQuery()
+                        .eq(SampleInfo::getSampleId, dto.getSampleId())
+                        .eq(SampleInfo::getOldSampleNum, dto.getOldSampleNum())
+        );
+
+        if (sampleInfo == null) {
+            sampleInfo = BuildUtil.buildSampleInfo(dto);
+            sampleInfoMapper.insert(sampleInfo);
+        } else {
+            UpdateUtil.updateSampleInfo(sampleInfo, dto);
             sampleInfoMapper.updateById(sampleInfo);
+        }
+        return sampleInfo;
+    }
 
-            // 5. 保存/更新结果
-            if (existResult != null) {
-                resultInfo.setId(existResult.getId());
-                resultInfoMapper.updateById(resultInfo);
-                log.info("更新检测结果成功，ID: {}", resultInfo.getId());
-            } else {
-                resultInfoMapper.insert(resultInfo);
-                log.info("新增检测结果成功，ID: {}", resultInfo.getId());
-            }
+    private void handlePatientInfo(DetectionResultDto dto, SampleInfo sampleInfo) {
+        // 通过身份证号查询患者
+        PatientInfo patientInfo = patientInfoMapper.selectOne(
+                Wrappers.<PatientInfo>lambdaQuery()
+                        .eq(PatientInfo::getPatientIdCard, dto.getPatientIdCard())
+        );
 
-            return true;
+        if (patientInfo == null) {
+            // 插入新患者
+            patientInfo = BuildUtil.buildPatientInfo(dto);
+            patientInfoMapper.insert(patientInfo);
+            sampleInfo.setPatientOid(patientInfo.getOid());
+        } else {
+            // 更新现有患者
+            UpdateUtil.updatePatientInfo(patientInfo, dto);
+            patientInfoMapper.updateById(patientInfo);
+            sampleInfo.setPatientOid(patientInfo.getOid());
+        }
+        sampleInfoMapper.updateById(sampleInfo); // 更新样本关联患者ID
+    }
 
-        } catch (BusinessException e) {
-            log.error("业务异常，样本编号: {}, 原因: {}", requestDTO.getSampleId(), e.getMessage(), e);
-            throw e;
-        } catch (Exception e) {
-            log.error("系统异常，样本编号: {}", requestDTO.getSampleId(), e);
-            throw new BusinessException("200909149", "结果保存失败: " + e.getMessage());
+    private void handleExaminationInfo(DetectionResultDto dto, SampleInfo sampleInfo) {
+        // 通过sample_oid查询检查信息
+        ExaminationInfo exam = examinationInfoMapper.selectOne(
+                Wrappers.<ExaminationInfo>lambdaQuery()
+                        .eq(ExaminationInfo::getSampleOid, sampleInfo.getOid())
+        );
+
+        if (exam == null) {
+            exam = BuildUtil.buildExaminationInfo(dto, sampleInfo);
+            examinationInfoMapper.insert(exam);
+        } else {
+            UpdateUtil.updateExaminationInfo(exam, dto);
+            examinationInfoMapper.updateById(exam);
+        }
+    }
+
+    private void handleSampleQcInfo(DetectionResultDto dto, SampleInfo sampleInfo) {
+        if (dto.getSampleQc() == null) return;
+
+        // 通过sample_oid查询样本质控
+        SampleQcInfo qc = sampleQcInfoMapper.selectOne(
+                Wrappers.<SampleQcInfo>lambdaQuery()
+                        .eq(SampleQcInfo::getSampleOid, sampleInfo.getOid())
+        );
+
+        if (qc == null) {
+            qc = BuildUtil.buildSampleQcInfo(dto, sampleInfo);
+            sampleQcInfoMapper.insert(qc);
+        } else {
+            UpdateUtil.updateSampleQcInfo(qc, dto);
+            sampleQcInfoMapper.updateById(qc);
+        }
+    }
+
+    private void handleLaneQcInfo(DetectionResultDto dto, SampleInfo sampleInfo) {
+        if (dto.getLaneQc() == null) return;
+
+        // 通过sample_oid查询Lane质控
+        LaneQcInfo qc = laneQcInfoMapper.selectOne(
+                Wrappers.<LaneQcInfo>lambdaQuery()
+                        .eq(LaneQcInfo::getSampleOid, sampleInfo.getOid())
+        );
+
+        if (qc == null) {
+            qc = BuildUtil.buildLaneQcInfo(dto, sampleInfo);
+            laneQcInfoMapper.insert(qc);
+        } else {
+            UpdateUtil.updateLaneQcInfo(qc, dto);
+            laneQcInfoMapper.updateById(qc);
+        }
+    }
+
+    private Long handleTestResultInfo(DetectionResultDto dto, SampleInfo sampleInfo) {
+        // 通过sample_oid查询检测结果
+        TestResultInfo result = testResultInfoMapper.selectOne(
+                Wrappers.<TestResultInfo>lambdaQuery()
+                        .eq(TestResultInfo::getSampleOid, sampleInfo.getOid())
+        );
+
+        if (result == null) {
+            result = BuildUtil.buildTestResultInfo(dto, sampleInfo);
+            testResultInfoMapper.insert(result);
+        } else {
+            UpdateUtil.updateTestResultInfo(result, dto);
+            testResultInfoMapper.updateById(result);
+        }
+        return result.getOid();
+    }
+
+    private void handleTestCnvInfo(DetectionResultDto dto, Long testResultOid) {
+        // CNV信息无需查询，直接批量插入
+        if (dto.getDiseaseList() != null) {
+            List<TestCnvInfo> cnvList = dto.getDiseaseList().stream()
+                    .map(detectionCnv -> {
+                        TestCnvInfo info = new TestCnvInfo();
+                        info.setResultOid(testResultOid);
+                        info.setCnvCategory("D");
+                        info.setCytoband(detectionCnv.getDiseaseInfo().getCytoband());
+                        info.setChrNum(detectionCnv.getDiseaseInfo().getChr());
+                        info.setCnvType(detectionCnv.getDiseaseInfo().getCnvType());
+                        info.setCnvSize(detectionCnv.getDiseaseInfo().getCnvSize());
+                        info.setSite(detectionCnv.getDiseaseInfo().getSite());
+                        info.setDelDupDesc(detectionCnv.getDiseaseInfo().getDisease());
+                        info.setDiseaseName(detectionCnv.getDiseaseInfo().getDisease());
+                        info.setDiseaseDetail(detectionCnv.getDiseaseInfo().getDiseaseDetail());
+                        info.setDiseaseDescription(detectionCnv.getDiseaseInfo().getDetail());
+                        info.setUpdatedBy(UPDATED_BY);
+                        info.setUpdatedOn(LocalDateTime.now());
+                        return info;
+                    })
+                    .collect(Collectors.toList());
+            testCnvInfoMapper.insertBatch(cnvList);
+        }
+
+        if (dto.getOtherDiseaseList() != null) {
+            List<TestCnvInfo> cnvList = dto.getOtherDiseaseList().stream()
+                    .map(diseaseInfo -> {
+                        TestCnvInfo info = new TestCnvInfo();
+                        info.setResultOid(testResultOid);
+                        info.setCnvCategory("O");
+                        info.setCytoband(diseaseInfo.getCytoband());
+                        info.setChrNum(diseaseInfo.getChr());
+                        info.setCnvType(diseaseInfo.getCnvType());
+                        info.setCnvSize(diseaseInfo.getCnvSize());
+                        info.setSite(diseaseInfo.getSite());
+                        info.setDelDupDesc(diseaseInfo.getDisease());
+                        info.setDiseaseName(diseaseInfo.getDisease());
+                        info.setDiseaseDetail(diseaseInfo.getDiseaseDetail());
+                        info.setDiseaseDescription(diseaseInfo.getDetail());
+                        info.setUpdatedBy(UPDATED_BY);
+                        info.setUpdatedOn(LocalDateTime.now());
+                        return info;
+                    })
+                    .collect(Collectors.toList());
+            testCnvInfoMapper.insertBatch(cnvList);
         }
     }
 }

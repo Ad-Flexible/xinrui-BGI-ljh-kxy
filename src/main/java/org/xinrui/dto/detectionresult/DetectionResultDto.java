@@ -168,10 +168,10 @@ public class DetectionResultDto {
     private Double zChr13;
 
     @ApiModelProperty(value = "Z(chr18)", example = "0.205")
-    private String zChr18;
+    private Double zChr18;
 
     @ApiModelProperty(value = "Z(chr21)", example = "0.205")
-    private String zChr21;
+    private Double zChr21;
 
     @ApiModelProperty(value = "13号染色体风险判定", allowableValues = "未检出T13,chr13偏高,chr13危险,T13高危,chr13偏少,T13,S13,nan")
     private String testChr13;

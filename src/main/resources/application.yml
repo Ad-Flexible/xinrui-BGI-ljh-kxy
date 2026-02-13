@@ -17,6 +17,15 @@ spring:
 
 #仅为了启动程序进行单元测试使用，后续添加真正数据库配置内容
 
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
+  global-config:
+    db-config:
+      insert-strategy: not_null
+      update-strategy: not_null
+
 # Halos系统对接配置
 halos:
   app:
@@ -40,3 +49,4 @@ rest:
   template:
     connect-timeout: 3000
     read-timeout: 5000
+

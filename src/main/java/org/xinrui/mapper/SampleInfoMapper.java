@@ -1,9 +1,9 @@
 package org.xinrui.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import org.xinrui.entity.SampleInfo;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * RequestSampleDao类，用于Halos请求样本信息的数据库操作
@@ -11,9 +11,6 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 public interface SampleInfoMapper extends BaseMapper<SampleInfo> {
-
-    /**
-     * 根据原样本编号查询（唯一索引）
-     */
-    SampleInfo selectByOldSampleNum(@Param("oldSampleNum") String oldSampleNum);
+    @Override
+    SampleInfo selectOne(Wrapper<SampleInfo> queryWrapper);
 }
