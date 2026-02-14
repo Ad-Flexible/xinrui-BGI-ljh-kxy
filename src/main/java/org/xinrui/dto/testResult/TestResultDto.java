@@ -1,8 +1,8 @@
-package org.xinrui.dto.testresult;
+package org.xinrui.dto.testResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.xinrui.dto.testresult.nested.*;
+import org.xinrui.dto.testResult.nested.*;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;

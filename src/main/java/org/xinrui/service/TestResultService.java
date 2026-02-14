@@ -1,6 +1,6 @@
 package org.xinrui.service;
 
-import org.xinrui.dto.testresult.TestResultDto;
+import org.xinrui.dto.testResult.TestResultDto;
 
 /**
  * Halos推送结果数据服务接口

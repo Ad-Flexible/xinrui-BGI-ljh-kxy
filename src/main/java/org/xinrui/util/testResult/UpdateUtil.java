@@ -1,9 +1,9 @@
 package org.xinrui.util.testResult;
 
-import org.xinrui.dto.testresult.TestResultDto;
-import org.xinrui.dto.testresult.nested.LaneQcDto;
-import org.xinrui.dto.testresult.nested.SampleQcDto;
-import org.xinrui.dto.testresult.nested.TestCnvDto;
+import org.xinrui.dto.testResult.TestResultDto;
+import org.xinrui.dto.testResult.nested.LaneQcDto;
+import org.xinrui.dto.testResult.nested.SampleQcDto;
+import org.xinrui.dto.testResult.nested.TestCnvDto;
 import org.xinrui.entity.*;
 
 import java.time.LocalDateTime;

@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xinrui.dto.ApiResponse;
-import org.xinrui.dto.testresult.TestResultDto;
+import org.xinrui.dto.testResult.TestResultDto;
 import org.xinrui.service.TestResultService;
 import org.xinrui.util.FileUtil;
 import javax.validation.Valid;

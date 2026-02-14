@@ -1,4 +1,4 @@
-package org.xinrui.dto.testresult.nested;
+package org.xinrui.dto.testResult.nested;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
