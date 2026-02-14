@@ -18,8 +18,7 @@ public class SampleServiceImpl implements SampleService {
     @Autowired
     private SampleMapper sampleMapper;
 
-    @Autowired
-    private SampleUtil sampleUtil;
+
 
     @Override
     @Transactional(readOnly = true)
@@ -34,7 +33,7 @@ public class SampleServiceImpl implements SampleService {
         }
 
         //2.属性的校验，确保部分字段的必填以及数值的规定
-        sampleUtil.RequestSampleValidate(sampleDto);
+        SampleUtil.RequestSampleValidate(sampleDto);
 
         log.info("样本信息查询成功，样本编号: {}", sampleDto.getSampleId());
         return sampleDto;

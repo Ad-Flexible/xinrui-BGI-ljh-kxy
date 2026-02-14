@@ -6,15 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xinrui.dto.testresult.TestResultDto;
+import org.xinrui.dto.testresult.nested.DiseaseDto;
 import org.xinrui.entity.*;
-import org.xinrui.exception.BusinessException;
 import org.xinrui.mapper.*;
-import org.xinrui.util.DetectionResultUtil.*;
+import org.xinrui.util.testResult.*;
 import org.xinrui.service.TestResultService;
-import org.xinrui.util.BuildUtil;
-import org.xinrui.util.UpdateUtil;
 
-import java.math.BigDecimal;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +21,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class TestResultServiceImpl implements TestResultService {
+
+    private static final Long UPDATED_BY = 1L; // 固定更新人ID
 
     @Autowired
     private SampleInfoMapper sampleInfoMapper;
@@ -50,6 +50,9 @@ public class TestResultServiceImpl implements TestResultService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean handlePushResult(TestResultDto requestDTO) {
+
+
+
         log.info("开始处理Halos推送结果，样本编号: {}", requestDTO.getSampleId());
 
         // 1. 处理样本信息（t_lis_sample）
@@ -101,7 +104,7 @@ public class TestResultServiceImpl implements TestResultService {
         // 通过身份证号查询患者
         PatientInfo patientInfo = patientInfoMapper.selectOne(
                 Wrappers.<PatientInfo>lambdaQuery()
-                        .eq(PatientInfo::getPatientIdCard, dto.getPatientIdCard())
+                        .eq(PatientInfo::getIdentity, dto.getPatientIdCard())
         );
 
         if (patientInfo == null) {
@@ -191,19 +194,24 @@ public class TestResultServiceImpl implements TestResultService {
         // CNV信息无需查询，直接批量插入
         if (dto.getDiseaseList() != null) {
             List<TestCnvInfo> cnvList = dto.getDiseaseList().stream()
-                    .map(detectionCnv -> {
+                    .map(testCnvDto -> {
                         TestCnvInfo info = new TestCnvInfo();
                         info.setResultOid(testResultOid);
                         info.setCnvCategory("D");
-                        info.setCytoband(detectionCnv.getDiseaseInfo().getCytoband());
-                        info.setChrNum(detectionCnv.getDiseaseInfo().getChr());
-                        info.setCnvType(detectionCnv.getDiseaseInfo().getCnvType());
-                        info.setCnvSize(detectionCnv.getDiseaseInfo().getCnvSize());
-                        info.setSite(detectionCnv.getDiseaseInfo().getSite());
-                        info.setDelDupDesc(detectionCnv.getDiseaseInfo().getDisease());
-                        info.setDiseaseName(detectionCnv.getDiseaseInfo().getDisease());
-                        info.setDiseaseDetail(detectionCnv.getDiseaseInfo().getDiseaseDetail());
-                        info.setDiseaseDescription(detectionCnv.getDiseaseInfo().getDetail());
+
+                        DiseaseDto diseaseDto = testCnvDto.getDiseaseDto();
+                        if (diseaseDto != null) {
+                            info.setCytoband(diseaseDto.getCytoband());
+                            info.setChrNum(diseaseDto.getChr());
+                            info.setCnvType(diseaseDto.getCnvType());
+                            info.setCnvSize(ConvertUtil.convertBigDecimal(diseaseDto.getCnvSize()));
+                            info.setSite(diseaseDto.getSite());
+                            info.setDelDupDesc(diseaseDto.getDisease());
+                            info.setDiseaseName(diseaseDto.getDisease());
+                            info.setDiseaseDetail(diseaseDto.getDiseaseDetail());
+                            info.setDiseaseDescription(diseaseDto.getDetail());
+                        }
+
                         info.setUpdatedBy(UPDATED_BY);
                         info.setUpdatedOn(LocalDateTime.now());
                         return info;
@@ -214,19 +222,19 @@ public class TestResultServiceImpl implements TestResultService {
 
         if (dto.getOtherDiseaseList() != null) {
             List<TestCnvInfo> cnvList = dto.getOtherDiseaseList().stream()
-                    .map(diseaseInfo -> {
+                    .map(diseaseDto -> {
                         TestCnvInfo info = new TestCnvInfo();
                         info.setResultOid(testResultOid);
                         info.setCnvCategory("O");
-                        info.setCytoband(diseaseInfo.getCytoband());
-                        info.setChrNum(diseaseInfo.getChr());
-                        info.setCnvType(diseaseInfo.getCnvType());
-                        info.setCnvSize(diseaseInfo.getCnvSize());
-                        info.setSite(diseaseInfo.getSite());
-                        info.setDelDupDesc(diseaseInfo.getDisease());
-                        info.setDiseaseName(diseaseInfo.getDisease());
-                        info.setDiseaseDetail(diseaseInfo.getDiseaseDetail());
-                        info.setDiseaseDescription(diseaseInfo.getDetail());
+                        info.setCytoband(diseaseDto.getCytoband());
+                        info.setChrNum(diseaseDto.getChr());
+                        info.setCnvType(diseaseDto.getCnvType());
+                        info.setCnvSize(ConvertUtil.convertBigDecimal(diseaseDto.getCnvSize()));
+                        info.setSite(diseaseDto.getSite());
+                        info.setDelDupDesc(diseaseDto.getDisease());
+                        info.setDiseaseName(diseaseDto.getDisease());
+                        info.setDiseaseDetail(diseaseDto.getDiseaseDetail());
+                        info.setDiseaseDescription(diseaseDto.getDetail());
                         info.setUpdatedBy(UPDATED_BY);
                         info.setUpdatedOn(LocalDateTime.now());
                         return info;
@@ -235,4 +243,5 @@ public class TestResultServiceImpl implements TestResultService {
             testCnvInfoMapper.insertBatch(cnvList);
         }
     }
+
 }

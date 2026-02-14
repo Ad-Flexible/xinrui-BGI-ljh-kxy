@@ -1,22 +1,18 @@
-package org.xinrui.util;
+package org.xinrui.util.testResult;
 
-import org.xinrui.dto.detectionresult.DetectionResultDto;
+
 import org.xinrui.dto.testresult.TestResultDto;
 import org.xinrui.dto.testresult.nested.LaneQcDto;
 import org.xinrui.dto.testresult.nested.SampleQcDto;
 import org.xinrui.dto.testresult.nested.TestCnvDto;
 import org.xinrui.entity.*;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
+import java.time.LocalDateTime;
 
 
 public class BuildUtil {
 
     private static final Long UPDATED_BY = 1L; // 固定更新人ID
-    private static final Long CREATE_BY = 2L; // 固定创建人ID
     private static final int INVERT = 1; //固定更新版本值为1
 
     public static SampleInfo buildSampleInfo(TestResultDto dto) {
@@ -26,11 +22,11 @@ public class BuildUtil {
         info.setSlideId(dto.getSlideId());
         info.setLaneId(dto.getLaneId());
         info.setDnbId(dto.getDnbId());
-        info.setSampleType(convertSampleType(dto.getSampleType()));
-        info.setShipmentCondition(convertShipmentCondition(dto.getShipmentCondition()));
-        info.setTubeType(convertTubeType(dto.getTubeType()));
-        info.setCollectDate(convertDateTime(dto.getCollectDate()));
-        info.setReceivedDate(convertDateTime(dto.getReceivedDate()));
+        info.setSampleType(ConvertUtil.convertSampleType(dto.getSampleType()));
+        info.setShipmentCondition(ConvertUtil.convertShipmentCondition(dto.getShipmentCondition()));
+        info.setTubeType(ConvertUtil.convertTubeType(dto.getTubeType()));
+        info.setCollectDate(ConvertUtil.convertDateTime(dto.getCollectDate()));
+        info.setReceivedDate(ConvertUtil.convertDateTime(dto.getReceivedDate()));
         info.setAdditionalReportFlag(dto.getAdditionalReportFlag());
         info.setOldSampleNum(dto.getOldSampleNum());
         info.setRepeatCount(dto.getRepeatCount());
@@ -101,12 +97,12 @@ public class BuildUtil {
         }
 
         // 转换其他字段
-        exam.setFetusType(convertFetusType(dto.getFetusType()));
-        exam.setLastMenstrualPeriod(convertDate(dto.getLastMenstrualPeriod()));
-        exam.setChorionType(convertChorion(dto.getChorion()));
-        exam.setBUltrasonography(convertBUltrasonography(dto.getBUltrasonography()));
-        exam.setIvfFlag(convertIvfFlag(dto.getIvfFlag()));
-        exam.setConceptionMethod(convertConceptionMethod(dto.getConceptionMethod()));
+        exam.setFetusType(ConvertUtil.convertFetusType(dto.getFetusType()));
+        exam.setLastMenstrualPeriod(ConvertUtil.convertDate(dto.getLastMenstrualPeriod()));
+        exam.setChorionType(ConvertUtil.convertChorion(dto.getChorion()));
+        exam.setBUltrasonography(ConvertUtil.convertBUltrasonography(dto.getBUltrasonography()));
+        exam.setIvfFlag(ConvertUtil.convertIvfFlag(dto.getIvfFlag()));
+        exam.setConceptionMethod(ConvertUtil.convertConceptionMethod(dto.getConceptionMethod()));
         exam.setBhGravidity(dto.getBhGravidity());
         exam.setBhParity(dto.getBhParity());
         exam.setBhOther(dto.getBhOther());
@@ -136,11 +132,11 @@ public class BuildUtil {
         // 设置样本质控详细指标
         if (dto.getSampleQc() != null) {
             SampleQcDto sampleQcDto = dto.getSampleQc();
-            qc.setSampleGc(convertBigDecimal(sampleQcDto.getSampleGc()));
-            qc.setUniqueReads(convertBigDecimal(sampleQcDto.getUniqueReads()));
-            qc.setReadsNum(convertBigDecimal(sampleQcDto.getReadsNum()));
-            qc.setDuplicationRate(convertBigDecimal(sampleQcDto.getDuplicationRate()));
-            qc.setMapRate(convertBigDecimal(sampleQcDto.getMapRate()));
+            qc.setSampleGc(ConvertUtil.convertBigDecimal(sampleQcDto.getSampleGc()));
+            qc.setUniqueReads(ConvertUtil.convertBigDecimal(sampleQcDto.getUniqueReads()));
+            qc.setReadsNum(ConvertUtil.convertBigDecimal(sampleQcDto.getReadsNum()));
+            qc.setDuplicationRate(ConvertUtil.convertBigDecimal(sampleQcDto.getDuplicationRate()));
+            qc.setMapRate(ConvertUtil.convertBigDecimal(sampleQcDto.getMapRate()));
         }
 
         // 设置审计字段
@@ -155,22 +151,22 @@ public class BuildUtil {
         LaneQcInfo qc = new LaneQcInfo();
         qc.setSampleOid(sampleInfo.getOid());
 
-        // 设置lane质控结果
-        qc.setLaneQcResult(dto.getLaneQcResult());
-        qc.setLaneQcReason(dto.getLaneQcReason());
+
 
         // 设置lane质控详细指标
         if (dto.getLaneQc() != null) {
             LaneQcDto laneQcDto = dto.getLaneQc();
-            qc.setLaneReadsMean(convertBigDecimal(laneQcDto.getReadsNum()));
-            qc.setLaneMapRate(convertBigDecimal(laneQcDto.getMapRate()));
-            qc.setTotalDecodeRate(convertBigDecimal(laneQcDto.getTotalDecodeRate()));
-            qc.setLaneDuplicateRate(convertBigDecimal(laneQcDto.getDuplicateRate()));
-            qc.setFailSampleRate(convertBigDecimal(laneQcDto.getFailSampleRate()));
-            qc.setLaneGcMean(convertBigDecimal(laneQcDto.getLaneGc()));
-            qc.setTotalReads(convertBigDecimal(laneQcDto.getTotalReads()));
-            qc.setQ20(convertBigDecimal(laneQcDto.getQ20()));
-            qc.setDimRate(convertBigDecimal(laneQcDto.getDimRate()));
+            qc.setLaneQcResult(laneQcDto.getLaneQcResult());
+            qc.setLaneQcReason(laneQcDto.getLaneQcReason());
+            qc.setLaneReadsMean(ConvertUtil.convertBigDecimal(laneQcDto.getReadsNum()));
+            qc.setLaneMapRate(ConvertUtil.convertBigDecimal(laneQcDto.getMapRate()));
+            qc.setTotalDecodeRate(ConvertUtil.convertBigDecimal(laneQcDto.getTotalDecodeRate()));
+            qc.setLaneDuplicateRate(ConvertUtil.convertBigDecimal(laneQcDto.getDuplicateRate()));
+            qc.setFailSampleRate(ConvertUtil.convertBigDecimal(laneQcDto.getFailSampleRate()));
+            qc.setLaneGcMean(ConvertUtil.convertBigDecimal(laneQcDto.getLaneGc()));
+            qc.setTotalReads(ConvertUtil.convertBigDecimal(laneQcDto.getTotalReads()));
+            qc.setQ20(ConvertUtil.convertBigDecimal(laneQcDto.getQ20()));
+            qc.setDimRate(ConvertUtil.convertBigDecimal(laneQcDto.getDimRate()));
         }
 
         // 设置审计字段
@@ -187,26 +183,26 @@ public class BuildUtil {
             result.setSampleOid(sampleInfo.getOid());
 
             // 设置检测基本信息
-            result.setTestTime(convertDateTime(dto.getTestTime()));
+            result.setTestTime(ConvertUtil.convertDateTime(dto.getTestTime()));
             result.setTestResult(dto.getDetectionResult());
             result.setReportType(dto.getReportType());
-            result.setReportCreateTime(convertDateTime(dto.getReportCreateTime()));
-            result.setDownScreeningResult(convertDownScreening(dto.getDownScreening()));
+            result.setReportCreateTime(ConvertUtil.convertDateTime(dto.getReportCreateTime()));
+            result.setDownScreeningResult(ConvertUtil.convertDownScreening(dto.getDownScreening()));
 
             // 设置染色体相关数据
-            result.setZChr13(convertBigDecimal(dto.getZChr13()));
-            result.setZChr18(convertBigDecimal(dto.getZChr18()));
-            result.setZChr21(convertBigDecimal(dto.getZChr21()));
+            result.setZChr13(ConvertUtil.convertBigDecimal(dto.getZChr13()));
+            result.setZChr18(ConvertUtil.convertBigDecimal(dto.getZChr18()));
+            result.setZChr21(ConvertUtil.convertBigDecimal(dto.getZChr21()));
             result.setTestChr13(dto.getTestChr13());
             result.setTestChr18(dto.getTestChr18());
             result.setTestChr21(dto.getTestChr21());
             result.setTestChrSex(dto.getTestChrSex());
             result.setAbnormalChrX(dto.getAbnormalChrX());
-            result.setFracAbs(convertBigDecimal(dto.getFracAbs()));
-            result.setFetalFaction(convertBigDecimal(dto.getFetalFraction()));
-            result.setChildLvChr13(convertBigDecimal(dto.getChildLvChr13()));
-            result.setChildLvChr18(convertBigDecimal(dto.getChildLvChr18()));
-            result.setChildLvChr21(convertBigDecimal(dto.getChildLvChr21()));
+            result.setFracAbs(ConvertUtil.convertBigDecimal(dto.getFracAbs()));
+            result.setFetalFaction(ConvertUtil.convertBigDecimal(dto.getFetalFraction()));
+            result.setChildLvChr13(ConvertUtil.convertBigDecimal(dto.getChildLvChr13()));
+            result.setChildLvChr18(ConvertUtil.convertBigDecimal(dto.getChildLvChr18()));
+            result.setChildLvChr21(ConvertUtil.convertBigDecimal(dto.getChildLvChr21()));
             result.setRiskIndex13(dto.getRiskIndex13());
             result.setRiskIndex18(dto.getRiskIndex18());
             result.setRiskIndex21(dto.getRiskIndex21());

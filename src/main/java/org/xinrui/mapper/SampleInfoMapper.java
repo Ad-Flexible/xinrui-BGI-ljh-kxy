@@ -6,6 +6,5 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import org.xinrui.entity.SampleInfo;
 @Mapper
 public interface SampleInfoMapper extends BaseMapper<SampleInfo> {
-    @Override
-    SampleInfo selectOne(Wrapper<SampleInfo> queryWrapper);
+
 }

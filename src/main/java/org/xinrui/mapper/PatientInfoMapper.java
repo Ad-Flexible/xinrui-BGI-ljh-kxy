@@ -8,6 +8,5 @@ import org.xinrui.entity.PatientInfo;
 @Mapper
 public interface PatientInfoMapper extends BaseMapper<PatientInfo> {
 
-    @Override
-    PatientInfo selectOne(Wrapper<PatientInfo> queryWrapper);
+
 }
