@@ -29,7 +29,7 @@ public class SampleServiceImpl implements SampleService {
         SampleDto sampleDto = sampleMapper.selectByOldSampleNum(oldSampleNum);
         if (sampleDto == null) {
             log.warn("样本信息不存在，原样本编号: {}", oldSampleNum);
-            throw new BusinessException("100909141", "样本信息不存在");
+            throw new BusinessException("100110103", "请求的资源不存在");
         }
 
         //2.属性的校验，确保部分字段的必填以及数值的规定
