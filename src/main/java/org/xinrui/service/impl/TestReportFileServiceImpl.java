@@ -55,26 +55,9 @@ public class TestReportFileServiceImpl implements TestReportFileService {
                 log.warn("文件名命名错误，不符合要求（子文库号_芯片号_LaneId_姓名_医院名称_报告类型_时间标识.pdf）");
                 throw new BusinessException("文件名命名错误，不符合要求（子文库号_芯片号_LaneId_姓名_医院名称_报告类型_时间标识.pdf）");
             }
-            String subLibraryNo = parts[0];// 子文库号
-            String chipNo = parts[1];// 芯片号
-            String laneId = parts[2];// LaneId
-            String patientName = parts[3];// 姓名
-
 
             // 3. 根据子文库号+芯片号+LaneId+姓名查询数据库
-            TestResultInfo testResult = testResultInfoMapper.selectOne(
-                    new QueryWrapper<TestResultInfo>()
-                            .eq("sub_library_no", subLibraryNo)
-                            .eq("chip_no", chipNo)
-                            .eq("lane_id", laneId)
-                            .eq("patient_name", patientName)
-            );
-
-            if (testResult == null) {
-                log.warn("未查询到匹配的样本记录");
-                throw new BusinessException("未查询到匹配的样本记录");
-            }
-
+            TestResultInfo testResult = findTestResultByFileParts(parts);
             Long sampleOid = testResult.getSampleOid();
 
             // 4. 创建日期目录
@@ -95,7 +78,6 @@ public class TestReportFileServiceImpl implements TestReportFileService {
             // 7. 更新报告文件表
             int fileType = 1;
             updateReportFileRecord(sampleOid, currentDate, newFileName, fileType);
-
             return true;
         } catch (IOException e) {
             log.error("文件保存失败", e);
@@ -129,25 +111,8 @@ public class TestReportFileServiceImpl implements TestReportFileService {
                 throw new BusinessException("文件名命名错误，不符合要求（子文库号_芯片号_LaneId_姓名_医院名称_报告类型_时间标识.pdf）");
             }
 
-            String subLibraryNo = parts[0];// 子文库号
-            String chipNo = parts[1];// 芯片号
-            String laneId = parts[2];// LaneId
-            String patientName = parts[3];// 姓名
-
             // 3. 根据子文库号+芯片号+LaneId+姓名查询数据库
-            TestResultInfo testResult = testResultInfoMapper.selectOne(
-                    new QueryWrapper<TestResultInfo>()
-                            .eq("sub_library_no", subLibraryNo)
-                            .eq("chip_no", chipNo)
-                            .eq("lane_id", laneId)
-                            .eq("patient_name", patientName)
-            );
-
-            if (testResult == null) {
-                log.warn("未查询到匹配的样本记录");
-                throw new BusinessException("未查询到匹配的样本记录");
-            }
-
+            TestResultInfo testResult = findTestResultByFileParts(parts);
             Long sampleOid = testResult.getSampleOid();
 
             // 4. 创建日期目录
@@ -168,7 +133,6 @@ public class TestReportFileServiceImpl implements TestReportFileService {
             // 7. 更新报告文件表
             int fileType = 0;
             updateReportFileRecord(sampleOid, currentDate, newFileName, fileType);
-
             return true;
         } catch (IOException e) {
             log.error("文件保存失败", e);
@@ -207,5 +171,37 @@ public class TestReportFileServiceImpl implements TestReportFileService {
             testReportFileInfoMapper.insert(reportFile);
         }
     }
+
+
+
+    /**
+     * 根据文件名解析的字段查询TestResultInfo对象
+     * @param parts
+     * @return 匹配的TestResultInfo对象
+     * @throws BusinessException 如果未查询到匹配记录
+     */
+    private TestResultInfo findTestResultByFileParts(String[] parts) {
+
+        String subLibraryNo = parts[0];// 子文库号
+        String chipNo = parts[1];// 芯片号
+        String laneId = parts[2];// LaneId
+        String patientName = parts[3];// 姓名
+
+        TestResultInfo testResult = testResultInfoMapper.selectOne(
+                new QueryWrapper<TestResultInfo>()
+                        .eq("sub_library_no", subLibraryNo)
+                        .eq("chip_no", chipNo)
+                        .eq("lane_id", laneId)
+                        .eq("patient_name", patientName)
+        );
+
+        if (testResult == null) {
+            log.warn("未查询到匹配的样本记录");
+            throw new BusinessException("未查询到匹配的样本记录");
+        }
+
+        return testResult;
+    }
+
 }
 

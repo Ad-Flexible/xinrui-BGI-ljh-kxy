@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xinrui.dto.ApiResponse;
 import org.xinrui.dto.testResult.TestResultDto;
+import org.xinrui.service.TestReportFileService;
 import org.xinrui.service.TestResultService;
 import org.xinrui.util.FileUtil;
 import javax.validation.Valid;
@@ -24,6 +25,9 @@ public class TestResultController {
 
     @Autowired
     private TestResultService testResultService;
+
+    @Autowired
+    private TestReportFileService testReportFileService;
 
     /**
      * Halos推送JSON结果数据接口
@@ -50,18 +54,9 @@ public class TestResultController {
      * 3. 文件名由Halos系统通过"报告命名"功能生成，HIS通过文件名匹配样本
      */
     @PostMapping("/pushPdfReport")
-    public ApiResponse<Void> pushPdfReport(@RequestParam("file") MultipartFile file) {
-        FileUtil.validateFile(file, "PDF");
-
-        String filename = file.getOriginalFilename();
-        //前提是获得的file名可以与样本做关联，例如文件名是sample_id那就知道是哪个样本的word文件
-        log.info("✅ 接收PDF报告文件成功 | 文件名: {} | 大小: {} bytes",
-                filename, file.getSize());
-
-        // TODO: 后续扩展（当前按需求：接收到即视为成功）
-        // pushResultService.saveReportFile(file, "PDF");
-
-        return ApiResponse.success();
+    public ApiResponse receivePdfReport(@RequestParam("file") MultipartFile file) {
+        boolean success = testReportFileService.receivePdfReport(file);
+        return success ? ApiResponse.success() : ApiResponse.fail("上传失败");
     }
 
     /**
@@ -71,18 +66,9 @@ public class TestResultController {
      * 约定同PDF接口
      */
     @PostMapping("/pushWordReport")
-    public ApiResponse<Void> pushWordReport(@RequestParam("file") MultipartFile file) {
-        FileUtil.validateFile(file, "WORD");
-
-        String filename = file.getOriginalFilename();
-        //前提是获得的file名可以与样本做关联，例如文件名是sample_id那就知道是哪个样本的word文件
-        log.info("✅ 接收WORD报告文件成功 | 文件名: {} | 大小: {} bytes",
-                filename, file.getSize());
-
-        // TODO: 后续扩展
-        // pushResultService.saveReportFile(file, "WORD");
-
-        return ApiResponse.success();
+    public ApiResponse receiveWordReport(@RequestParam("file") MultipartFile file) {
+        boolean success = testReportFileService.receiveWordReport(file);
+        return success ? ApiResponse.success() : ApiResponse.fail("上传失败");
     }
 
 }
