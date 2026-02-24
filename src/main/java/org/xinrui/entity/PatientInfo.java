@@ -22,7 +22,7 @@ public class PatientInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(type = IdType.ASSIGN_ID)
+    @TableId(type = IdType.AUTO)
     @ApiModelProperty(value = "患者基本信息id", example = "1001")
     @TableField("oid")
     private Long oid;

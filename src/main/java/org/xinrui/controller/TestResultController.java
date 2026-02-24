@@ -23,7 +23,7 @@ import javax.validation.Valid;
 public class TestResultController {
 
     @Autowired
-    private TestResultService pushResultService;
+    private TestResultService testResultService;
 
     /**
      * Halos推送JSON结果数据接口
@@ -32,7 +32,7 @@ public class TestResultController {
     @PostMapping("/pushResult")
     public ApiResponse<Void> pushResult(@Valid @RequestBody TestResultDto requestDTO) {
 
-            boolean success = pushResultService.handlePushResult(requestDTO);
+            boolean success = testResultService.handlePushResult(requestDTO);
             return success ?
                     ApiResponse.success() : // 调用无参 success
                     ApiResponse.fail("请求失败");

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.xinrui.dto.testResult.TestResultDto;
 import org.xinrui.dto.testResult.nested.DiseaseDto;
 import org.xinrui.entity.*;
+import org.xinrui.exception.BusinessException;
 import org.xinrui.mapper.*;
 import org.xinrui.util.testResult.*;
 import org.xinrui.service.TestResultService;
@@ -101,6 +102,9 @@ public class TestResultServiceImpl implements TestResultService {
     }
 
     private void handlePatientInfo(TestResultDto dto, SampleInfo sampleInfo) {
+        if(sampleInfo == null){
+            throw new BusinessException("样本信息为空");
+        }
         // 通过身份证号查询患者
         PatientInfo patientInfo = patientInfoMapper.selectOne(
                 Wrappers.<PatientInfo>lambdaQuery()
@@ -122,6 +126,9 @@ public class TestResultServiceImpl implements TestResultService {
     }
 
     private void handleExaminationInfo(TestResultDto dto, SampleInfo sampleInfo) {
+        if(sampleInfo == null){
+            throw new BusinessException("样本信息为空");
+        }
         // 通过sample_oid查询检查信息
         ExaminationInfo exam = examinationInfoMapper.selectOne(
                 Wrappers.<ExaminationInfo>lambdaQuery()
@@ -138,6 +145,10 @@ public class TestResultServiceImpl implements TestResultService {
     }
 
     private void handleSampleQcInfo(TestResultDto dto, SampleInfo sampleInfo) {
+        if(sampleInfo == null){
+            throw new BusinessException("样本信息为空");
+        }
+
         if (dto.getSampleQc() == null) return;
 
         // 通过sample_oid查询样本质控
@@ -156,6 +167,11 @@ public class TestResultServiceImpl implements TestResultService {
     }
 
     private void handleLaneQcInfo(TestResultDto dto, SampleInfo sampleInfo) {
+
+        if(sampleInfo == null){
+            throw new BusinessException("样本信息为空");
+        }
+
         if (dto.getLaneQc() == null) return;
 
         // 通过sample_oid查询Lane质控
@@ -174,6 +190,11 @@ public class TestResultServiceImpl implements TestResultService {
     }
 
     private Long handleTestResultInfo(TestResultDto dto, SampleInfo sampleInfo) {
+
+        if(sampleInfo == null){
+            throw new BusinessException("样本信息为空");
+        }
+
         // 通过sample_oid查询检测结果
         TestResultInfo result = testResultInfoMapper.selectOne(
                 Wrappers.<TestResultInfo>lambdaQuery()
