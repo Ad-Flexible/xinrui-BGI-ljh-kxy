@@ -15,7 +15,7 @@ spring:
       max-request-size: 100MB # 单次请求最大100MB
       file-size-threshold: 2KB # 超过2KB写入临时文件
 
-#仅为了启动程序进行单元测试使用，后续添加真正数据库配置内容
+
 
 mybatis-plus:
   configuration:

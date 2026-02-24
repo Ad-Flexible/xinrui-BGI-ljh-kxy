@@ -33,12 +33,15 @@ public class BuildUtil {
         // 设置缺失字段 - 从diseaseList获取产品信息
         if (dto.getDiseaseList() != null && !dto.getDiseaseList().isEmpty()) {
             TestCnvDto firstTestCnv = dto.getDiseaseList().get(0);
-            info.setProductNo(firstTestCnv.getProductNo());
-            info.setProductName(firstTestCnv.getProductName());
+            if(firstTestCnv.getProductNo()!=null) info.setProductNo(firstTestCnv.getProductNo());
+            else info.setProductNo("未知");
+            if(firstTestCnv.getProductName()!=null) info.setProductName(firstTestCnv.getProductName());
+            else info.setProductName("未知");
+            //因为ProductNo和ProductName是必填项，所以如果diseaseList为空，则设置为默认值
         } else {
             // 如果diseaseList为空，可以设置为默认值
-            info.setProductNo(null);
-            info.setProductName(null);
+            info.setProductNo("未知");
+            info.setProductName("未知");
         }
         info.setClinicNum(dto.getClinicNum());
         info.setHospitalName(dto.getHospitalName());

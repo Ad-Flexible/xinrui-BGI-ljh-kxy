@@ -56,11 +56,11 @@ public class TestResultServiceImpl implements TestResultService {
 
         log.info("开始处理Halos推送结果，样本编号: {}", requestDTO.getSampleId());
 
-        // 1. 处理样本信息（t_lis_sample）
-        SampleInfo sampleInfo = handleSampleInfo(requestDTO);
+        // 1. 处理患者信息（t_mchi_patient）
+        PatientInfo patientInfo = handlePatientInfo(requestDTO);
 
-        // 2. 处理患者信息（t_mchi_patient）
-        handlePatientInfo(requestDTO, sampleInfo);
+        // 2. 处理样本信息（t_lis_sample）
+        SampleInfo sampleInfo = handleSampleInfo(requestDTO, patientInfo.getOid());
 
         // 3. 处理检查信息（t_lis_examination）
         handleExaminationInfo(requestDTO, sampleInfo);
@@ -83,7 +83,7 @@ public class TestResultServiceImpl implements TestResultService {
 
     // ==================== 核心处理方法 ====================
 
-    private SampleInfo handleSampleInfo(TestResultDto dto) {
+    private SampleInfo handleSampleInfo(TestResultDto dto, Long patientOid) {
         // 通过sample_id和old_sample_num查询
         SampleInfo sampleInfo = sampleInfoMapper.selectOne(
                 Wrappers.<SampleInfo>lambdaQuery()
@@ -93,18 +93,23 @@ public class TestResultServiceImpl implements TestResultService {
 
         if (sampleInfo == null) {
             sampleInfo = BuildUtil.buildSampleInfo(dto);
+            sampleInfo.setPatientOid(patientOid);
             sampleInfoMapper.insert(sampleInfo);
         } else {
             UpdateUtil.updateSampleInfo(sampleInfo, dto);
+            sampleInfo.setPatientOid(patientOid);
             sampleInfoMapper.updateById(sampleInfo);
         }
-        return sampleInfo;
+
+        // 由于oid为自增主键，为了得到完整的sampleInfo只能从数据库中重新查询
+        return sampleInfoMapper.selectOne(
+                Wrappers.<SampleInfo>lambdaQuery()
+                        .eq(SampleInfo::getSampleId, dto.getSampleId())
+                        .eq(SampleInfo::getOldSampleNum, dto.getOldSampleNum())
+        );
     }
 
-    private void handlePatientInfo(TestResultDto dto, SampleInfo sampleInfo) {
-        if(sampleInfo == null){
-            throw new BusinessException("样本信息为空");
-        }
+    private PatientInfo handlePatientInfo(TestResultDto dto) {
         // 通过身份证号查询患者
         PatientInfo patientInfo = patientInfoMapper.selectOne(
                 Wrappers.<PatientInfo>lambdaQuery()
@@ -115,14 +120,12 @@ public class TestResultServiceImpl implements TestResultService {
             // 插入新患者
             patientInfo = BuildUtil.buildPatientInfo(dto);
             patientInfoMapper.insert(patientInfo);
-            sampleInfo.setPatientOid(patientInfo.getOid());
         } else {
             // 更新现有患者
             UpdateUtil.updatePatientInfo(patientInfo, dto);
             patientInfoMapper.updateById(patientInfo);
-            sampleInfo.setPatientOid(patientInfo.getOid());
         }
-        sampleInfoMapper.updateById(sampleInfo); // 更新样本关联患者ID
+        return patientInfo;
     }
 
     private void handleExaminationInfo(TestResultDto dto, SampleInfo sampleInfo) {
@@ -137,9 +140,11 @@ public class TestResultServiceImpl implements TestResultService {
 
         if (exam == null) {
             exam = BuildUtil.buildExaminationInfo(dto, sampleInfo);
+//            log.info("exam:{}", exam);//测试使用
             examinationInfoMapper.insert(exam);
         } else {
             UpdateUtil.updateExaminationInfo(exam, dto);
+//            log.info("exam:{}", exam);//测试使用
             examinationInfoMapper.updateById(exam);
         }
     }
@@ -149,7 +154,10 @@ public class TestResultServiceImpl implements TestResultService {
             throw new BusinessException("样本信息为空");
         }
 
-        if (dto.getSampleQc() == null) return;
+        if (dto.getSampleQc() == null) {
+            log.info("SampleQcInfo为空，跳过处理");
+            return;
+        }
 
         // 通过sample_oid查询样本质控
         SampleQcInfo qc = sampleQcInfoMapper.selectOne(
@@ -159,9 +167,11 @@ public class TestResultServiceImpl implements TestResultService {
 
         if (qc == null) {
             qc = BuildUtil.buildSampleQcInfo(dto, sampleInfo);
+//            log.info("qc:{}", qc);//测试使用
             sampleQcInfoMapper.insert(qc);
         } else {
             UpdateUtil.updateSampleQcInfo(qc, dto);
+//            log.info("qc:{}", qc);//测试使用
             sampleQcInfoMapper.updateById(qc);
         }
     }
@@ -172,7 +182,10 @@ public class TestResultServiceImpl implements TestResultService {
             throw new BusinessException("样本信息为空");
         }
 
-        if (dto.getLaneQc() == null) return;
+        if (dto.getLaneQc() == null) {
+            log.info("LaneQcInfo为空，跳过处理");
+            return;
+        }
 
         // 通过sample_oid查询Lane质控
         LaneQcInfo qc = laneQcInfoMapper.selectOne(
@@ -182,9 +195,11 @@ public class TestResultServiceImpl implements TestResultService {
 
         if (qc == null) {
             qc = BuildUtil.buildLaneQcInfo(dto, sampleInfo);
+//            log.info("qc:{}", qc);//测试使用
             laneQcInfoMapper.insert(qc);
         } else {
             UpdateUtil.updateLaneQcInfo(qc, dto);
+//            log.info("qc:{}", qc);//测试使用
             laneQcInfoMapper.updateById(qc);
         }
     }
@@ -203,12 +218,18 @@ public class TestResultServiceImpl implements TestResultService {
 
         if (result == null) {
             result = BuildUtil.buildTestResultInfo(dto, sampleInfo);
+//            log.info("result:{}", result);//测试使用
             testResultInfoMapper.insert(result);
         } else {
             UpdateUtil.updateTestResultInfo(result, dto);
+//            log.info("result:{}", result);//测试使用
             testResultInfoMapper.updateById(result);
         }
-        return result.getOid();
+        TestResultInfo resultInfo = testResultInfoMapper.selectOne(
+                Wrappers.<TestResultInfo>lambdaQuery()
+                        .eq(TestResultInfo::getSampleOid, sampleInfo.getOid())
+        );
+        return resultInfo.getOid();
     }
 
     private void handleTestCnvInfo(TestResultDto dto, Long testResultOid) {
@@ -219,7 +240,8 @@ public class TestResultServiceImpl implements TestResultService {
                         TestCnvInfo info = new TestCnvInfo();
                         info.setResultOid(testResultOid);
                         info.setCnvCategory("D");
-
+                        // 不确定逻辑要不要改为diseaseDto为null的话直接不做insert了
+                        // 目前为null的话还是会插入审计字段和ResultOid以及CnvCategory
                         DiseaseDto diseaseDto = testCnvDto.getDiseaseDto();
                         if (diseaseDto != null) {
                             info.setCytoband(diseaseDto.getCytoband());
@@ -238,7 +260,8 @@ public class TestResultServiceImpl implements TestResultService {
                         return info;
                     })
                     .collect(Collectors.toList());
-            testCnvInfoMapper.insertBatch(cnvList);
+//            log.info("cnvList:{}",cnvList);//测试使用
+            if(cnvList != null) testCnvInfoMapper.insertBatch(cnvList);
         }
 
         if (dto.getOtherDiseaseList() != null) {
@@ -261,7 +284,8 @@ public class TestResultServiceImpl implements TestResultService {
                         return info;
                     })
                     .collect(Collectors.toList());
-            testCnvInfoMapper.insertBatch(cnvList);
+//            log.info("cnvList:{}",cnvList);//测试使用
+            if(cnvList != null) testCnvInfoMapper.insertBatch(cnvList);
         }
     }
 

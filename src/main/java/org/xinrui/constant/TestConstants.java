@@ -82,8 +82,9 @@ public class TestConstants {
      */
     public static final Map<String, Integer> B_ULTRASONOGRAPHY_CODE_MAP = new HashMap<>();
     static {
-        B_ULTRASONOGRAPHY_CODE_MAP.put("正常", 1);
-        B_ULTRASONOGRAPHY_CODE_MAP.put("异常", 2);
+        B_ULTRASONOGRAPHY_CODE_MAP.put("正常单活胎", 10);
+        B_ULTRASONOGRAPHY_CODE_MAP.put("正常非单胎", 20);
+        B_ULTRASONOGRAPHY_CODE_MAP.put("异常单活胎", 30);
     }
 
     /**

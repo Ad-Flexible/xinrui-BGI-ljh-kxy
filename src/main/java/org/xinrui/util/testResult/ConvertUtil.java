@@ -8,24 +8,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 public class ConvertUtil {
 
-//    private static Integer convertToCode(Map<String, Integer> dictMap, String displayName) {
-//        if (displayName == null || displayName.isEmpty()) {
-//            return null;
-//        }
-//        return dictMap.get(displayName);
-//    }
-//
-//    private static String convertToCode(Map<String, String> dictMap, String displayName) {
-//        if (displayName == null || displayName.isEmpty()) {
-//            return null;
-//        }
-//        return dictMap.get(displayName);
-//    }
 
+    private static final Pattern DATE_PATTERN = Pattern.compile("^(\\d{4}-\\d{2}-\\d{2})");
+    private static final Pattern DATE_TIME_PATTERN = Pattern.compile("^(\\d{4}-\\d{2}-\\d{2})");
     private static <T> T convertToCode(Map<String, T> dictMap, String displayName) {
         if (displayName == null || displayName.isEmpty()) {
             return null;
@@ -82,17 +73,56 @@ public class ConvertUtil {
 
     // ==================== 日期转换 ====================
     public static LocalDateTime convertDateTime(String dateTime) {
-        if (dateTime == null) {
+        if (dateTime == null || dateTime.trim().isEmpty()) {
             return null;
         }
-        return LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
+        // 1. 预处理
+        String cleanDate = dateTime.trim();
+
+        // 2. 使用正则提取日期部分 (yyyy-MM-dd)
+        Matcher matcher = DATE_TIME_PATTERN.matcher(cleanDate);
+
+        if (!matcher.find()) {
+            throw new IllegalArgumentException("日期格式无法识别: " + dateTime);
+        }
+
+        String datePart = matcher.group(1); // 得到 "2020-11-12"
+
+        // 3. 智能补全逻辑
+        // 尝试直接解析为 LocalDateTime (如果原字符串包含时间，如 "2020-11-12 12:00:00"，这步会成功)
+        try {
+            // 这里使用 ISO_LOCAL_DATE_TIME，它可以兼容 "yyyy-MM-ddTHH:mm:ss" 或 "yyyy-MM-dd HH:mm:ss"
+            return LocalDateTime.parse(cleanDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        } catch (Exception e) {
+            // 4. 如果上面解析失败（说明只有日期没有时间），手动补上 " 00:00:00"
+            // 拼接成 "2020-11-12 00:00:00"
+            String fullDateTimeStr = datePart + " 00:00:00";
+            return LocalDateTime.parse(fullDateTimeStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        }
     }
 
     public static LocalDate convertDate(String date) {
-        if (date == null) {
+        if (date == null || date.trim().isEmpty()) {
             return null;
         }
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
+        // 1. 预处理
+        String cleanDate = date.trim();
+
+        // 2. 正则提取日期部分
+        // 只要匹配到 yyyy-MM-dd 开头即可，后面的时间部分直接忽略
+        Matcher matcher = DATE_PATTERN.matcher(cleanDate);
+
+        if (!matcher.find()) {
+            throw new IllegalArgumentException("日期格式无法识别: " + date);
+        }
+
+        // 3. 只取日期部分
+        String datePart = matcher.group(1);
+
+        // 4. 解析
+        return LocalDate.parse(datePart, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     // ==================== 数值转换 ====================
