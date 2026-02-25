@@ -36,7 +36,7 @@ public class SampleInfo implements Serializable {
     @TableField("sample_id")
     private String sampleId;
 
-    @ApiModelProperty(value = "子文库号（业务唯一键）", example = "SUB123456")
+    @ApiModelProperty(value = "子文库号", example = "SUB123456")
     @TableField("pooling_sub_id")
     private String poolingSubId;
 

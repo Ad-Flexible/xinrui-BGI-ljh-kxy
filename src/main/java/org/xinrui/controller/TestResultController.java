@@ -2,6 +2,7 @@ package org.xinrui.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,8 +54,9 @@ public class TestResultController {
      * 2. 文件字段名: file
      * 3. 文件名由Halos系统通过"报告命名"功能生成，HIS通过文件名匹配样本
      */
-    @PostMapping("/pushPdfReport")
+    @PostMapping(path = "/pushPdfReport")
     public ApiResponse receivePdfReport(@RequestParam("file") MultipartFile file) {
+        log.info("接收PDF报告文件");
         boolean success = testReportFileService.receivePdfReport(file);
         return success ? ApiResponse.success() : ApiResponse.fail("上传失败");
     }
@@ -65,7 +67,7 @@ public class TestResultController {
      *
      * 约定同PDF接口
      */
-    @PostMapping("/pushWordReport")
+    @PostMapping(path = "/pushWordReport")
     public ApiResponse receiveWordReport(@RequestParam("file") MultipartFile file) {
         boolean success = testReportFileService.receiveWordReport(file);
         return success ? ApiResponse.success() : ApiResponse.fail("上传失败");

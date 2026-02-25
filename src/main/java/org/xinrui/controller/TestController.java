@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController // 等同于 @Controller + @ResponseBody（返回 JSON/字符串，不跳转页面）
 @RequestMapping("/api/test") // 基础路径：所有接口以 /api/test 开头
 public class TestController {
-
     /**
      * 1. 无参 GET 请求：返回欢迎消息
      * 访问路径：GET http://localhost:8030/api/test/hello
