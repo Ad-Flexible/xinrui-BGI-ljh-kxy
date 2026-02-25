@@ -83,7 +83,8 @@ public class TestResultServiceImpl implements TestResultService {
 
     // ==================== 核心处理方法 ====================
 
-    private SampleInfo handleSampleInfo(TestResultDto dto, Long patientOid) {
+    @Override
+    public SampleInfo handleSampleInfo(TestResultDto dto, Long patientOid) {
         // 通过sample_id和old_sample_num查询
         SampleInfo sampleInfo = sampleInfoMapper.selectOne(
                 Wrappers.<SampleInfo>lambdaQuery()
@@ -109,7 +110,8 @@ public class TestResultServiceImpl implements TestResultService {
         );
     }
 
-    private PatientInfo handlePatientInfo(TestResultDto dto) {
+    @Override
+    public PatientInfo handlePatientInfo(TestResultDto dto) {
         // 通过身份证号查询患者
         PatientInfo patientInfo = patientInfoMapper.selectOne(
                 Wrappers.<PatientInfo>lambdaQuery()
@@ -128,7 +130,8 @@ public class TestResultServiceImpl implements TestResultService {
         return patientInfo;
     }
 
-    private void handleExaminationInfo(TestResultDto dto, SampleInfo sampleInfo) {
+    @Override
+    public void handleExaminationInfo(TestResultDto dto, SampleInfo sampleInfo) {
         if(sampleInfo == null){
             throw new BusinessException("样本信息为空");
         }
@@ -149,7 +152,8 @@ public class TestResultServiceImpl implements TestResultService {
         }
     }
 
-    private void handleSampleQcInfo(TestResultDto dto, SampleInfo sampleInfo) {
+    @Override
+    public void handleSampleQcInfo(TestResultDto dto, SampleInfo sampleInfo) {
         if(sampleInfo == null){
             throw new BusinessException("样本信息为空");
         }
@@ -176,7 +180,8 @@ public class TestResultServiceImpl implements TestResultService {
         }
     }
 
-    private void handleLaneQcInfo(TestResultDto dto, SampleInfo sampleInfo) {
+    @Override
+    public void handleLaneQcInfo(TestResultDto dto, SampleInfo sampleInfo) {
 
         if(sampleInfo == null){
             throw new BusinessException("样本信息为空");
@@ -204,7 +209,8 @@ public class TestResultServiceImpl implements TestResultService {
         }
     }
 
-    private Long handleTestResultInfo(TestResultDto dto, SampleInfo sampleInfo) {
+    @Override
+    public Long handleTestResultInfo(TestResultDto dto, SampleInfo sampleInfo) {
 
         if(sampleInfo == null){
             throw new BusinessException("样本信息为空");
@@ -232,7 +238,8 @@ public class TestResultServiceImpl implements TestResultService {
         return resultInfo.getOid();
     }
 
-    private void handleTestCnvInfo(TestResultDto dto, Long testResultOid) {
+    @Override
+    public void handleTestCnvInfo(TestResultDto dto, Long testResultOid) {
         // CNV信息无需查询，直接批量插入
         if (dto.getDiseaseList() != null) {
             List<TestCnvInfo> cnvList = dto.getDiseaseList().stream()

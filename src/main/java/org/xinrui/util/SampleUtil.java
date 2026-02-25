@@ -29,12 +29,12 @@ public class SampleUtil {
     /**
      * Entity 转 DTO
      */
-    public static SampleDto convertToDTO(SampleInfo sampleInfo) {
-        if (sampleInfo == null) {
-            return null;
-        }
-        return BeanConvertUtil.convert(sampleInfo, SampleDto.class);
-    }
+//    public static SampleDto convertToDTO(SampleInfo sampleInfo) {
+//        if (sampleInfo == null) {
+//            return null;
+//        }
+//        return BeanConvertUtil.convert(sampleInfo, SampleDto.class);
+//    }
 
     /**
      * 校验 DTO 对象

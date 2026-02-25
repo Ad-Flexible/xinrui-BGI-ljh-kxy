@@ -41,8 +41,16 @@ public class UpdateUtil {
             if (firstTestCnv.getProductNo() != null) {
                 sampleInfo.setProductNo(firstTestCnv.getProductNo());
             }
+            else if(firstTestCnv.getProductNo() == null && sampleInfo.getProductNo() == null) {
+                sampleInfo.setProductNo("未提供产品套餐编号");
+                //保证有值传入，因为数据库中对该字段设为非空
+            }
             if (firstTestCnv.getProductName() != null) {
                 sampleInfo.setProductName(firstTestCnv.getProductName());
+            }
+            else if(firstTestCnv.getProductName() == null && sampleInfo.getProductName() == null) {
+                sampleInfo.setProductName("未提供产品套餐名称");
+                //保证有值传入，因为数据库中对该字段设为非空
             }
         }
 
@@ -56,6 +64,10 @@ public class UpdateUtil {
 
     public static void updatePatientInfo(PatientInfo patientInfo, TestResultDto dto) {
         if (dto.getPatientName() != null) patientInfo.setName(dto.getPatientName());
+        else if(dto.getPatientName() == null && patientInfo.getName() == null) {
+            patientInfo.setName("未提供患者姓名");
+            //保证有值传入，因为数据库中对该字段设为非空
+        }
         if (dto.getPatientMobile() != null) patientInfo.setPhone(dto.getPatientMobile());
         if (dto.getPatientAddress() != null)
             patientInfo.setCurrentAddressDetail(dto.getPatientAddress());

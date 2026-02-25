@@ -34,9 +34,9 @@ public class BuildUtil {
         if (dto.getDiseaseList() != null && !dto.getDiseaseList().isEmpty()) {
             TestCnvDto firstTestCnv = dto.getDiseaseList().get(0);
             if(firstTestCnv.getProductNo()!=null) info.setProductNo(firstTestCnv.getProductNo());
-            else info.setProductNo("未知");
+            else info.setProductNo("未提供产品套餐编号");
             if(firstTestCnv.getProductName()!=null) info.setProductName(firstTestCnv.getProductName());
-            else info.setProductName("未知");
+            else info.setProductName("未提供产品套餐名称");
             //因为ProductNo和ProductName是必填项，所以如果diseaseList为空，则设置为默认值
         } else {
             // 如果diseaseList为空，可以设置为默认值
@@ -55,7 +55,8 @@ public class BuildUtil {
 
     public static PatientInfo buildPatientInfo(TestResultDto dto) {
         PatientInfo info = new PatientInfo();
-        info.setName(dto.getPatientName());
+        if(info.getName() != null) info.setName(dto.getPatientName());
+        else info.setName("未提供患者姓名");
         info.setPhone(dto.getPatientMobile());
         info.setPatientTel(null);
         info.setSex("女");  //因为是孕检相关所以统一设置为女
