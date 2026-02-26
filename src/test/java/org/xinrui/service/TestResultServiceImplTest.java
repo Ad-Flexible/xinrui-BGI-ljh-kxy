@@ -256,33 +256,40 @@ public class TestResultServiceImplTest {
     }
 
     // ==================== handleTestResultInfo 测试 ====================
-//均未成功
+    // ... existing code ...
     @Test
     void handleTestResultInfo_whenResultNotFound_shouldInsert() {
-        // Mock
-        when(testResultInfoMapper.selectOne(any())).thenReturn(null);
+        // 准备测试数据
+        SampleInfo sampleInfo = new SampleInfo();
+        sampleInfo.setOid(100L);
 
-        // 使用 ArgumentCaptor 捕获传入 insert 方法的参数
-        ArgumentCaptor<TestResultInfo> captor = ArgumentCaptor.forClass(TestResultInfo.class);
+        // 创建预期返回的结果对象
+        TestResultInfo expectedResult = new TestResultInfo();
+        expectedResult.setOid(1L);
 
-        // Mock insert 行为：当调用 insert 时，捕获参数，并手动设置 ID，然后返回 1
-        // 假设主键字段名为 oid
+        // 设置mock行为：第一次查询返回null，第二次查询返回预期结果
+        when(testResultInfoMapper.selectOne(any()))
+                .thenReturn(null)                    // 第一次查询
+                .thenReturn(expectedResult);         // 第二次查询
+
+        // Mock insert 行为
         doAnswer(invocation -> {
             TestResultInfo argument = invocation.getArgument(0);
-            argument.setOid(1L); // 模拟数据库回填了 ID
-            return 1; // 模拟插入成功
+            argument.setOid(1L); // 模拟数据库设置ID
+            return 1;
         }).when(testResultInfoMapper).insert(any(TestResultInfo.class));
 
         // Execute
-        Long resultOid = testResultService.handleTestResultInfo(testResultDto, new SampleInfo());
+        Long resultOid = testResultService.handleTestResultInfo(testResultDto, sampleInfo);
 
         // Verify
         assertNotNull(resultOid);
-        assertEquals(1L, resultOid); // 验证返回的 ID 是我们设置的 1L
-
-        verify(testResultInfoMapper, times(1)).selectOne(any());
+        assertEquals(1L, resultOid);
+        verify(testResultInfoMapper, times(2)).selectOne(any());
         verify(testResultInfoMapper, times(1)).insert(any(TestResultInfo.class));
     }
+// ... existing code ...
+
 
 
     @Test

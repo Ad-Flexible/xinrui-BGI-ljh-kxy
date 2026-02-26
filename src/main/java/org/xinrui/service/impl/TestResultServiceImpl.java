@@ -224,7 +224,7 @@ public class TestResultServiceImpl implements TestResultService {
 
         if (result == null) {
             result = BuildUtil.buildTestResultInfo(dto, sampleInfo);
-//            log.info("result:{}", result);//测试使用
+            //log.info("result:{}", result);//测试使用
             testResultInfoMapper.insert(result);
         } else {
             UpdateUtil.updateTestResultInfo(result, dto);

@@ -55,7 +55,7 @@ public class BuildUtil {
 
     public static PatientInfo buildPatientInfo(TestResultDto dto) {
         PatientInfo info = new PatientInfo();
-        if(info.getName() != null) info.setName(dto.getPatientName());
+        if(dto.getPatientName() != null) info.setName(dto.getPatientName());
         else info.setName("未提供患者姓名");
         info.setPhone(dto.getPatientMobile());
         info.setPatientTel(null);
