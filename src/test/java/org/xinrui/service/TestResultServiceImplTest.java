@@ -95,7 +95,9 @@ public class TestResultServiceImplTest {
     @Test
     void handleSampleInfo_whenSampleNotFound_shouldInsert() {
         // Mock
-        when(sampleInfoMapper.selectOne(any())).thenReturn(null);
+        SampleInfo existingSample = new SampleInfo();
+        existingSample.setOid(1L);
+        when(sampleInfoMapper.selectOne(any())).thenReturn(null).thenReturn(existingSample);
         when(sampleInfoMapper.insert(any(SampleInfo.class))).thenReturn(1);
 
         Long testPatientOid = 1L;
@@ -104,7 +106,7 @@ public class TestResultServiceImplTest {
 
         // Verify
         assertNotNull(result);
-        verify(sampleInfoMapper, times(1)).selectOne(any());
+        verify(sampleInfoMapper, times(2)).selectOne(any());
         verify(sampleInfoMapper, times(1)).insert(any(SampleInfo.class));
     }
 
@@ -305,7 +307,7 @@ public class TestResultServiceImplTest {
 
         // Verify
         assertEquals(1L, resultOid);
-        verify(testResultInfoMapper, times(1)).selectOne(any());
+        verify(testResultInfoMapper, times(2)).selectOne(any());
         verify(testResultInfoMapper, times(1)).updateById(any(TestResultInfo.class));
     }
 
@@ -327,7 +329,7 @@ public class TestResultServiceImplTest {
     }
 
 
-    //测试未成功
+
     @Test
     void handleTestCnvInfo_whenDiseaseListHasNullDiseaseDto_shouldSkipNull() {
         // 修改处2：修正TestCnvDto的初始化方式
@@ -337,6 +339,7 @@ public class TestResultServiceImplTest {
         testCnvDto.setDiseaseDto(null);
 
         testResultDto.setDiseaseList(Arrays.asList(testCnvDto));
+        testResultDto.setOtherDiseaseList(null);
 
         // Mock
         when(testCnvInfoMapper.insertBatch(anyList())).thenReturn(1);
