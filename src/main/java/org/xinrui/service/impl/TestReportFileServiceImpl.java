@@ -3,6 +3,7 @@ package org.xinrui.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,8 +27,8 @@ public class TestReportFileServiceImpl implements TestReportFileService {
     private static final Long UPDATED_BY = 1L; // 固定更新人ID
 
     //todo 待配置
-    // @Value("")
-    private String fileStorageRoot = "D:/fileStorage";
+    @Value("${file.storage.root:D:/fileStorage}")
+    private String fileStorageRoot;
 
     @Autowired
     private SampleInfoMapper sampleInfoMapper;

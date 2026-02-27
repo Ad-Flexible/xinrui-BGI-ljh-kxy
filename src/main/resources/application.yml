@@ -34,3 +34,10 @@ rest:
     connect-timeout: 3000
     read-timeout: 5000
 
+
+
+# 报告文件存储配置
+file:
+  storage:
+    root: D:/fileStorage
+
