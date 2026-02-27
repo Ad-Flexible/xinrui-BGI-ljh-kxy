@@ -7,7 +7,7 @@ spring:
     url:  jdbc:mysql://172.18.4.54:3306/mchi?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
     username: mchi_user
     password: mchi_user
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   servlet:
     multipart:
