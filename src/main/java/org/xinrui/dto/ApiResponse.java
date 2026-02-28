@@ -20,6 +20,15 @@ public class ApiResponse<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 常用错误码
+     */
+    public static final int SUCCESS = 0;
+    public static final int ERROR = -1;
+    public static final int DB_ERROR = 1001;
+    public static final int NOT_FOUND = 1002;
+    public static final int PARAM_ERROR = 1003;
+
+    /**
      * 错误码与错误信息映射
      */
     private static final Map<Integer, String> ERROR_CODE_MAP = new HashMap<>();
@@ -45,19 +54,24 @@ public class ApiResponse<T> implements Serializable {
         ERROR_CODE_MAP.put(400220101, "没有报告文件");
         ERROR_CODE_MAP.put(400410153, "创建样本失败,请检查参数");
         ERROR_CODE_MAP.put(400410155, "产品编号或样本设定不可编辑");
+
+        // 添加常用错误信息
+        ERROR_CODE_MAP.put(DB_ERROR, "数据库操作失败");
+        ERROR_CODE_MAP.put(NOT_FOUND, "请求的资源不存在");
+        ERROR_CODE_MAP.put(PARAM_ERROR, "请求参数错误");
     }
 
     public static <T> ApiResponse<T> success(T data) {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setRetCode(0);
+        response.setRetCode(SUCCESS);
         response.setRetInfo("请求成功");
         response.setResult(data);
         return response;
     }
 
-    public static  ApiResponse success() {
+    public static ApiResponse success() {
         ApiResponse response = new ApiResponse<>();
-        response.setRetCode(0);
+        response.setRetCode(SUCCESS);
         response.setRetInfo("请求成功");
         // result 默认为 null，JSON 序列化时通常会被忽略
         return response;
@@ -71,9 +85,8 @@ public class ApiResponse<T> implements Serializable {
     }
 
     public static <T> ApiResponse<T> fail(String message) {
-        return fail(-1, message);
+        return fail(ERROR, message);
     }
-
 
     /**
      * 根据错误码获取标准化错误描述

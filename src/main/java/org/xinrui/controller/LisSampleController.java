@@ -1,6 +1,5 @@
 package org.xinrui.controller;
 
-
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.xinrui.dto.ApiResponse;
 import org.xinrui.entity.SampleInfo;
 import org.xinrui.service.LisSampleService;
-import org.xinrui.service.SampleService;
 
 @Slf4j
 @RestController
@@ -26,30 +24,51 @@ public class LisSampleController {
     @ApiOperation("新增样本信息")
     @PostMapping("/add")
     public ApiResponse<SampleInfo> addSample(@RequestBody @Validated SampleInfo sampleInfo) {
-        return ApiResponse.success(lisSampleService.save(sampleInfo) ? sampleInfo : null);
+        boolean success = lisSampleService.save(sampleInfo);
+        if (success) {
+            return ApiResponse.success(sampleInfo);
+        } else {
+            return ApiResponse.fail(ApiResponse.DB_ERROR, "新增样本信息失败");
+        }
     }
 
     @ApiOperation("修改样本信息")
     @PutMapping("/update")
     public ApiResponse<Boolean> updateSample(@RequestBody @Validated SampleInfo sampleInfo) {
-        return ApiResponse.success(lisSampleService.updateById(sampleInfo));
+        boolean success = lisSampleService.updateById(sampleInfo);
+        if (success) {
+            return ApiResponse.success(true);
+        } else {
+            return ApiResponse.fail(ApiResponse.DB_ERROR, "修改样本信息失败");
+        }
     }
 
     @ApiOperation("删除样本信息（物理删除）")
     @DeleteMapping("/delete/{oid}")
     public ApiResponse<Boolean> deleteSample(@PathVariable Long oid) {
-        return ApiResponse.success(lisSampleService.removeById(oid));
+        boolean success = lisSampleService.removeById(oid);
+        if (success) {
+            return ApiResponse.success(true);
+        } else {
+            return ApiResponse.fail(ApiResponse.DB_ERROR, "删除样本信息失败");
+        }
     }
 
     @ApiOperation("根据ID查询样本信息")
     @GetMapping("/get/{oid}")
     public ApiResponse<SampleInfo> getSampleById(@PathVariable Long oid) {
-        return ApiResponse.success(lisSampleService.getById(oid));
+        SampleInfo sampleInfo = lisSampleService.getById(oid);
+        if (sampleInfo != null) {
+            return ApiResponse.success(sampleInfo);
+        } else {
+            return ApiResponse.fail(ApiResponse.NOT_FOUND, "样本信息不存在");
+        }
     }
 
     @ApiOperation("分页查询样本信息")
     @PostMapping("/list")
     public ApiResponse<Page<SampleInfo>> listSample(@RequestBody Page<SampleInfo> page) {
-        return ApiResponse.success(lisSampleService.page(page));
+        Page<SampleInfo> resultPage = lisSampleService.page(page);
+        return ApiResponse.success(resultPage);
     }
 }
