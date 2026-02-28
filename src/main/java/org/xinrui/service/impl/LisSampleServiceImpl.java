@@ -7,9 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.xinrui.entity.*;
 import org.xinrui.mapper.*;
 import org.xinrui.service.LisSampleService;
-import org.xinrui.service.SampleService;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LisSampleServiceImpl extends ServiceImpl<SampleInfoMapper, SampleInfo> implements LisSampleService {
@@ -29,17 +30,35 @@ public class LisSampleServiceImpl extends ServiceImpl<SampleInfoMapper, SampleIn
     @Resource
     private TestResultInfoMapper testResultInfoMapper;
 
+    @Resource
+    private TestCnvInfoMapper testCnvInfoMapper; // 新增：TestCnvInfoMapper
+
     @Override
-    @Transactional // 确保级联删除在同一个事务中
+    @Transactional
     public boolean removeWithCascade(Long oid) {
-        // 删除所有关联子表数据
+        // 步骤1: 先获取关联的TestResultInfo的oid列表（用于删除TestCnvInfo）
+        List<TestResultInfo> testResultList = testResultInfoMapper.selectList(
+                new QueryWrapper<TestResultInfo>().eq("sample_oid", oid)
+        );
+        List<Long> resultOidList = testResultList.stream()
+                .map(TestResultInfo::getOid)
+                .collect(Collectors.toList());
+
+        // 步骤2: 删除TestCnvInfo（关联TestResultInfo的oid）
+        if (!resultOidList.isEmpty()) {
+            testCnvInfoMapper.delete(new QueryWrapper<TestCnvInfo>().in("result_oid", resultOidList));
+        }
+
+        // 步骤3: 删除TestResultInfo（关联样本的oid）
+        testResultInfoMapper.delete(new QueryWrapper<TestResultInfo>().eq("sample_oid", oid));
+
+        // 步骤4: 删除其他子表
         examinationInfoMapper.delete(new QueryWrapper<ExaminationInfo>().eq("sample_oid", oid));
         laneQcInfoMapper.delete(new QueryWrapper<LaneQcInfo>().eq("sample_oid", oid));
         sampleQcInfoMapper.delete(new QueryWrapper<SampleQcInfo>().eq("sample_oid", oid));
         testReportFileInfoMapper.delete(new QueryWrapper<TestReportFileInfo>().eq("sample_oid", oid));
-        testResultInfoMapper.delete(new QueryWrapper<TestResultInfo>().eq("sample_oid", oid));
 
-        // 删除父表数据
+        // 步骤5: 删除父表（样本表）
         return super.removeById(oid);
     }
 }

@@ -43,10 +43,10 @@ public class MchiPatientController {
         }
     }
 
-    @ApiOperation("删除患者信息（物理删除）")
+    @ApiOperation("删除患者信息（物理删除，级联删除关联样本及其子表）")
     @DeleteMapping("/delete/{oid}")
     public ApiResponse<Boolean> deletePatient(@PathVariable Long oid) {
-        boolean success = mchiPatientService.removeById(oid);
+        boolean success = mchiPatientService.removeWithCascade(oid);
         if (success) {
             return ApiResponse.success(true);
         } else {
