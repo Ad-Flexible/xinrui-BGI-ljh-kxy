@@ -310,6 +310,7 @@ public class TestReportFileServiceImpl implements TestReportFileService {
         reportFile.setUpdatedOn(LocalDateTime.now());
 
         if (existingFile != null) {
+            reportFile.setOid(existingFile.getOid());
             testReportFileInfoMapper.updateById(reportFile);
         } else {
             testReportFileInfoMapper.insert(reportFile);
