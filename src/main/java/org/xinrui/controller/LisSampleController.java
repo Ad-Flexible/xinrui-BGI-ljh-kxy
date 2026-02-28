@@ -43,10 +43,10 @@ public class LisSampleController {
         }
     }
 
-    @ApiOperation("删除样本信息（物理删除）")
+    @ApiOperation("删除样本信息（物理删除），级联删除子表")
     @DeleteMapping("/delete/{oid}")
     public ApiResponse<Boolean> deleteSample(@PathVariable Long oid) {
-        boolean success = lisSampleService.removeById(oid);
+        boolean success = lisSampleService.removeWithCascade(oid);
         if (success) {
             return ApiResponse.success(true);
         } else {
