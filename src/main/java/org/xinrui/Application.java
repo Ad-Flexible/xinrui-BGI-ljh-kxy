@@ -12,7 +12,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  * 包含了 @Configuration、@EnableAutoConfiguration 和 @ComponentScan 的组合功能
  */
 
-
 @SpringBootApplication
 public class Application {
 

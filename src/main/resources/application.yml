@@ -17,6 +17,23 @@ spring:
       file-size-threshold: 2KB # 超过2KB写入临时文件
 
 
+# 日志配置
+logging:
+  level:
+    root: INFO
+    org.xinrui: DEBUG
+    org.springframework.web: INFO
+    com.baomidou.mybatisplus: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: D:\service\BGI\node8030\log\log.log
+    max-size: 10MB
+    max-history: 30
+    total-size-cap: 1GB
+
+
 
 mybatis-plus:
   configuration:
