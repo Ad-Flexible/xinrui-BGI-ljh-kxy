@@ -33,12 +33,10 @@ public class TestResultDto {
     @ApiModelProperty(value = "DNB ID", required = true, example = "SZDNB018")
     private String dnbId;
 
-    //todo 在此文档其他处为int类型
     @NotBlank(message = "样本类型不能为空")
     @ApiModelProperty(value = "样本类型", required = true, allowableValues = "全血,血浆,DNA")
     private String sampleType;
 
-    //todo 在此文档其他处为int类型
     @NotBlank(message = "运输条件不能为空")
     @ApiModelProperty(value = "运输条件", required = true, allowableValues = "4℃,6~35℃,dry ice")
     private String shipmentCondition;
@@ -55,12 +53,10 @@ public class TestResultDto {
     @ApiModelProperty(value = "孕周（周,天）", required = true, example = "30,6")
     private String gestationalWeeks;
 
-    //todo 在此文档其他处为int类型
     @NotBlank(message = "胎儿类型不能为空")
     @ApiModelProperty(value = "胎儿类型", required = true, allowableValues = "单胎,双胎")
     private String fetusType;
 
-    //todo 在此文档其他处为int类型
     @NotBlank(message = "管路类型不能为空")
     @ApiModelProperty(value = "管道类型", required = true, allowableValues = "Streck管,EDTA管,K管,G管,X管")
     private String tubeType;
@@ -100,23 +96,18 @@ public class TestResultDto {
     @ApiModelProperty(value = "末次月经", example = "2017-06-14 18:00")
     private String lastMenstrualPeriod;
 
-    //todo 在此文档其他处为int类型
     @ApiModelProperty(value = "绒毛膜", allowableValues = "DC,DA,MC,DCDA,CMA,MCDA")
     private String chorion;
 
-    //todo 在此文档其他处为int类型
     @ApiModelProperty(value = "唐筛结果", allowableValues = "13-三体，低风险,13-三体，中风险,13-三体，高风险,18-三体，低风险,18-三体，中风险,18-三体，高风险,21-三体，低风险,21-三体，中风险,21-三体，高风险")
     private String downScreening;
 
-    //todo 在此文档其他处为int类型
     @ApiModelProperty(value = "B超检查结果", allowableValues = "正常单活胎,正常非单胎,异常单活胎")
     private String bUltrasonography;
 
-    //todo 在此文档其他处为int类型
     @ApiModelProperty(value = "是否IVF", allowableValues = "是,否")
     private String ivfFlag;
 
-    //todo 在此文档其他处为int类型
     @ApiModelProperty(value = "受孕方式", allowableValues = "自然受孕,IUI,IVF-ET")
     private String conceptionMethod;
 
@@ -156,15 +147,12 @@ public class TestResultDto {
     @ApiModelProperty(value = "医生意见", allowableValues = "合格,重上机,重建库,重取样,退费")
     private String doctorOpinion;
 
-    //todo 在此文档其他处为Enum类型
     @ApiModelProperty(value = "检测结果", allowableValues = "合格阴性,合格阳性,合格异常,失败")
     private String detectionResult;
 
-    //todo 在此文档其他处为Enum类型
     @ApiModelProperty(value = "报告类型", allowableValues = "单胎报告,双胎报告,重取样,退费报告")
     private String reportType;
 
-    //todo 用double还是String
     @ApiModelProperty(value = "Z(chr13)", example = "0.205")
     private Double zChr13;
 
@@ -205,19 +193,15 @@ public class TestResultDto {
     @ApiModelProperty(value = "补充", example = "单样本流程")
     private String chrN;
 
-    //todo 用double还是String
     @ApiModelProperty(value = "胎儿浓度", example = "10.01")
     private Double fetalFraction;
 
-    //todo 用double还是String
     @ApiModelProperty(value = "13浓度", example = "-1.359")
     private Double childLvChr13;
 
-    //todo 用double还是String
     @ApiModelProperty(value = "18浓度", example = "-1.359")
     private Double childLvChr18;
 
-    //todo 用double还是String
     @ApiModelProperty(value = "21浓度", example = "-1.359")
     private Double childLvChr21;
 
@@ -227,7 +211,6 @@ public class TestResultDto {
     @ApiModelProperty(value = "异常染色体数", example = "1")
     private int abnormalChrNum;
 
-    //todo 用double还是String
     @ApiModelProperty(value = "性染色体浓度差", example = "3.394")
     private Double fracAbs;
 
