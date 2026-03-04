@@ -43,6 +43,10 @@ public class SampleServiceImpl implements SampleService {
     @Override
     @Transactional
     public boolean handleSampleRegistrationInfo(SampleRegistrationDto sampleRegistrationDto) {
+
+        log.info("样本登记信息处理，样本编号为: {}", sampleRegistrationDto.getSampleId());
+
+
         return true;
     }
 

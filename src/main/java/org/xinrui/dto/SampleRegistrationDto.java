@@ -27,11 +27,11 @@ public class SampleRegistrationDto {
     /** 样本编号/实验编号 */
     @ApiModelProperty(value = "样本编号/实验编号")
     @NotBlank(message = "样本编号/实验编号不能为空")
-    private String sampleExperimentNo;
+    private String sampleId;
 
     /** 原样本编号 */
     @ApiModelProperty(value = "原样本编号")
-    private String originalSampleNo;
+    private String oldSampleNum;
 
     /** 年龄（周岁） */
     @ApiModelProperty(value = "年龄（周岁）")
@@ -190,4 +190,8 @@ public class SampleRegistrationDto {
     /** 备注 */
     @ApiModelProperty(value = "备注")
     private String remark;
+
+    /** 筛查档案主表主键 */
+    @ApiModelProperty(value = "筛查档案主表主键")
+    private Long screeningArchivesId;
 }

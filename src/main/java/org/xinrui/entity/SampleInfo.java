@@ -32,6 +32,10 @@ public class SampleInfo implements Serializable {
     @TableField("patient_oid")
     private Long patientOid;
 
+    @ApiModelProperty(value = "筛查档案主表主键", example = "101")
+    @TableField("screening_archives_id")
+    private Long screeningArchivesId;
+
     @ApiModelProperty(value = "样本编号", example = "SMP2023001")
     @TableField("sample_id")
     private String sampleId;
