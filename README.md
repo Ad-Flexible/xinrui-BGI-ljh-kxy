@@ -30,21 +30,14 @@
 >12. tubeType(管道类型)
 >13. oldSampleNum(原样本编号)
 
-3. #### **Halos推送PDF报告文件**
+3. #### **Halos推送PDF/WORD报告文件**
 
->URL:http://172.18.4.89:8030/his/V3/result/pushPdfReport
+>URL:http://172.18.4.89:8030/his/V3/result/pushReport
 >
 >必需传递请求参数：
 >file(multipart/form-data的key)
 >
 >PDF报告文件默认存储路径为：D:/fileStorage/{yyyy/MM/dd}/pdf，根路径（D:/fileStorage）可在配置文件里修改
-
-4. #### 推送WORD报告文件
-
->URL:http://172.18.4.89:8030/his/V3/result/pushWordReport
->
->必需传递请求参数：
->file(multipart/form-data的key)
 >
 >word报告文件默认存储路径为：D:/fileStorage/{yyyy/MM/dd}/word，根路径（D:/fileStorage）可在配置文件里修改
 
@@ -91,3 +84,9 @@
 5. INFO_FILE包含**INFO级别及以上** (包括 INFO, WARN, ERROR) 的所有日志
 6. ERROR_FILE专门记录 ERROR 级别的严重错误日志
 7. 目前样本文件与样本数据的映射依靠样本文件名（以样本编号命名）
+
+
+
+### 修改记录
+
+2026/3/4 11：38        柯心怡修改了halos推送pdf和word报告接口，将两个接口合并成一个共用的接口
