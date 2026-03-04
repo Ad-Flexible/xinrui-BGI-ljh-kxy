@@ -5,6 +5,7 @@ import org.xinrui.dto.testResult.nested.LaneQcDto;
 import org.xinrui.dto.testResult.nested.SampleQcDto;
 import org.xinrui.dto.testResult.nested.TestCnvDto;
 import org.xinrui.entity.*;
+import org.xinrui.util.ConvertUtil;
 
 import java.time.LocalDateTime;
 

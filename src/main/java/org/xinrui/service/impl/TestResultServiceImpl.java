@@ -10,6 +10,7 @@ import org.xinrui.dto.testResult.nested.DiseaseDto;
 import org.xinrui.entity.*;
 import org.xinrui.exception.BusinessException;
 import org.xinrui.mapper.*;
+import org.xinrui.util.ConvertUtil;
 import org.xinrui.util.testResult.*;
 import org.xinrui.service.TestResultService;
 

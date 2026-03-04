@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xinrui.dto.SampleDto;
 import org.xinrui.dto.SampleRegistrationDto;
+import org.xinrui.entity.PatientInfo;
 import org.xinrui.entity.SampleInfo;
 import org.xinrui.exception.BusinessException;
 import org.xinrui.mapper.SampleMapper;
@@ -46,8 +47,42 @@ public class SampleServiceImpl implements SampleService {
 
         log.info("样本登记信息处理，样本编号为: {}", sampleRegistrationDto.getSampleId());
 
+        //to do :将sampleRegistrationDto拆分为examinationInfo、sampleInfo和patientInfo
+        //to do :对patientInfo、sampleInfo、examinationInfo进行校验，看看是否是新增还是更新
+
+        PatientInfo patientInfo = handlePatientInfo(sampleRegistrationDto);
+
+        SampleInfo sampleInfo = handleSampleInfo(sampleRegistrationDto,patientInfo.getOid());
+
+        handleExaminationInfo(sampleRegistrationDto,sampleInfo.getOid());
+
 
         return true;
+    }
+
+    @Override
+    @Transactional
+    public PatientInfo handlePatientInfo(SampleRegistrationDto sampleRegistrationDto){
+        //to do 待完善
+        //具体校验方法：patientInfo利用证件号或者手机号来查询数据库，若无返回数据则三表数据均为新增，
+        // 有数据返回则对patientInfo作更新，继续校验sampleInfo的存在
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public SampleInfo handleSampleInfo(SampleRegistrationDto sampleRegistrationDto,Long patientOid){
+        //to do 待完善
+        //具体校验方法：sampleInfo利用样本编号来查询数据库，若无返回数据则sampleInfo和examinationInfo为新增,
+        // 有数据返回则对sampleInfo作更新，获取sample_oid到继续校验examinationInfo的存在
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public void handleExaminationInfo(SampleRegistrationDto sampleRegistrationDto, Long sampleOid){
+        //to do 待完善
+        //具体校验方法：examinationInfo利用关联的sample_oid来查询数据库，若无返回数据则examinationInfo为新增,有则更新
     }
 
 }

@@ -2,6 +2,8 @@ package org.xinrui.service;
 
 import org.xinrui.dto.SampleDto;
 import org.xinrui.dto.SampleRegistrationDto;
+import org.xinrui.entity.PatientInfo;
+import org.xinrui.entity.SampleInfo;
 
 /**
  * RequestSampleService接口
@@ -18,4 +20,11 @@ public interface SampleService {
     SampleDto getSample(String oldSampleNum);
 
     boolean handleSampleRegistrationInfo(SampleRegistrationDto sampleRegistrationDto);
+
+    PatientInfo handlePatientInfo(SampleRegistrationDto sampleRegistrationDto);
+
+    SampleInfo handleSampleInfo(SampleRegistrationDto sampleRegistrationDto,Long patientOid);
+
+    void handleExaminationInfo(SampleRegistrationDto sampleRegistrationDto, Long sampleOid);
+
 }

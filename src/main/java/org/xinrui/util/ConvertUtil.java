@@ -1,4 +1,4 @@
-package org.xinrui.util.testResult;
+package org.xinrui.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.xinrui.constant.TestConstants;
