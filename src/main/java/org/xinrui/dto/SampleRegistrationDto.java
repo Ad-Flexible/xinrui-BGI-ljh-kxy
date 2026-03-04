@@ -10,6 +10,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -24,6 +26,7 @@ public class SampleRegistrationDto {
 
     /** 样本编号/实验编号 */
     @ApiModelProperty(value = "样本编号/实验编号")
+    @NotBlank(message = "样本编号/实验编号不能为空")
     private String sampleExperimentNo;
 
     /** 原样本编号 */
@@ -71,6 +74,7 @@ public class SampleRegistrationDto {
     private Boolean isAllogeneicEggDonation;
 
     /** 胎儿类型（必填，下拉字典值） */
+    @NotBlank(message = "胎儿类型不能为空")
     @ApiModelProperty(value = "胎儿类型（必填，下拉字典值）", required = true)
     private String fetusType;
 
@@ -79,26 +83,32 @@ public class SampleRegistrationDto {
     private Integer gestationalWeeks;
 
     /** 孕天（必填） */
+    @NotNull(message = "孕天不能为空")
     @ApiModelProperty(value = "孕天（必填）", required = true)
     private Integer gestationalDays;
 
     /** 样本类型（必填，下拉字典值） */
+    @NotNull(message = "样本类型不能为空")
     @ApiModelProperty(value = "样本类型（必填，下拉字典值）", required = true)
     private String sampleType;
 
     /** 运输条件（必填，下拉字典值） */
+    @NotNull(message = "运输条件不能为空")
     @ApiModelProperty(value = "运输条件（必填，下拉字典值）", required = true)
     private String transportCondition;
 
     /** 采血管类型（必填，下拉字典值） */
+    @NotBlank(message = "采血管类型不能为空")
     @ApiModelProperty(value = "采血管类型（必填，下拉字典值）", required = true)
     private String bloodCollectionTubeType;
 
     /** 产品套餐（必填，下拉字典值） */
+    @NotBlank(message = "产品套餐不能为空")
     @ApiModelProperty(value = "产品套餐（必填，下拉字典值）", required = true)
     private String productPackage;
 
     /** 手机号 */
+    @NotBlank(message = "手机号不能为空")
     @ApiModelProperty(value = "手机号")
     private String phone;
 
@@ -126,14 +136,12 @@ public class SampleRegistrationDto {
     @ApiModelProperty(value = "产前检查-血清学筛查状态（未做/已做）")
     private String serumScreeningStatus;
 
-    @ApiModelProperty(value = "产前检查-21-三体风险值（格式：分子/分母，如 1/1000）")
-    private String serumT21Risk;
+    @ApiModelProperty(value = "产前检查-21-三体风险值分母")
+    private Integer serumT21Risk;
 
-    @ApiModelProperty(value = "产前检查-18-三体风险值（格式：分子/分母，如 1/1000）")
-    private String serumT18Risk;
+    @ApiModelProperty(value = "产前检查-18-三体风险值分母")
+    private Integer serumT18Risk;
 
-    @ApiModelProperty(value = "产前检查-其他三体风险值（如13-三体，格式：分子/分母，无则空）")
-    private String serumT13Risk;
 
     /** 产前检查-血清学筛查其他情况 */
     @ApiModelProperty(value = "产前检查-血清学筛查其他情况")
@@ -153,7 +161,7 @@ public class SampleRegistrationDto {
 
     /** 其它情况-移植手术日期 */
     @ApiModelProperty(value = "其它情况-移植手术日期")
-    private String transplantDate;
+    private LocalDate transplantDate;
 
     /** 其它情况-异体输血状态（无/有） */
     @ApiModelProperty(value = "其它情况-异体输血状态（无/有）")
@@ -161,7 +169,7 @@ public class SampleRegistrationDto {
 
     /** 其它情况-异体输血日期 */
     @ApiModelProperty(value = "其它情况-异体输血日期")
-    private String transfusionDate;
+    private LocalDate transfusionDate;
 
     /** 其它情况-免疫治疗状态（无/有） */
     @ApiModelProperty(value = "其它情况-免疫治疗状态（无/有）")
@@ -169,7 +177,7 @@ public class SampleRegistrationDto {
 
     /** 其它情况-免疫治疗日期 */
     @ApiModelProperty(value = "其它情况-免疫治疗日期")
-    private String immunotherapyDate;
+    private LocalDate immunotherapyDate;
 
     /** 其它情况-免疫治疗类型 */
     @ApiModelProperty(value = "其它情况-免疫治疗类型")
