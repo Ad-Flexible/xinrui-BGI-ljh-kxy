@@ -36,7 +36,7 @@ public class TestResultController {
      */
     @PostMapping("/pushResult")
     public ApiResponse<Void> pushResult(@Valid @RequestBody TestResultDto requestDTO) {
-
+            log.info("接收JSON结果数据");
             boolean success = testResultService.handlePushResult(requestDTO);
             return success ?
                     ApiResponse.success() : // 调用无参 success

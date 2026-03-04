@@ -1,6 +1,7 @@
 package org.xinrui.service;
 
 import org.xinrui.dto.SampleDto;
+import org.xinrui.dto.SampleRegistrationDto;
 
 /**
  * RequestSampleService接口
@@ -15,4 +16,6 @@ public interface SampleService {
      * @throws org.xinrui.exception.BusinessException 业务异常
      */
     SampleDto getSample(String oldSampleNum);
+
+    boolean handleSampleRegistrationInfo(SampleRegistrationDto sampleRegistrationDto);
 }

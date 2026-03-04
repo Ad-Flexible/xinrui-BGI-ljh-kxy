@@ -3,14 +3,13 @@ package org.xinrui.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.xinrui.dto.ApiResponse;
 import org.xinrui.dto.SampleDto;
+import org.xinrui.dto.SampleRegistrationDto;
 import org.xinrui.service.SampleService;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -37,4 +36,15 @@ public class SampleController {
         return ApiResponse.success(result);
 
     }
+
+    @PostMapping("/sava/sampleRegistrationInfo")
+    public ApiResponse saveSampleRegistrationInfo(@Valid @RequestBody SampleRegistrationDto sampleRegistrationDto) {
+        log.info("接收样本登记数据");
+        boolean success = sampleService.handleSampleRegistrationInfo(sampleRegistrationDto);
+        return success ?
+                ApiResponse.success() : // 调用无参 success
+                ApiResponse.fail("请求失败");
+    }
+
+
 }

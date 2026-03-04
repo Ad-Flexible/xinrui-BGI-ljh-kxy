@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xinrui.dto.SampleDto;
+import org.xinrui.dto.SampleRegistrationDto;
 import org.xinrui.entity.SampleInfo;
 import org.xinrui.exception.BusinessException;
 import org.xinrui.mapper.SampleMapper;
@@ -38,4 +39,11 @@ public class SampleServiceImpl implements SampleService {
         log.info("样本信息查询成功，样本编号: {}", sampleDto.getSampleId());
         return sampleDto;
     }
+
+    @Override
+    @Transactional
+    public boolean handleSampleRegistrationInfo(SampleRegistrationDto sampleRegistrationDto) {
+        return true;
+    }
+
 }
