@@ -45,31 +45,49 @@ public class TestResultController {
 
     }
 
+//    /**
+//     * 接收Halos推送的PDF报告文件（multipart/form-data）
+//     * POST /his/V3/sample/pushPdfReport
+//     *
+//     * 约定：
+//     * 1. Content-Type: multipart/form-data
+//     * 2. 文件字段名: file
+//     * 3. 文件名由Halos系统通过"报告命名"功能生成，HIS通过文件名匹配样本
+//     */
+//    @PostMapping(path = "/pushPdfReport")
+//    public ApiResponse receivePdfReport(@RequestParam("file") MultipartFile file) {
+//        log.info("接收PDF报告文件");
+//        boolean success = testReportFileService.receivePdfReport(file);
+//        return success ? ApiResponse.success() : ApiResponse.fail("上传失败");
+//    }
+//
+//    /**
+//     * 接收Halos推送的WORD报告文件（multipart/form-data）
+//     * POST /his/V3/sample/pushWordReport
+//     *
+//     * 约定同PDF接口
+//     */
+//    @PostMapping(path = "/pushWordReport")
+//    public ApiResponse receiveWordReport(@RequestParam("file") MultipartFile file) {
+//        boolean success = testReportFileService.receiveWordReport(file);
+//        return success ? ApiResponse.success() : ApiResponse.fail("上传失败");
+//    }
+
+
     /**
-     * 接收Halos推送的PDF报告文件（multipart/form-data）
-     * POST /his/V3/sample/pushPdfReport
+     * 接收 Halos 推送的报告文件（multipart/form-data）
+     * POST /his/V3/result/pushReport
      *
      * 约定：
      * 1. Content-Type: multipart/form-data
-     * 2. 文件字段名: file
-     * 3. 文件名由Halos系统通过"报告命名"功能生成，HIS通过文件名匹配样本
+     * 2. 文件字段名：file
+     * 3. 文件名由 Halos 系统通过"报告命名"功能生成，HIS 通过文件名匹配样本
+     * 4. 支持 PDF 和 WORD 格式，自动根据文件扩展名识别
      */
-    @PostMapping(path = "/pushPdfReport")
-    public ApiResponse receivePdfReport(@RequestParam("file") MultipartFile file) {
-        log.info("接收PDF报告文件");
-        boolean success = testReportFileService.receivePdfReport(file);
-        return success ? ApiResponse.success() : ApiResponse.fail("上传失败");
-    }
-
-    /**
-     * 接收Halos推送的WORD报告文件（multipart/form-data）
-     * POST /his/V3/sample/pushWordReport
-     *
-     * 约定同PDF接口
-     */
-    @PostMapping(path = "/pushWordReport")
-    public ApiResponse receiveWordReport(@RequestParam("file") MultipartFile file) {
-        boolean success = testReportFileService.receiveWordReport(file);
+    @PostMapping(path = "/pushReport")
+    public ApiResponse receiveReport(@RequestParam("file") MultipartFile file) {
+        log.info("接收报告文件");
+        boolean success = testReportFileService.receiveReport(file);
         return success ? ApiResponse.success() : ApiResponse.fail("上传失败");
     }
 
