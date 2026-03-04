@@ -47,15 +47,15 @@ public class SampleRegistrationDto {
 
     /** 证件号 */
     @ApiModelProperty(value = "证件号")
-    private String idNumber;
+    private String identity;
 
     /** 妊娠史-妊娠次数 */
     @ApiModelProperty(value = "妊娠史-妊娠次数")
-    private Integer pregnancyCount;
+    private Integer bhGravidity;
 
     /** 生育次数 */
     @ApiModelProperty(value = "生育次数")
-    private Integer childbirthCount;
+    private Integer bhParity;
 
     /** 自然流产次数 */
     @ApiModelProperty(value = "自然流产次数")
@@ -63,7 +63,7 @@ public class SampleRegistrationDto {
 
     /** 是否为试管婴儿（是:true / 否:false） */
     @ApiModelProperty(value = "是否为试管婴儿（是:true / 否:false）")
-    private Boolean isTestTubeBaby;
+    private Boolean ivfFlag;
 
     /** 是否自体供卵（是:true / 否:false） */
     @ApiModelProperty(value = "是否自体供卵（是:true / 否:false）")
@@ -95,17 +95,17 @@ public class SampleRegistrationDto {
     /** 运输条件（必填，下拉字典值） */
     @NotNull(message = "运输条件不能为空")
     @ApiModelProperty(value = "运输条件（必填，下拉字典值）", required = true)
-    private String transportCondition;
+    private String shipmentCondition;
 
     /** 采血管类型（必填，下拉字典值） */
     @NotBlank(message = "采血管类型不能为空")
     @ApiModelProperty(value = "采血管类型（必填，下拉字典值）", required = true)
-    private String bloodCollectionTubeType;
+    private String tubeType;
 
     /** 产品套餐（必填，下拉字典值） */
     @NotBlank(message = "产品套餐不能为空")
     @ApiModelProperty(value = "产品套餐（必填，下拉字典值）", required = true)
-    private String productPackage;
+    private String productName;
 
     /** 手机号 */
     @NotBlank(message = "手机号不能为空")
@@ -118,7 +118,7 @@ public class SampleRegistrationDto {
 
     /** 联系人电话 */
     @ApiModelProperty(value = "联系人电话")
-    private String contactPhone;
+    private String emergencyContactPhone;
 
     /** 产前检查-超声检查结果（未查/提示异常） */
     @ApiModelProperty(value = "产前检查-超声检查结果（未查/提示异常）")
@@ -137,10 +137,10 @@ public class SampleRegistrationDto {
     private String serumScreeningStatus;
 
     @ApiModelProperty(value = "产前检查-21-三体风险值分母")
-    private Integer serumT21Risk;
+    private Integer trisomy21RiskDenominator;
 
     @ApiModelProperty(value = "产前检查-18-三体风险值分母")
-    private Integer serumT18Risk;
+    private Integer trisomy18RiskDenominator;
 
 
     /** 产前检查-血清学筛查其他情况 */
