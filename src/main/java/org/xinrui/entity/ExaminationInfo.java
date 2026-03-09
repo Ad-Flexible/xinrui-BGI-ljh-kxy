@@ -129,9 +129,6 @@ public class ExaminationInfo implements Serializable {
     @TableField("updated_on")
     private LocalDateTime updatedOn;
 
-    @ApiModelProperty(value = "是否试管婴儿 1-是 0-否", example = "0")
-    @TableField("tubebaby_flag")
-    private Integer tubebabyFlag;
 
     @ApiModelProperty(value = "01-自体供卵，02-异体供卵", example = "01")
     @TableField("tubebaby_type")
@@ -153,17 +150,17 @@ public class ExaminationInfo implements Serializable {
     @TableField("down_syndrome_flag")
     private Integer downSyndromeFlag;
 
-//    @ApiModelProperty(value = "唐筛风险值 21-三体", example = "example_value")
-//    @TableField("down_syndrome_result1")
-//    private String downSyndromeResult1;
-//
-//    @ApiModelProperty(value = "唐筛风险值 18-三体", example = "example_value")
-//    @TableField("down_syndrome_result2")
-//    private String downSyndromeResult2;
-//
-//    @ApiModelProperty(value = "唐筛风险值 其他", example = "example_value")
-//    @TableField("down_syndrome_result_oth")
-//    private String downSyndromeResultOth;
+    @ApiModelProperty(value = "唐筛风险值 21-三体", example = "example_value")
+    @TableField("down_syndrome_result1")
+    private String downSyndromeResult1;
+
+    @ApiModelProperty(value = "唐筛风险值 18-三体", example = "example_value")
+    @TableField("down_syndrome_result2")
+    private String downSyndromeResult2;
+
+    @ApiModelProperty(value = "唐筛风险值 其他", example = "example_value")
+    @TableField("down_syndrome_result_oth")
+    private String downSyndromeResultOth;
 
     @ApiModelProperty(value = "预约穿刺诊断情况 1-已预约 0-无", example = "0")
     @TableField("puncture_appointment")

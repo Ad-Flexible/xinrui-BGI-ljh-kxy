@@ -53,8 +53,6 @@ public class TestResultServiceImpl implements TestResultService {
     @Transactional(rollbackFor = Exception.class)
     public boolean handlePushResult(TestResultDto requestDTO) {
 
-
-
         log.info("开始处理Halos推送结果，样本编号: {}", requestDTO.getSampleId());
 
         // 1. 处理患者信息（t_mchi_patient）

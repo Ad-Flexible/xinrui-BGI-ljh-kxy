@@ -117,6 +117,24 @@ public class BuildUtil {
         exam.setIllnessHistoryAllergy(dto.getIllnessHistoryAllergy());
         exam.setIllnessHistoryGenetic(dto.getIllnessHistoryGenetic());
         exam.setPatientRemark(dto.getPatientRemark());
+        exam.setTubebabyType(null); // DTO 中无自体/异体供卵字段
+        exam.setUsCheck(null);
+        exam.setUsResult(null); // DTO 中无超声异常信息字段
+        exam.setReduceDate(null); // DTO 中无减胎日期字段
+        exam.setDownSyndromeFlag(null);
+        exam.setDownSyndromeResult1(null); // 使用唐筛结果
+        exam.setDownSyndromeResult2(null); // DTO 中无 18-三体风险值字段
+        exam.setDownSyndromeResultOth(null); // DTO 中无其他风险值字段
+        exam.setPunctureAppointment(null); // DTO 中无预约穿刺诊断情况字段
+        exam.setPunctureAppointmentDate(null); // DTO 中无穿刺诊断预约日期字段
+        exam.setTransplantation(null); // DTO 中无移植手术字段
+        exam.setTransplantationDate(null); // DTO 中无移植手术日期字段
+        exam.setAllogeneicTransfusion(null); // DTO 中无异体输血字段
+        exam.setAllogeneicTransfusionDate(null); // DTO 中无异体输血日期字段
+        exam.setImmunotherapy(null); // DTO 中无免疫治疗字段
+        exam.setImmunotherapyDate(null); // DTO 中无免疫治疗日期字段
+        exam.setImmunotherapyType(null); // DTO 中无免疫治疗类型字段
+        exam.setSpecialCase(null); // DTO 中无特殊情况字段
 
         // 设置审计字段
         exam.setIntver(INVERT);
