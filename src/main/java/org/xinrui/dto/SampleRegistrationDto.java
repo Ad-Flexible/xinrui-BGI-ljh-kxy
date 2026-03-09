@@ -9,12 +9,14 @@ import lombok.Data;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.tomcat.jni.Local;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * 样本登记 DTO
@@ -35,7 +37,7 @@ public class SampleRegistrationDto {
 
     /** 年龄（周岁） */
     @ApiModelProperty(value = "年龄（周岁）")
-    private BigDecimal age;
+    private Integer age;
 
     /** 身高（cm） */
     @ApiModelProperty(value = "身高（cm）")
@@ -59,19 +61,15 @@ public class SampleRegistrationDto {
 
     /** 自然流产次数 */
     @ApiModelProperty(value = "自然流产次数")
-    private Integer miscarriageCount;
+    private String bhOther;
 
-    /** 是否为试管婴儿（是:true / 否:false） */
-    @ApiModelProperty(value = "是否为试管婴儿（是:true / 否:false）")
-    private Boolean ivfFlag;
+    /** 是否为试管婴儿（是:1 / 否:0） */
+    @ApiModelProperty(value = "是否为试管婴儿（是:1 / 否:0）")
+    private Integer tubebabyFlag;
 
-    /** 是否自体供卵（是:true / 否:false） */
-    @ApiModelProperty(value = "是否自体供卵（是:true / 否:false）")
-    private Boolean isSelfEggDonation;
-
-    /** 是否异体供卵（是:true / 否:false） */
-    @ApiModelProperty(value = "是否异体供卵（是:true / 否:false）")
-    private Boolean isAllogeneicEggDonation;
+    /** 01-自体供卵,02异体供卵 */
+    @ApiModelProperty(value = "01-自体供卵,02异体供卵")
+    private String tubebabyType;
 
     /** 胎儿类型（必填，下拉字典值） */
     @NotBlank(message = "胎儿类型不能为空")
@@ -120,72 +118,74 @@ public class SampleRegistrationDto {
     @ApiModelProperty(value = "联系人电话")
     private String emergencyContactPhone;
 
-    /** 产前检查-超声检查结果（未查/提示异常） */
-    @ApiModelProperty(value = "产前检查-超声检查结果（未查/提示异常）")
-    private String ultrasoundCheckResult;
+    /** 超声检查结果 */
+    @ApiModelProperty(value = "超声检查结果，01未见异常，02提示异常")
+    private String usCheck;
 
-    /** 产前检查-减胎日期（若存在减胎操作） */
-    @ApiModelProperty(value = "产前检查-减胎日期（若存在减胎操作）")
-    private LocalDate reductionDate;
+    /** 超声异常信息 */
+    @ApiModelProperty(value = "超声异常信息")
+    private String usResult;
 
-    /** 产前检查-妊娠情况（单胎/双胎或多胎） */
-    @ApiModelProperty(value = "产前检查-妊娠情况（单胎/双胎或多胎）")
-    private String pregnancySituation;
+    /** 减胎日期 */
+    @ApiModelProperty(value = "减胎日期")
+    private LocalDateTime reduceDate;
 
-    /** 产前检查-血清学筛查状态（未做/已做） */
-    @ApiModelProperty(value = "产前检查-血清学筛查状态（未做/已做）")
-    private String serumScreeningStatus;
+    /** 是否已做唐筛（1-是，0-否） */
+    @ApiModelProperty(value = "是否已做唐筛（1-是，0-否）")
+    private Integer downSyndromeFlag;
 
-    @ApiModelProperty(value = "产前检查-21-三体风险值分母")
-    private Integer trisomy21RiskDenominator;
+    /** 唐筛风险值 21-三体 */
+    @ApiModelProperty(value = "唐筛风险值 21-三体")
+    private String downSyndromeResult1;
 
-    @ApiModelProperty(value = "产前检查-18-三体风险值分母")
-    private Integer trisomy18RiskDenominator;
+    /** 唐筛风险值 18-三体 */
+    @ApiModelProperty(value = "唐筛风险值 18-三体")
+    private String downSyndromeResult2;
 
+    /** 唐筛风险值 其他 */
+    @ApiModelProperty(value = "唐筛风险值 其他")
+    private String downSyndromeResultOth;
 
-    /** 产前检查-血清学筛查其他情况 */
-    @ApiModelProperty(value = "产前检查-血清学筛查其他情况")
-    private String serumOther;
+    /** 预约穿刺诊断情况（1-已预约，0-无） */
+    @ApiModelProperty(value = "预约穿刺诊断情况（1-已预约，0-无）")
+    private Integer punctureAppointment;
 
-    /** 产前检查-预约穿刺诊断状态（无/已预约） */
-    @ApiModelProperty(value = "产前检查-预约穿刺诊断状态（无/已预约）")
-    private String appointmentPunctureStatus;
+    /** 穿刺诊断预约日期 */
+    @ApiModelProperty(value = "穿刺诊断预约日期")
+    private LocalDateTime punctureAppointmentDate;
 
-    /** 产前检查-预约穿刺诊断日期 */
-    @ApiModelProperty(value = "产前检查-预约穿刺诊断日期,若已预约")
-    private LocalDate punctureAppointmentDate;
+    /** 移植手术（1-有，0-无） */
+    @ApiModelProperty(value = "移植手术（1-有，0-无）")
+    private Integer transplantation;
 
-    /** 其它情况-移植手术状态（无/有） */
-    @ApiModelProperty(value = "其它情况-移植手术状态（无/有）")
-    private String transplantSurgeryStatus;
+    /** 移植手术日期 */
+    @ApiModelProperty(value = "移植手术日期")
+    private LocalDateTime transplantationDate;
 
-    /** 其它情况-移植手术日期 */
-    @ApiModelProperty(value = "其它情况-移植手术日期")
-    private LocalDate transplantDate;
+    /** 异体输血（1-有，0-无） */
+    @ApiModelProperty(value = "异体输血（1-有，0-无）")
+    private Integer allogeneicTransfusion;
 
-    /** 其它情况-异体输血状态（无/有） */
-    @ApiModelProperty(value = "其它情况-异体输血状态（无/有）")
-    private String allogeneicTransfusionStatus;
+    /** 异体输血日期 */
+    @ApiModelProperty(value = "异体输血日期")
+    private LocalDateTime allogeneicTransfusionDate;
 
-    /** 其它情况-异体输血日期 */
-    @ApiModelProperty(value = "其它情况-异体输血日期")
-    private LocalDate transfusionDate;
+    /** 免疫治疗（1-有，0-无） */
+    @ApiModelProperty(value = "免疫治疗（1-有，0-无）")
+    private Integer immunotherapy;
 
-    /** 其它情况-免疫治疗状态（无/有） */
-    @ApiModelProperty(value = "其它情况-免疫治疗状态（无/有）")
-    private String immunotherapyStatus;
+    /** 免疫治疗日期 */
+    @ApiModelProperty(value = "免疫治疗日期")
+    private LocalDateTime immunotherapyDate;
 
-    /** 其它情况-免疫治疗日期 */
-    @ApiModelProperty(value = "其它情况-免疫治疗日期")
-    private LocalDate immunotherapyDate;
-
-    /** 其它情况-免疫治疗类型 */
-    @ApiModelProperty(value = "其它情况-免疫治疗类型")
+    /** 免疫治疗类型 */
+    @ApiModelProperty(value = "免疫治疗类型")
     private String immunotherapyType;
 
     /** 特殊情况 */
     @ApiModelProperty(value = "特殊情况")
-    private String specialSituation;
+    private String specialCase;
+
 
     /** 备注 */
     @ApiModelProperty(value = "备注")
