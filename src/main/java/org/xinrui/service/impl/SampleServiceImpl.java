@@ -1,17 +1,23 @@
 package org.xinrui.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xinrui.dto.SampleDto;
 import org.xinrui.dto.SampleRegistrationDto;
+import org.xinrui.entity.ExaminationInfo;
 import org.xinrui.entity.PatientInfo;
 import org.xinrui.entity.SampleInfo;
 import org.xinrui.exception.BusinessException;
+import org.xinrui.mapper.ExaminationInfoMapper;
+import org.xinrui.mapper.PatientInfoMapper;
+import org.xinrui.mapper.SampleInfoMapper;
 import org.xinrui.mapper.SampleMapper;
 import org.xinrui.service.SampleService;
 import org.xinrui.util.SampleUtil;
+import org.xinrui.util.sample.*;
 
 @Slf4j
 @Service
@@ -19,6 +25,15 @@ public class SampleServiceImpl implements SampleService {
 
     @Autowired
     private SampleMapper sampleMapper;
+
+    @Autowired
+    private PatientInfoMapper patientInfoMapper;
+
+    @Autowired
+    private SampleInfoMapper sampleInfoMapper;
+
+    @Autowired
+    private ExaminationInfoMapper examinationInfoMapper;
 
 
 
@@ -44,45 +59,78 @@ public class SampleServiceImpl implements SampleService {
     @Override
     @Transactional
     public boolean handleSampleRegistrationInfo(SampleRegistrationDto sampleRegistrationDto) {
-
         log.info("样本登记信息处理，样本编号为: {}", sampleRegistrationDto.getSampleId());
-
-        //to do :将sampleRegistrationDto拆分为examinationInfo、sampleInfo和patientInfo
-        //to do :对patientInfo、sampleInfo、examinationInfo进行校验，看看是否是新增还是更新
-
         PatientInfo patientInfo = handlePatientInfo(sampleRegistrationDto);
-
-        SampleInfo sampleInfo = handleSampleInfo(sampleRegistrationDto,patientInfo.getOid());
-
-        handleExaminationInfo(sampleRegistrationDto,sampleInfo.getOid());
-
-
+        SampleInfo sampleInfo = handleSampleInfo(sampleRegistrationDto, patientInfo.getOid());
+        handleExaminationInfo(sampleRegistrationDto, sampleInfo.getOid());
         return true;
     }
 
     @Override
     @Transactional
-    public PatientInfo handlePatientInfo(SampleRegistrationDto sampleRegistrationDto){
-        //to do 待完善
-        //具体校验方法：patientInfo利用证件号或者手机号来查询数据库，若无返回数据则三表数据均为新增，
-        // 有数据返回则对patientInfo作更新，继续校验sampleInfo的存在
-        return null;
+    public PatientInfo handlePatientInfo(SampleRegistrationDto sampleRegistrationDto) {
+        // 1. 根据证件号或手机号查询患者信息
+        PatientInfo patientInfo = patientInfoMapper.selectOne(
+                Wrappers.<PatientInfo>lambdaQuery()
+                        .or(query -> query.eq(PatientInfo::getIdentity, sampleRegistrationDto.getIdentity()))
+                        .or(query -> query.eq(PatientInfo::getPhone, sampleRegistrationDto.getPhone()))
+        );
+
+        if (patientInfo == null) {
+            // 2. 如果不存在，则创建新患者
+            patientInfo = BuildUtil.buildPatientInfo(sampleRegistrationDto);
+            patientInfoMapper.insert(patientInfo);
+        } else {
+            // 3. 如果存在，则更新患者信息
+            UpdateUtil.updatePatientInfo(patientInfo, sampleRegistrationDto);
+            patientInfoMapper.updateById(patientInfo);
+        }
+
+        return patientInfo;
     }
 
     @Override
     @Transactional
-    public SampleInfo handleSampleInfo(SampleRegistrationDto sampleRegistrationDto,Long patientOid){
-        //to do 待完善
-        //具体校验方法：sampleInfo利用样本编号来查询数据库，若无返回数据则sampleInfo和examinationInfo为新增,
-        // 有数据返回则对sampleInfo作更新，获取sample_oid到继续校验examinationInfo的存在
-        return null;
+    public SampleInfo handleSampleInfo(SampleRegistrationDto sampleRegistrationDto, Long patientOid) {
+        // 1. 根据样本编号查询样本信息
+        SampleInfo sampleInfo = sampleInfoMapper.selectOne(
+                Wrappers.<SampleInfo>lambdaQuery()
+                        .eq(SampleInfo::getSampleId, sampleRegistrationDto.getSampleId())
+        );
+
+        if (sampleInfo == null) {
+            // 2. 如果不存在，则创建新样本
+            sampleInfo = BuildUtil.buildSampleInfo(sampleRegistrationDto,patientOid);
+
+            sampleInfoMapper.insert(sampleInfo);
+        } else {
+            // 3. 如果存在，则更新样本信息
+            UpdateUtil.updateSampleInfo(sampleInfo, sampleRegistrationDto,patientOid);
+
+            sampleInfoMapper.updateById(sampleInfo);
+        }
+
+        return sampleInfo;
     }
 
     @Override
     @Transactional
-    public void handleExaminationInfo(SampleRegistrationDto sampleRegistrationDto, Long sampleOid){
-        //to do 待完善
-        //具体校验方法：examinationInfo利用关联的sample_oid来查询数据库，若无返回数据则examinationInfo为新增,有则更新
+    public void handleExaminationInfo(SampleRegistrationDto sampleRegistrationDto, Long sampleOid) {
+        // 1. 根据sample_oid查询检查信息
+        ExaminationInfo exam = examinationInfoMapper.selectOne(
+                Wrappers.<ExaminationInfo>lambdaQuery()
+                        .eq(ExaminationInfo::getSampleOid, sampleOid)
+        );
+
+        if (exam == null) {
+            // 2. 如果不存在，则创建新检查信息
+            exam = BuildUtil.buildExaminationInfo(sampleRegistrationDto, sampleOid);
+            examinationInfoMapper.insert(exam);
+        } else {
+            // 3. 如果存在，则更新检查信息
+            UpdateUtil.updateExaminationInfo(exam, sampleRegistrationDto,sampleOid);
+            examinationInfoMapper.updateById(exam);
+        }
     }
 
 }

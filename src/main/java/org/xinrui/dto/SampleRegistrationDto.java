@@ -128,7 +128,7 @@ public class SampleRegistrationDto {
 
     /** 减胎日期 */
     @ApiModelProperty(value = "减胎日期")
-    private LocalDateTime reduceDate;
+    private String reduceDate;
 
     /** 是否已做唐筛（1-是，0-否） */
     @ApiModelProperty(value = "是否已做唐筛（1-是，0-否）")
@@ -152,7 +152,7 @@ public class SampleRegistrationDto {
 
     /** 穿刺诊断预约日期 */
     @ApiModelProperty(value = "穿刺诊断预约日期")
-    private LocalDateTime punctureAppointmentDate;
+    private String punctureAppointmentDate;
 
     /** 移植手术（1-有，0-无） */
     @ApiModelProperty(value = "移植手术（1-有，0-无）")
@@ -160,7 +160,7 @@ public class SampleRegistrationDto {
 
     /** 移植手术日期 */
     @ApiModelProperty(value = "移植手术日期")
-    private LocalDateTime transplantationDate;
+    private String transplantationDate;
 
     /** 异体输血（1-有，0-无） */
     @ApiModelProperty(value = "异体输血（1-有，0-无）")
@@ -168,7 +168,7 @@ public class SampleRegistrationDto {
 
     /** 异体输血日期 */
     @ApiModelProperty(value = "异体输血日期")
-    private LocalDateTime allogeneicTransfusionDate;
+    private String allogeneicTransfusionDate;
 
     /** 免疫治疗（1-有，0-无） */
     @ApiModelProperty(value = "免疫治疗（1-有，0-无）")
@@ -176,7 +176,7 @@ public class SampleRegistrationDto {
 
     /** 免疫治疗日期 */
     @ApiModelProperty(value = "免疫治疗日期")
-    private LocalDateTime immunotherapyDate;
+    private String immunotherapyDate;
 
     /** 免疫治疗类型 */
     @ApiModelProperty(value = "免疫治疗类型")
