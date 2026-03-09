@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.tomcat.jni.Local;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -127,4 +128,80 @@ public class ExaminationInfo implements Serializable {
     @ApiModelProperty(value = "更新时间(审计字段)", example = "2023-08-15T16:00:00")
     @TableField("updated_on")
     private LocalDateTime updatedOn;
+
+    @ApiModelProperty(value = "是否试管婴儿 1-是 0-否", example = "0")
+    @TableField("tubebaby_flag")
+    private Integer tubebabyFlag;
+
+    @ApiModelProperty(value = "01-自体供卵，02-异体供卵", example = "01")
+    @TableField("tubebaby_type")
+    private String tubebabyType;
+
+    @ApiModelProperty(value = "01-未见异常，02-提示异常", example = "01")
+    @TableField("us_check")
+    private String usCheck;
+
+    @ApiModelProperty(value = "超声异常信息", example = "example_value")
+    @TableField("us_result")
+    private String usResult;
+
+    @ApiModelProperty(value = "减胎日期", example = "2023-10-01 12:00:00")
+    @TableField("reduce_date")
+    private LocalDateTime reduceDate;
+
+    @ApiModelProperty(value = "是否已做唐筛 1-是 0-否", example = "0")
+    @TableField("down_syndrome_flag")
+    private Integer downSyndromeFlag;
+
+//    @ApiModelProperty(value = "唐筛风险值 21-三体", example = "example_value")
+//    @TableField("down_syndrome_result1")
+//    private String downSyndromeResult1;
+//
+//    @ApiModelProperty(value = "唐筛风险值 18-三体", example = "example_value")
+//    @TableField("down_syndrome_result2")
+//    private String downSyndromeResult2;
+//
+//    @ApiModelProperty(value = "唐筛风险值 其他", example = "example_value")
+//    @TableField("down_syndrome_result_oth")
+//    private String downSyndromeResultOth;
+
+    @ApiModelProperty(value = "预约穿刺诊断情况 1-已预约 0-无", example = "0")
+    @TableField("puncture_appointment")
+    private Integer punctureAppointment;
+
+    @ApiModelProperty(value = "穿刺诊断预约日期", example = "2023-10-01 12:00:00")
+    @TableField("puncture_appointment_date")
+    private LocalDateTime punctureAppointmentDate;
+
+    @ApiModelProperty(value = "移植手术 1-有 0-无", example = "0")
+    @TableField("transplantation")
+    private Integer transplantation;
+
+    @ApiModelProperty(value = "移植手术日期", example = "2023-10-01 12:00:00")
+    @TableField("transplantation_date")
+    private LocalDateTime transplantationDate;
+
+    @ApiModelProperty(value = "异体输血 1-有 0-无", example = "0")
+    @TableField("allogeneic_transfusion")
+    private Integer allogeneicTransfusion;
+
+    @ApiModelProperty(value = "异体输血日期", example = "2023-10-01 12:00:00")
+    @TableField("allogeneic_transfusion_date")
+    private LocalDateTime allogeneicTransfusionDate;
+
+    @ApiModelProperty(value = "免疫治疗 1-有 0-无", example = "0")
+    @TableField("immunotherapy")
+    private Integer immunotherapy;
+
+    @ApiModelProperty(value = "免疫治疗日期", example = "2023-10-01 12:00:00")
+    @TableField("immunotherapy_date")
+    private LocalDateTime immunotherapyDate;
+
+    @ApiModelProperty(value = "免疫治疗类型", example = "example_value")
+    @TableField("immunotherapy_type")
+    private String immunotherapyType;
+
+    @ApiModelProperty(value = "特殊情况", example = "example_value")
+    @TableField("special_case")
+    private String specialCase;
 }
