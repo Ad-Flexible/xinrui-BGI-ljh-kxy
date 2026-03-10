@@ -81,7 +81,7 @@ public class BuildUtil {
         exam.setLastMenstrualPeriod(null); // 末次月经
         exam.setChorionType(null); // 绒毛膜类型
         exam.setBUltrasonography(ConvertUtil.convertBUltrasonography(dto.getUsCheck()));
-        exam.setIvfFlag(dto.getTubebabyFlag());
+        exam.setIvfFlag(dto.getIvfFlag());
         exam.setTubebabyType(dto.getTubebabyType());
         exam.setConceptionMethod(null); // 受孕方式
         exam.setBhGravidity(dto.getBhGravidity());
