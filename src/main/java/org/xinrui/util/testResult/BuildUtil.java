@@ -1,6 +1,7 @@
 package org.xinrui.util.testResult;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.xinrui.dto.testResult.TestResultDto;
 import org.xinrui.dto.testResult.nested.LaneQcDto;
 import org.xinrui.dto.testResult.nested.SampleQcDto;
@@ -10,7 +11,7 @@ import org.xinrui.util.ConvertUtil;
 
 import java.time.LocalDateTime;
 
-
+@Slf4j
 public class BuildUtil {
 
     private static final Long UPDATED_BY = 1L; // 固定更新人ID
@@ -23,9 +24,24 @@ public class BuildUtil {
         info.setSlideId(dto.getSlideId());
         info.setLaneId(dto.getLaneId());
         info.setDnbId(dto.getDnbId());
-        info.setSampleType(ConvertUtil.convertSampleType(dto.getSampleType()));
-        info.setShipmentCondition(ConvertUtil.convertShipmentCondition(dto.getShipmentCondition()));
-        info.setTubeType(ConvertUtil.convertTubeType(dto.getTubeType()));
+        //若SampleType字段缺失或者转换失败，默认为0
+        Integer sampleTypeCode = ConvertUtil.convertSampleType(dto.getSampleType());
+        if(sampleTypeCode == null){
+            log.warn("SampleType字段缺失或者转换失败{}，默认值为0", dto.getSampleType());
+        }
+        info.setSampleType(sampleTypeCode==null?0:sampleTypeCode);
+        //若ShipmentCondition字段缺失或者转换失败，默认为0
+        Integer shipmentConditionCode = ConvertUtil.convertShipmentCondition(dto.getShipmentCondition());
+        if(shipmentConditionCode == null){
+            log.warn("ShipmentCondition字段缺失或者转换失败{}，默认值为0", dto.getShipmentCondition());
+        }
+        info.setShipmentCondition(shipmentConditionCode==null?0:shipmentConditionCode);
+        //若TubeType字段缺失或者转换失败，默认为0
+        Integer tubeTypeCode = ConvertUtil.convertTubeType(dto.getTubeType());
+        if(tubeTypeCode == null){
+            log.warn("TubeType字段缺失或者转换失败{}，默认值为0", dto.getTubeType());
+        }
+        info.setTubeType(tubeTypeCode==null?0:tubeTypeCode);
         info.setCollectDate(ConvertUtil.convertDateTime(dto.getCollectDate()));
         info.setReceivedDate(ConvertUtil.convertDateTime(dto.getReceivedDate()));
         info.setAdditionalReportFlag(dto.getAdditionalReportFlag());
@@ -118,10 +134,10 @@ public class BuildUtil {
         exam.setIllnessHistoryGenetic(dto.getIllnessHistoryGenetic());
         exam.setPatientRemark(dto.getPatientRemark());
         exam.setTubebabyType(null); // DTO 中无自体/异体供卵字段
-        exam.setUsCheck(null);
+        exam.setUsCheck(null);// DTO 中无超声检查字段
         exam.setUsResult(null); // DTO 中无超声异常信息字段
         exam.setReduceDate(null); // DTO 中无减胎日期字段
-        exam.setDownSyndromeFlag(null);
+        exam.setDownSyndromeFlag(null);// DTO 中无唐筛结果字段
         exam.setDownSyndromeResult1(null); // 使用唐筛结果
         exam.setDownSyndromeResult2(null); // DTO 中无 18-三体风险值字段
         exam.setDownSyndromeResultOth(null); // DTO 中无其他风险值字段

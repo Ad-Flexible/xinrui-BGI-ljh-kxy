@@ -19,12 +19,18 @@ public class UpdateUtil {
         if (dto.getSlideId() != null) sampleInfo.setSlideId(dto.getSlideId());
         if (dto.getLaneId() != null) sampleInfo.setLaneId(dto.getLaneId());
         if (dto.getDnbId() != null) sampleInfo.setDnbId(dto.getDnbId());
-        if (dto.getSampleType() != null)
-            sampleInfo.setSampleType(ConvertUtil.convertSampleType(dto.getSampleType()));
-        if (dto.getShipmentCondition() != null)
-            sampleInfo.setShipmentCondition(ConvertUtil.convertShipmentCondition(dto.getShipmentCondition()));
-        if (dto.getTubeType() != null)
-            sampleInfo.setTubeType(ConvertUtil.convertTubeType(dto.getTubeType()));
+        if(dto.getSampleType() != null){
+            Integer sampleTypeCode =ConvertUtil.convertSampleType(dto.getSampleType())==null?0:ConvertUtil.convertSampleType(dto.getSampleType());
+            sampleInfo.setSampleType(sampleTypeCode);
+        }
+        if (dto.getShipmentCondition() != null){
+            Integer shipmentConditionCode = ConvertUtil.convertShipmentCondition(dto.getShipmentCondition())==null?0:ConvertUtil.convertShipmentCondition(dto.getShipmentCondition());
+            sampleInfo.setShipmentCondition(shipmentConditionCode);
+        }
+        if (dto.getTubeType() != null){
+            Integer tubeTypeCode = ConvertUtil.convertTubeType(dto.getTubeType())==null?0:ConvertUtil.convertTubeType(dto.getTubeType());
+            sampleInfo.setTubeType(tubeTypeCode);
+        }
         if (dto.getCollectDate() != null)
             sampleInfo.setCollectDate(ConvertUtil.convertDateTime(dto.getCollectDate()));
         if (dto.getReceivedDate() != null)

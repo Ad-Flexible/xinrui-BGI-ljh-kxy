@@ -65,7 +65,7 @@ public class SampleRegistrationDto {
 
     /** 是否为试管婴儿（是:1 / 否:0） */
     @ApiModelProperty(value = "是否为试管婴儿（是:1 / 否:0）")
-    private Integer tubebabyFlag;
+    private Integer ivfFlag;
 
     /** 01-自体供卵,02异体供卵 */
     @ApiModelProperty(value = "01-自体供卵,02异体供卵")
