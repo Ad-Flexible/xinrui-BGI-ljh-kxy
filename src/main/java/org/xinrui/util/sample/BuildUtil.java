@@ -1,10 +1,12 @@
 package org.xinrui.util.sample;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.xinrui.dto.SampleRegistrationDto;
 import org.xinrui.entity.ExaminationInfo;
 import org.xinrui.entity.PatientInfo;
 import org.xinrui.entity.SampleInfo;
 import org.springframework.util.StringUtils;
+import org.xinrui.mapper.SampleMapper;
 import org.xinrui.util.ConvertUtil;
 
 import java.time.LocalDate;
@@ -15,15 +17,17 @@ public class BuildUtil {
     private static final Long UPDATED_BY = 1L; // 固定更新人ID
     private static final int INVERT = 1; // 数据版本初始值
 
+
+
     public static SampleInfo buildSampleInfo(SampleRegistrationDto dto, Long patientOid) {
         SampleInfo info = new SampleInfo();
         info.setSampleId(dto.getSampleId());
         info.setOldSampleNum(dto.getOldSampleNum());
         info.setPatientOid(patientOid); // 会由handleSampleInfo设置
+        info.setScreeningArchivesId(dto.getScreeningArchivesId());
         info.setSampleType(ConvertUtil.convertSampleType(dto.getSampleType()));//需确认返回的是编号还是对应值
         info.setShipmentCondition(ConvertUtil.convertShipmentCondition(dto.getShipmentCondition()));//需确认返回的是编号还是对应值
         info.setTubeType(ConvertUtil.convertTubeType(dto.getTubeType()));//需确认返回的是编号还是对应值
-        info.setCollectDate(null);
         info.setReceivedDate(null);
         info.setAdditionalReportFlag(1); // 默认为"是"
         info.setRepeatCount(1); // 默认为1

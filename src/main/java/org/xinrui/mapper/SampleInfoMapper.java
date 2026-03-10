@@ -7,4 +7,6 @@ import org.xinrui.entity.SampleInfo;
 @Mapper
 public interface SampleInfoMapper extends BaseMapper<SampleInfo> {
 
+
+
 }

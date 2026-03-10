@@ -194,4 +194,7 @@ public class SampleRegistrationDto {
     /** 筛查档案主表主键 */
     @ApiModelProperty(value = "筛查档案主表主键")
     private Long screeningArchivesId;
+
+
+
 }

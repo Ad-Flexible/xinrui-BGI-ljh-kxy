@@ -16,8 +16,12 @@ import org.xinrui.mapper.PatientInfoMapper;
 import org.xinrui.mapper.SampleInfoMapper;
 import org.xinrui.mapper.SampleMapper;
 import org.xinrui.service.SampleService;
+import org.xinrui.util.ConvertUtil;
 import org.xinrui.util.SampleUtil;
 import org.xinrui.util.sample.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -101,7 +105,10 @@ public class SampleServiceImpl implements SampleService {
         if (sampleInfo == null) {
             // 2. 如果不存在，则创建新样本
             sampleInfo = BuildUtil.buildSampleInfo(sampleRegistrationDto,patientOid);
-
+            //获取采样时间
+            LocalDate collectDate = sampleMapper.selectCollectDateBySAId(sampleInfo.getScreeningArchivesId());
+            sampleInfo.setCollectDate(ConvertUtil.convertDateTime(collectDate.toString()));
+            sampleInfo.setReceivedDate(ConvertUtil.convertDateTime(collectDate.toString()));
             sampleInfoMapper.insert(sampleInfo);
         } else {
             // 3. 如果存在，则更新样本信息

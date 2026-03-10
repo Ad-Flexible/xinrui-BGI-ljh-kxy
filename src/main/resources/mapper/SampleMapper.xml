@@ -62,4 +62,12 @@
             LEFT JOIN t_lis_test_result tr ON si.oid = tr.sample_oid
         WHERE si.old_sample_num = #{oldSampleNum}
     </select>
+
+    <!-- 新增：根据筛查档案ID查询采血日期 -->
+    <select id="selectCollectDateBySAId" resultType="java.time.LocalDate">
+        SELECT blood_collection_time
+        FROM t_mchi_blood_film_management
+        WHERE screening_archives_id = #{screeningArchivesId, jdbcType=BIGINT}
+            LIMIT 1
+    </select>
 </mapper>
