@@ -27,4 +27,12 @@ public interface SampleService {
 
     void handleExaminationInfo(SampleRegistrationDto sampleRegistrationDto, Long sampleOid);
 
+
+    /**
+     * 根据筛查档案 ID 获取样本登记信息
+     * @param screeningArchivesId 筛查档案 ID
+     * @return 样本登记 DTO
+     */
+    SampleRegistrationDto getSampleRegistrationByScreeningArchivesId(Long screeningArchivesId);
+
 }

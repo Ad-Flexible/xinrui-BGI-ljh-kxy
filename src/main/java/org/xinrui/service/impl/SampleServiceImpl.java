@@ -11,10 +11,7 @@ import org.xinrui.entity.ExaminationInfo;
 import org.xinrui.entity.PatientInfo;
 import org.xinrui.entity.SampleInfo;
 import org.xinrui.exception.BusinessException;
-import org.xinrui.mapper.ExaminationInfoMapper;
-import org.xinrui.mapper.PatientInfoMapper;
-import org.xinrui.mapper.SampleInfoMapper;
-import org.xinrui.mapper.SampleMapper;
+import org.xinrui.mapper.*;
 import org.xinrui.service.SampleService;
 import org.xinrui.util.ConvertUtil;
 import org.xinrui.util.SampleUtil;
@@ -39,6 +36,8 @@ public class SampleServiceImpl implements SampleService {
     @Autowired
     private ExaminationInfoMapper examinationInfoMapper;
 
+    @Autowired
+    private BloodFilmManagementMapper bloodFilmManagementMapper;
 
 
     @Override
@@ -104,7 +103,7 @@ public class SampleServiceImpl implements SampleService {
 
         if (sampleInfo == null) {
             // 2. 如果不存在，则创建新样本
-            sampleInfo = BuildUtil.buildSampleInfo(sampleRegistrationDto,patientOid);
+            sampleInfo = BuildUtil.buildSampleInfo(sampleRegistrationDto, patientOid);
             //获取采样时间
             LocalDate collectDate = sampleMapper.selectCollectDateBySAId(sampleInfo.getScreeningArchivesId());
             sampleInfo.setCollectDate(ConvertUtil.convertDateTime(collectDate.toString()));
@@ -112,7 +111,7 @@ public class SampleServiceImpl implements SampleService {
             sampleInfoMapper.insert(sampleInfo);
         } else {
             // 3. 如果存在，则更新样本信息
-            UpdateUtil.updateSampleInfo(sampleInfo, sampleRegistrationDto,patientOid);
+            UpdateUtil.updateSampleInfo(sampleInfo, sampleRegistrationDto, patientOid);
 
             sampleInfoMapper.updateById(sampleInfo);
         }
@@ -135,9 +134,167 @@ public class SampleServiceImpl implements SampleService {
             examinationInfoMapper.insert(exam);
         } else {
             // 3. 如果存在，则更新检查信息
-            UpdateUtil.updateExaminationInfo(exam, sampleRegistrationDto,sampleOid);
+            UpdateUtil.updateExaminationInfo(exam, sampleRegistrationDto, sampleOid);
             examinationInfoMapper.updateById(exam);
         }
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public SampleRegistrationDto getSampleRegistrationByScreeningArchivesId(Long screeningArchivesId) {
+        if (screeningArchivesId == null) {
+            log.warn("筛查档案 ID 不能为空");
+            throw new BusinessException("-1", "screeningArchivesId 不能为空");
+        }
+
+        // 1. 查询实验编号
+        String experimentNumber = bloodFilmManagementMapper.selectExperimentNumberByScreeningArchivesId(screeningArchivesId);
+
+        if (experimentNumber == null || experimentNumber.trim().isEmpty()) {
+            log.warn("未找到对应的实验编号，screeningArchivesId: {}", screeningArchivesId);
+            throw new BusinessException("-1", "请检查 screeningArchivesId 是否正确");
+        }
+
+        // 2. 查询 SampleInfo 需要的字段
+        SampleInfo sampleInfo = sampleInfoMapper.selectOne(
+                Wrappers.<SampleInfo>lambdaQuery()
+                        .eq(SampleInfo::getSampleId, experimentNumber)
+                        .select(SampleInfo::getOid,           // 需要 oid 来关联查询 ExaminationInfo
+                                SampleInfo::getPatientOid,      // 需要 patientOid 来关联查询 PatientInfo
+                                SampleInfo::getSampleType,
+                                SampleInfo::getShipmentCondition,
+                                SampleInfo::getTubeType,
+                                SampleInfo::getProductNo)
+        );
+
+        if (sampleInfo == null) {
+            // 如果样本信息不存在，只返回基本的实验编号信息
+            SampleRegistrationDto dto = new SampleRegistrationDto();
+            dto.setSampleId(experimentNumber);
+            dto.setOldSampleNum(experimentNumber);
+            dto.setScreeningArchivesId(screeningArchivesId);
+            return dto;
+        }
+
+        // 3. 只查询 PatientInfo 需要的字段
+        PatientInfo patientInfo = null;
+        if (sampleInfo.getPatientOid() != null) {
+            patientInfo = patientInfoMapper.selectOne(
+                    Wrappers.<PatientInfo>lambdaQuery()
+                            .eq(PatientInfo::getOid, sampleInfo.getPatientOid())
+                            .select(PatientInfo::getPhone,
+                                    PatientInfo::getIdentity,
+                                    PatientInfo::getEmergencyContact,
+                                    PatientInfo::getEmergencyContactPhone)
+            );
+        }
+
+        // 4. 只查询 ExaminationInfo 需要的字段
+        ExaminationInfo examinationInfo = null;
+        if (sampleInfo.getOid() != null) {
+            examinationInfo = examinationInfoMapper.selectOne(
+                    Wrappers.<ExaminationInfo>lambdaQuery()
+                            .eq(ExaminationInfo::getSampleOid, sampleInfo.getOid())
+                            .select(ExaminationInfo::getPatientAge,
+                                    ExaminationInfo::getPatientHeight,
+                                    ExaminationInfo::getPatientWeight,
+                                    ExaminationInfo::getBhGravidity,
+                                    ExaminationInfo::getBhParity,
+                                    ExaminationInfo::getBhOther,
+                                    ExaminationInfo::getIvfFlag,
+                                    ExaminationInfo::getTubebabyType,
+                                    ExaminationInfo::getFetusType,
+                                    ExaminationInfo::getGestationalWeeks,
+                                    ExaminationInfo::getGestationalDays,
+                                    ExaminationInfo::getUsCheck,
+                                    ExaminationInfo::getUsResult,
+                                    ExaminationInfo::getReduceDate,
+                                    ExaminationInfo::getDownSyndromeFlag,
+                                    ExaminationInfo::getDownSyndromeResult1,
+                                    ExaminationInfo::getDownSyndromeResult2,
+                                    ExaminationInfo::getDownSyndromeResultOth,
+                                    ExaminationInfo::getPunctureAppointment,
+                                    ExaminationInfo::getPunctureAppointmentDate,
+                                    ExaminationInfo::getTransplantation,
+                                    ExaminationInfo::getTransplantationDate,
+                                    ExaminationInfo::getAllogeneicTransfusion,
+                                    ExaminationInfo::getAllogeneicTransfusionDate,
+                                    ExaminationInfo::getImmunotherapy,
+                                    ExaminationInfo::getImmunotherapyDate,
+                                    ExaminationInfo::getImmunotherapyType,
+                                    ExaminationInfo::getSpecialCase,
+                                    ExaminationInfo::getPatientRemark)
+            );
+        }
+        // 5. 填充 SampleRegistrationDto
+        return buildSampleRegistrationDto(sampleInfo, patientInfo, examinationInfo, experimentNumber, screeningArchivesId);
+    }
+
+
+    private SampleRegistrationDto buildSampleRegistrationDto(SampleInfo sampleInfo, PatientInfo patientInfo, ExaminationInfo examinationInfo, String experimentNumber, Long screeningArchivesId) {
+
+        SampleRegistrationDto dto = new SampleRegistrationDto();
+        // 基本信息
+        dto.setSampleId(experimentNumber);
+        dto.setOldSampleNum(experimentNumber);
+        dto.setScreeningArchivesId(screeningArchivesId);
+
+        // 从 SampleInfo 填充
+        dto.setProductName(sampleInfo.getProductNo());
+        dto.setSampleType(sampleInfo.getSampleType().toString());
+        dto.setShipmentCondition(sampleInfo.getShipmentCondition().toString());
+        dto.setTubeType(sampleInfo.getTubeType().toString());
+
+        // 从 PatientInfo 填充
+        if (patientInfo != null) {
+            dto.setPhone(patientInfo.getPhone());
+            dto.setIdentity(patientInfo.getIdentity());
+            dto.setEmergencyContact(patientInfo.getEmergencyContact());
+            dto.setEmergencyContactPhone(patientInfo.getEmergencyContactPhone());
+        }
+
+        // 从 ExaminationInfo 填充
+        if (examinationInfo != null) {
+            dto.setAge(examinationInfo.getPatientAge());
+            dto.setHeight(examinationInfo.getPatientHeight());
+            dto.setWeight(examinationInfo.getPatientWeight());
+            // 分娩史
+            dto.setBhGravidity(examinationInfo.getBhGravidity());
+            dto.setBhParity(examinationInfo.getBhParity());
+            dto.setBhOther(examinationInfo.getBhOther());
+            // IVF 和胎儿相关
+            dto.setIvfFlag(examinationInfo.getIvfFlag());
+            dto.setTubebabyType(examinationInfo.getTubebabyType());
+            dto.setFetusType(examinationInfo.getFetusType().toString());
+            dto.setGestationalWeeks(examinationInfo.getGestationalWeeks());
+            dto.setGestationalDays(examinationInfo.getGestationalDays());
+            // 超声相关
+            dto.setUsCheck(examinationInfo.getUsCheck());
+            dto.setUsResult(examinationInfo.getUsResult());
+            dto.setReduceDate(examinationInfo.getReduceDate());
+            // 唐筛相关
+            dto.setDownSyndromeFlag(examinationInfo.getDownSyndromeFlag());
+            dto.setDownSyndromeResult1(examinationInfo.getDownSyndromeResult1());
+            dto.setDownSyndromeResult2(examinationInfo.getDownSyndromeResult2());
+            dto.setDownSyndromeResultOth(examinationInfo.getDownSyndromeResultOth());
+            // 预约穿刺
+            dto.setPunctureAppointment(examinationInfo.getPunctureAppointment());
+            dto.setPunctureAppointmentDate(examinationInfo.getPunctureAppointmentDate().toString());
+            // 移植手术
+            dto.setTransplantation(examinationInfo.getTransplantation());
+            dto.setTransplantationDate(examinationInfo.getTransplantationDate().toString());
+            // 异体输血
+            dto.setAllogeneicTransfusion(examinationInfo.getAllogeneicTransfusion());
+            dto.setAllogeneicTransfusionDate(examinationInfo.getAllogeneicTransfusionDate().toString());
+            // 免疫治疗
+            dto.setImmunotherapy(examinationInfo.getImmunotherapy());
+            dto.setImmunotherapyDate(examinationInfo.getImmunotherapyDate().toString());
+            dto.setImmunotherapyType(examinationInfo.getImmunotherapyType());
+            dto.setSpecialCase(examinationInfo.getSpecialCase());
+            dto.setRemark(examinationInfo.getPatientRemark());
+        }
+        return dto;
     }
 
 }
