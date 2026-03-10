@@ -128,7 +128,7 @@ public class SampleRegistrationDto {
 
     /** 减胎日期 */
     @ApiModelProperty(value = "减胎日期")
-    private String reduceDate;
+    private LocalDateTime reduceDate;
 
     /** 是否已做唐筛（1-是，0-否） */
     @ApiModelProperty(value = "是否已做唐筛（1-是，0-否）")
