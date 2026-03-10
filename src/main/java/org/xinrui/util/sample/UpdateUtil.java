@@ -45,7 +45,7 @@ public class UpdateUtil {
         exam.setGestationalWeeks(dto.getGestationalWeeks());
         exam.setGestationalDays(dto.getGestationalDays());
         exam.setBUltrasonography(ConvertUtil.convertBUltrasonography(dto.getUsCheck()));
-        exam.setIvfFlag(dto.getTubebabyFlag());
+        exam.setIvfFlag(dto.getIvfFlag());
         exam.setTubebabyType(dto.getTubebabyType());
         exam.setBhGravidity(dto.getBhGravidity());
         exam.setBhParity(dto.getBhParity());

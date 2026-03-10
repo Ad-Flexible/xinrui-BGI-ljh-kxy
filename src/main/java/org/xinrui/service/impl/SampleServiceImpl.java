@@ -11,10 +11,7 @@ import org.xinrui.entity.ExaminationInfo;
 import org.xinrui.entity.PatientInfo;
 import org.xinrui.entity.SampleInfo;
 import org.xinrui.exception.BusinessException;
-import org.xinrui.mapper.ExaminationInfoMapper;
-import org.xinrui.mapper.PatientInfoMapper;
-import org.xinrui.mapper.SampleInfoMapper;
-import org.xinrui.mapper.SampleMapper;
+import org.xinrui.mapper.*;
 import org.xinrui.service.SampleService;
 import org.xinrui.util.ConvertUtil;
 import org.xinrui.util.SampleUtil;
@@ -39,6 +36,8 @@ public class SampleServiceImpl implements SampleService {
     @Autowired
     private ExaminationInfoMapper examinationInfoMapper;
 
+    @Autowired
+    private BloodFilmManagementMapper bloodFilmManagementMapper;
 
 
     @Override
@@ -138,6 +137,32 @@ public class SampleServiceImpl implements SampleService {
             UpdateUtil.updateExaminationInfo(exam, sampleRegistrationDto,sampleOid);
             examinationInfoMapper.updateById(exam);
         }
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public SampleRegistrationDto getSampleRegistrationByScreeningArchivesId(Long screeningArchivesId) {
+        if (screeningArchivesId == null) {
+            log.warn("筛查档案 ID 不能为空");
+            throw new BusinessException("-1", "screeningArchivesId 不能为空");
+        }
+
+        // 1. 查询实验编号
+        String experimentNumber= bloodFilmManagementMapper.selectExperimentNumberByScreeningArchivesId(screeningArchivesId);
+
+        if (experimentNumber == null || experimentNumber.trim().isEmpty()) {
+            log.warn("未找到对应的实验编号，screeningArchivesId: {}", screeningArchivesId);
+            throw new BusinessException("-1", "请检查 screeningArchivesId 是否正确");
+        }
+
+        // 2. 创建并填充 SampleRegistrationDto
+        SampleRegistrationDto dto = new SampleRegistrationDto();
+        dto.setSampleId(experimentNumber);
+        dto.setOldSampleNum(experimentNumber);
+        dto.setScreeningArchivesId(screeningArchivesId);
+
+        return dto;
     }
 
 }

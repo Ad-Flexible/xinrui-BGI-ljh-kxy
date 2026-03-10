@@ -11,6 +11,7 @@ import org.xinrui.service.SampleService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * Halos请求样本信息控制器类
@@ -44,6 +45,17 @@ public class SampleController {
         return success ?
                 ApiResponse.success() : // 调用无参 success
                 ApiResponse.fail("请求失败");
+    }
+
+    /**
+     * 根据筛查档案 ID 获取样本登记信息
+     * GET /his/V3/sample/registration/{screeningArchivesId}
+     */
+    @GetMapping("/registration")
+    public ApiResponse<SampleRegistrationDto> getSampleRegistrationInfo(
+            @RequestParam(required = false)Long screeningArchivesId) {
+        SampleRegistrationDto result = sampleService.getSampleRegistrationByScreeningArchivesId(screeningArchivesId);
+        return ApiResponse.success(result);
     }
 
 
