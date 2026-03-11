@@ -90,3 +90,4 @@
 ### 修改记录
 
 2026/3/4 11：38        柯心怡修改了halos推送pdf和word报告接口，将两个接口合并成一个共用的接口
+2026/3/11 13：08       柯心怡修复了halos推送报告接口中additionalReportFlag参数为String而不是Int的问题

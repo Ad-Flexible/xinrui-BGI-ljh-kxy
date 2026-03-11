@@ -20,23 +20,23 @@ public class UpdateUtil {
         if (dto.getLaneId() != null) sampleInfo.setLaneId(dto.getLaneId());
         if (dto.getDnbId() != null) sampleInfo.setDnbId(dto.getDnbId());
         if(dto.getSampleType() != null){
-            Integer sampleTypeCode =ConvertUtil.convertSampleType(dto.getSampleType())==null?0:ConvertUtil.convertSampleType(dto.getSampleType());
+            Integer sampleTypeCode =ConvertUtil.convertSampleType(dto.getSampleType());
             sampleInfo.setSampleType(sampleTypeCode);
         }
         if (dto.getShipmentCondition() != null){
-            Integer shipmentConditionCode = ConvertUtil.convertShipmentCondition(dto.getShipmentCondition())==null?0:ConvertUtil.convertShipmentCondition(dto.getShipmentCondition());
+            Integer shipmentConditionCode = ConvertUtil.convertShipmentCondition(dto.getShipmentCondition());
             sampleInfo.setShipmentCondition(shipmentConditionCode);
         }
         if (dto.getTubeType() != null){
-            Integer tubeTypeCode = ConvertUtil.convertTubeType(dto.getTubeType())==null?0:ConvertUtil.convertTubeType(dto.getTubeType());
+            Integer tubeTypeCode = ConvertUtil.convertTubeType(dto.getTubeType());
             sampleInfo.setTubeType(tubeTypeCode);
         }
         if (dto.getCollectDate() != null)
             sampleInfo.setCollectDate(ConvertUtil.convertDateTime(dto.getCollectDate()));
         if (dto.getReceivedDate() != null)
             sampleInfo.setReceivedDate(ConvertUtil.convertDateTime(dto.getReceivedDate()));
-        if (dto.getAdditionalReportFlag() == 1 || dto.getAdditionalReportFlag() == 2 )
-            sampleInfo.setAdditionalReportFlag(dto.getAdditionalReportFlag());
+        if (dto.getAdditionalReportFlag() !=null )
+            sampleInfo.setAdditionalReportFlag(ConvertUtil.convertAdditionalReportFlag(dto.getAdditionalReportFlag()));
         if (dto.getOldSampleNum() != null)
             sampleInfo.setOldSampleNum(dto.getOldSampleNum());
         if (dto.getRepeatCount() != 0)

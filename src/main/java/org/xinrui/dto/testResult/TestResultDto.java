@@ -61,8 +61,8 @@ public class TestResultDto {
     @ApiModelProperty(value = "管道类型", required = true, allowableValues = "Streck管,EDTA管,K管,G管,X管")
     private String tubeType;
 
-    @ApiModelProperty(value = "是否需要附加报告", allowableValues = "1,2", notes = "1=是,2=否,0=空")
-    private int additionalReportFlag;
+    @ApiModelProperty(value = "是否需要附加报告",  notes = "1=是,2=否,0=空")
+    private String additionalReportFlag;
 
     @NotBlank(message = "原样本编号不能为空")
     @ApiModelProperty(value = "原样本编号", required = true, example = "2342343SF")
