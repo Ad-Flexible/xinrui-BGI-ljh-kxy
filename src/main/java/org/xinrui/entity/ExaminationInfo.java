@@ -25,7 +25,6 @@ public class ExaminationInfo implements Serializable {
 
     @TableId(type = IdType.AUTO)
     @ApiModelProperty(value = "主键", example = "1001")
-    @TableField("oid")
     private Long oid;
 
     @ApiModelProperty(value = "样本主键", example = "2001")

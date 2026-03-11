@@ -24,7 +24,6 @@ public class TestCnvInfo implements Serializable {
 
     @TableId(type = IdType.AUTO)
     @ApiModelProperty(value = "主键", example = "1001")
-    @TableField("oid")
     private Long oid;
 
     @ApiModelProperty(value = "结果主键", example = "3001")

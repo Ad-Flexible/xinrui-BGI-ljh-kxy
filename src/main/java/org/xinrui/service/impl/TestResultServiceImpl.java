@@ -240,7 +240,7 @@ public class TestResultServiceImpl implements TestResultService {
     @Override
     public void handleTestCnvInfo(TestResultDto dto, Long testResultOid) {
         // CNV信息无需查询，直接批量插入
-        if (dto.getDiseaseList() != null) {
+        if (dto.getDiseaseList() != null && !dto.getDiseaseList().isEmpty()) {
             List<TestCnvInfo> cnvList = dto.getDiseaseList().stream()
                     .map(testCnvDto -> {
                         TestCnvInfo info = new TestCnvInfo();
@@ -267,10 +267,10 @@ public class TestResultServiceImpl implements TestResultService {
                     })
                     .collect(Collectors.toList());
 //            log.info("cnvList:{}",cnvList);//测试使用
-            if(cnvList != null) testCnvInfoMapper.insertBatch(cnvList);
+            if(cnvList != null && !cnvList.isEmpty()) testCnvInfoMapper.insertBatch(cnvList);
         }
 
-        if (dto.getOtherDiseaseList() != null) {
+        if (dto.getOtherDiseaseList() != null && !dto.getOtherDiseaseList().isEmpty()) {
             List<TestCnvInfo> cnvList = dto.getOtherDiseaseList().stream()
                     .map(diseaseDto -> {
                         TestCnvInfo info = new TestCnvInfo();
@@ -291,7 +291,7 @@ public class TestResultServiceImpl implements TestResultService {
                     })
                     .collect(Collectors.toList());
 //            log.info("cnvList:{}",cnvList);//测试使用
-            if(cnvList != null) testCnvInfoMapper.insertBatch(cnvList);
+            if(cnvList != null && !cnvList.isEmpty()) testCnvInfoMapper.insertBatch(cnvList);
         }
     }
 
