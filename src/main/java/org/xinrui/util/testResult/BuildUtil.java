@@ -122,10 +122,10 @@ public class BuildUtil {
         exam.setUsCheck(null);// DTO 中无超声检查字段
         exam.setUsResult(null); // DTO 中无超声异常信息字段
         exam.setReduceDate(null); // DTO 中无减胎日期字段
-        exam.setDownSyndromeFlag(null);// DTO 中无唐筛结果字段
-        exam.setDownSyndromeResult1(null); // 使用唐筛结果
-        exam.setDownSyndromeResult2(null); // DTO 中无 18-三体风险值字段
-        exam.setDownSyndromeResultOth(null); // DTO 中无其他风险值字段
+        exam.setDownSymdromeFlag(null);// DTO 中无唐筛结果字段
+        exam.setDownSymdromeResult1(null); // 使用唐筛结果
+        exam.setDownSymdromeResult2(null); // DTO 中无 18-三体风险值字段
+        exam.setDownSymdromeResultOth(null); // DTO 中无其他风险值字段
         exam.setPunctureAppointment(null); // DTO 中无预约穿刺诊断情况字段
         exam.setPunctureAppointmentDate(null); // DTO 中无穿刺诊断预约日期字段
         exam.setTransplantation(null); // DTO 中无移植手术字段

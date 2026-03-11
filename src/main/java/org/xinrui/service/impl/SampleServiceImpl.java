@@ -18,7 +18,6 @@ import org.xinrui.util.SampleUtil;
 import org.xinrui.util.sample.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -210,10 +209,10 @@ public class SampleServiceImpl implements SampleService {
                                     ExaminationInfo::getUsCheck,
                                     ExaminationInfo::getUsResult,
                                     ExaminationInfo::getReduceDate,
-                                    ExaminationInfo::getDownSyndromeFlag,
-                                    ExaminationInfo::getDownSyndromeResult1,
-                                    ExaminationInfo::getDownSyndromeResult2,
-                                    ExaminationInfo::getDownSyndromeResultOth,
+                                    ExaminationInfo::getDownSymdromeFlag,
+                                    ExaminationInfo::getDownSymdromeResult1,
+                                    ExaminationInfo::getDownSymdromeResult2,
+                                    ExaminationInfo::getDownSymdromeResultOth,
                                     ExaminationInfo::getPunctureAppointment,
                                     ExaminationInfo::getPunctureAppointmentDate,
                                     ExaminationInfo::getTransplantation,
@@ -274,10 +273,10 @@ public class SampleServiceImpl implements SampleService {
             dto.setUsResult(examinationInfo.getUsResult());
             dto.setReduceDate(examinationInfo.getReduceDate()==null?null:examinationInfo.getReduceDate().toString());
             // 唐筛相关
-            dto.setDownSyndromeFlag(examinationInfo.getDownSyndromeFlag());
-            dto.setDownSyndromeResult1(examinationInfo.getDownSyndromeResult1());
-            dto.setDownSyndromeResult2(examinationInfo.getDownSyndromeResult2());
-            dto.setDownSyndromeResultOth(examinationInfo.getDownSyndromeResultOth());
+            dto.setDownSymdromeFlag(examinationInfo.getDownSymdromeFlag());
+            dto.setDownSymdromeResult1(examinationInfo.getDownSymdromeResult1());
+            dto.setDownSymdromeResult2(examinationInfo.getDownSymdromeResult2());
+            dto.setDownSymdromeResultOth(examinationInfo.getDownSymdromeResultOth());
             // 预约穿刺
             dto.setPunctureAppointment(examinationInfo.getPunctureAppointment());
             dto.setPunctureAppointmentDate(examinationInfo.getPunctureAppointmentDate()==null?null:examinationInfo.getPunctureAppointmentDate().toString());

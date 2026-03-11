@@ -8,15 +8,10 @@ import lombok.Data;
  */
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import org.apache.tomcat.jni.Local;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  * 样本登记 DTO
@@ -132,19 +127,19 @@ public class SampleRegistrationDto {
 
     /** 是否已做唐筛（1-是，0-否） */
     @ApiModelProperty(value = "是否已做唐筛（1-是，0-否）")
-    private Integer downSyndromeFlag;
+    private Integer downSymdromeFlag;
 
     /** 唐筛风险值 21-三体 */
     @ApiModelProperty(value = "唐筛风险值 21-三体")
-    private String downSyndromeResult1;
+    private String downSymdromeResult1;
 
     /** 唐筛风险值 18-三体 */
     @ApiModelProperty(value = "唐筛风险值 18-三体")
-    private String downSyndromeResult2;
+    private String downSymdromeResult2;
 
     /** 唐筛风险值 其他 */
     @ApiModelProperty(value = "唐筛风险值 其他")
-    private String downSyndromeResultOth;
+    private String downSymdromeResultOth;
 
     /** 预约穿刺诊断情况（1-已预约，0-无） */
     @ApiModelProperty(value = "预约穿刺诊断情况（1-已预约，0-无）")
