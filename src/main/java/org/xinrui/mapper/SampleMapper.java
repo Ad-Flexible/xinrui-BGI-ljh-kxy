@@ -4,6 +4,7 @@ package org.xinrui.mapper;
 import org.xinrui.dto.SampleDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.xinrui.dto.SampleRegistrationDto;
 
 import java.time.LocalDate;
 
@@ -20,5 +21,12 @@ public interface SampleMapper {
     SampleDto selectByOldSampleNum(@Param("oldSampleNum") String oldSampleNum);
 
     LocalDate selectCollectDateBySAId(@Param("screeningArchivesId") Long screeningArchivesId);
+
+    /**
+     * 根据筛查档案 ID 查询样本登记信息（多表联查）
+     * @param screeningArchivesId 筛查档案 ID
+     * @return 样本登记 DTO
+     */
+    SampleRegistrationDto selectSampleRegistrationByScreeningArchivesId(Long screeningArchivesId);
 
 }
