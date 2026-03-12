@@ -93,3 +93,9 @@
 2026/3/11 13：08       柯心怡修复了halos推送报告接口中additionalReportFlag参数为String而不是Int的问题
 2026/3/11 17：15       柯心怡修复了handleTestCnvInfo空列表插入数据导致异常的问题，以及downSymdromeFlag等四个字段命名错误导致插入数据异常的问题
 2026/3/11 17：58       柯心怡修改了pdf和word的存储路径，从D:/fileStorage修改到默认存储路径为D:/service/BGI/HalosReportFile/{yyyy/MM/dd}/pdf和D:/service/BGI/HalosReportFile/{yyyy/MM/dd}/word
+
+2026/3/12 14:40   刘家铧新增样本登记信息返回和样本登记信息接收接口，URL:
+
+http://172.18.4.89:8030/his/V3/sample/registration/get
+
+http://172.18.4.89:8030/his/V3/sample/registration/save

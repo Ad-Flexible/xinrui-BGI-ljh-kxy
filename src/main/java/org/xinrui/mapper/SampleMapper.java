@@ -27,6 +27,6 @@ public interface SampleMapper {
      * @param screeningArchivesId 筛查档案 ID
      * @return 样本登记 DTO
      */
-    SampleRegistrationDto selectSampleRegistrationByScreeningArchivesId(Long screeningArchivesId);
+    SampleRegistrationDto selectSampleRegistrationBySAId(Long screeningArchivesId);
 
 }

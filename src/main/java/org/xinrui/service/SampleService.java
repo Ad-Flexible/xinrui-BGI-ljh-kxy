@@ -33,6 +33,6 @@ public interface SampleService {
      * @param screeningArchivesId 筛查档案 ID
      * @return 样本登记 DTO
      */
-    SampleRegistrationDto getSampleRegistrationByScreeningArchivesId(Long screeningArchivesId);
+    SampleRegistrationDto getSampleRegistrationBySAId(Long screeningArchivesId);
 
 }

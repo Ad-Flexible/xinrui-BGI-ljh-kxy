@@ -38,7 +38,7 @@ public class SampleController {
 
     }
 
-    @PostMapping("/sava/sampleRegistrationInfo")
+    @PostMapping("/registration/save")
     public ApiResponse saveSampleRegistrationInfo(@Valid @RequestBody SampleRegistrationDto sampleRegistrationDto) {
         log.info("接收样本登记数据");
         boolean success = sampleService.handleSampleRegistrationInfo(sampleRegistrationDto);
@@ -51,10 +51,10 @@ public class SampleController {
      * 根据筛查档案 ID 获取样本登记信息
      * GET /his/V3/sample/registration
      */
-    @GetMapping("/registration")
+    @GetMapping("/registration/get")
     public ApiResponse<SampleRegistrationDto> getSampleRegistrationInfo(
             @RequestParam(required = false)Long screeningArchivesId) {
-        SampleRegistrationDto result = sampleService.getSampleRegistrationByScreeningArchivesId(screeningArchivesId);
+        SampleRegistrationDto result = sampleService.getSampleRegistrationBySAId(screeningArchivesId);
         return ApiResponse.success(result);
     }
 

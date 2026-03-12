@@ -72,7 +72,7 @@
     </select>
 
     <!-- 新增：根据筛查档案 ID 查询样本登记信息（多表联查） -->
-    <select id="selectSampleRegistrationByScreeningArchivesId" resultType="org.xinrui.dto.SampleRegistrationDto">
+    <select id="selectSampleRegistrationBySAId" resultType="org.xinrui.dto.SampleRegistrationDto">
         SELECT
             -- 基本信息
             bf.experiment_number AS sampleId,

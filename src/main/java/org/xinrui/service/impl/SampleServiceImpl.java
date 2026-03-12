@@ -141,14 +141,14 @@ public class SampleServiceImpl implements SampleService {
 
     @Override
     @Transactional(readOnly = true)
-    public SampleRegistrationDto getSampleRegistrationByScreeningArchivesId(Long screeningArchivesId) {
+    public SampleRegistrationDto getSampleRegistrationBySAId(Long screeningArchivesId) {
         if (screeningArchivesId == null) {
             log.warn("筛查档案 ID 不能为空");
             throw new BusinessException("-1", "screeningArchivesId 不能为空");
         }
 
         // 直接使用多表联查获取数据
-        SampleRegistrationDto dto = sampleMapper.selectSampleRegistrationByScreeningArchivesId(screeningArchivesId);
+        SampleRegistrationDto dto = sampleMapper.selectSampleRegistrationBySAId(screeningArchivesId);
 
         if (dto == null || dto.getSampleId() == null) {
             log.warn("未找到对应的实验编号，screeningArchivesId: {}", screeningArchivesId);
