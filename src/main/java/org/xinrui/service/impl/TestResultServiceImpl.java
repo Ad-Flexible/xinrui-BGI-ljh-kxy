@@ -248,6 +248,7 @@ public class TestResultServiceImpl implements TestResultService {
                         info.setCnvCategory("D");
                         // 不确定逻辑要不要改为diseaseDto为null的话直接不做insert了
                         // 目前为null的话还是会插入审计字段和ResultOid以及CnvCategory
+                        //todo
                         DiseaseDto diseaseDto = testCnvDto.getDiseaseDto();
                         if (diseaseDto != null) {
                             info.setCytoband(diseaseDto.getCytoband());
