@@ -20,9 +20,9 @@ public class BuildUtil {
         info.setOldSampleNum(dto.getOldSampleNum());
         info.setPatientOid(patientOid); // 会由handleSampleInfo设置
         info.setScreeningArchivesId(dto.getScreeningArchivesId());
-        info.setSampleType(ConvertUtil.convertSampleType(dto.getSampleType()));//需确认返回的是编号还是对应值
-        info.setShipmentCondition(ConvertUtil.convertShipmentCondition(dto.getShipmentCondition()));//需确认返回的是编号还是对应值
-        info.setTubeType(ConvertUtil.convertTubeType(dto.getTubeType()));//需确认返回的是编号还是对应值
+        info.setSampleType(Integer.valueOf(dto.getSampleType()));//需确认返回的是编号还是对应值
+        info.setShipmentCondition(Integer.valueOf(dto.getShipmentCondition()));//需确认返回的是编号还是对应值
+        info.setTubeType(Integer.valueOf(dto.getTubeType()));//需确认返回的是编号还是对应值
         info.setReceivedDate(null);
         info.setAdditionalReportFlag(1); // 默认为"是"
         info.setRepeatCount(1); // 默认为1
@@ -70,13 +70,13 @@ public class BuildUtil {
         exam.setPatientHeight(dto.getHeight());
         exam.setPatientWeight(dto.getWeight());
         exam.setPatientEdd(null); // 预产期
-        exam.setFetusType(ConvertUtil.convertFetusType(dto.getFetusType()));
+        exam.setFetusType(Integer.valueOf(dto.getFetusType()));
         exam.setGestationalWeeks(dto.getGestationalWeeks());
         exam.setGestationalDays(dto.getGestationalDays());
         exam.setLastMenstrualPeriod(null); // 末次月经
         exam.setChorionType(null); // 绒毛膜类型
-        //todo
-        exam.setBUltrasonography(ConvertUtil.convertBUltrasonography(dto.getUsCheck()));
+        exam.setBUltrasonography(null); // B超检查结果
+        exam.setUsCheck(dto.getUsCheck());
         exam.setIvfFlag(dto.getIvfFlag());
         exam.setTubebabyType(dto.getTubebabyType());
         exam.setConceptionMethod(null); // 受孕方式

@@ -63,6 +63,12 @@ public class GlobalExceptionHandler {
         return ApiResponse.fail(-1, "请求失败");
     }
 
+    @ExceptionHandler(NumberFormatException.class)
+    public ApiResponse<Void> handleNumberFormatException(NumberFormatException ex) {
+         log.error("数字格式异常(应为String转Integer出错)", ex);
+         return ApiResponse.fail(-1, "请求失败");
+    }
+
     // 系统异常
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
