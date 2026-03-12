@@ -24,17 +24,35 @@ public class ConvertUtil {
         return dictMap.get(displayName);
     }
 
-    // ==================== 样本信息转换 ====================
+    // ==================== 样本信息转换====================
     public static Integer convertSampleType(String type) {
-        return convertToCode(TestConstants.SAMPLE_TYPE_CODE_MAP, type);
+        Integer result = convertToCode(TestConstants.SAMPLE_TYPE_CODE_MAP, type);
+        //（ 若SampleType字段缺失或者转换失败，默认为0）
+        if(result == null){
+            log.warn("SampleType字段缺失或者转换失败{}，默认值为0", type);
+            return 0;
+        }
+        return result;
     }
 
     public static Integer convertShipmentCondition(String condition) {
-        return convertToCode(TestConstants.SHIPMENT_CONDITION_CODE_MAP, condition);
+        Integer result = convertToCode(TestConstants.SHIPMENT_CONDITION_CODE_MAP, condition);
+        //（ 若ShipmentCondition字段缺失或者转换失败，默认为0）
+        if(result == null){
+            log.warn("ShipmentCondition字段缺失或者转换失败{}，默认值为0", condition);
+            return 0;
+        }
+        return result;
     }
 
     public static Integer convertTubeType(String tube) {
-        return convertToCode(TestConstants.TUBE_TYPE_CODE_MAP, tube);
+        Integer result = convertToCode(TestConstants.TUBE_TYPE_CODE_MAP, tube);
+        //（ 若TubeType字段缺失或者转换失败，默认为0）
+        if(result == null){
+            log.warn("TubeType字段缺失或者转换失败{}，默认值为0", tube);
+            return 0;
+        }
+        return result;
     }
 
     public static Integer convertGestationalWeeks(String weeks) {
@@ -158,5 +176,10 @@ public class ConvertUtil {
     // ==================== CNV类别转换 ====================
     public static String convertCnvCategory(String category) {
         return convertToCode(TestConstants.CNV_CATEGORY_CODE_MAP, category);
+    }
+
+    // ==================== 检测报告转换(是转化为1，否转化为2，空转化为0) ====================
+    public static Integer convertAdditionalReportFlag(String additionalReportFlag) {
+        return additionalReportFlag==null?0:convertToCode(TestConstants.ADDITIONAL_REPORT_FLAG_CODE_MAP, additionalReportFlag);
     }
 }

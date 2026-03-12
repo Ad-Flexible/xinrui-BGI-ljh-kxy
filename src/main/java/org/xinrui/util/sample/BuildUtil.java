@@ -1,17 +1,12 @@
 package org.xinrui.util.sample;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.xinrui.dto.SampleRegistrationDto;
 import org.xinrui.entity.ExaminationInfo;
 import org.xinrui.entity.PatientInfo;
 import org.xinrui.entity.SampleInfo;
-import org.springframework.util.StringUtils;
-import org.xinrui.mapper.SampleMapper;
 import org.xinrui.util.ConvertUtil;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 public class BuildUtil {
     private static final Long UPDATED_BY = 1L; // 固定更新人ID
@@ -80,6 +75,7 @@ public class BuildUtil {
         exam.setGestationalDays(dto.getGestationalDays());
         exam.setLastMenstrualPeriod(null); // 末次月经
         exam.setChorionType(null); // 绒毛膜类型
+        //todo
         exam.setBUltrasonography(ConvertUtil.convertBUltrasonography(dto.getUsCheck()));
         exam.setIvfFlag(dto.getIvfFlag());
         exam.setTubebabyType(dto.getTubebabyType());
@@ -93,10 +89,10 @@ public class BuildUtil {
         exam.setIllnessHistoryAllergy(null); // 过敏史
         exam.setIllnessHistoryGenetic(null); // 家族遗传病史
         exam.setPatientRemark(dto.getRemark());
-        exam.setDownSyndromeFlag(dto.getDownSyndromeFlag());
-        exam.setDownSyndromeResult1(dto.getDownSyndromeResult1());
-        exam.setDownSyndromeResult2(dto.getDownSyndromeResult2());
-        exam.setDownSyndromeResultOth(dto.getDownSyndromeResultOth());
+        exam.setDownSymdromeFlag(dto.getDownSymdromeFlag());
+        exam.setDownSymdromeResult1(dto.getDownSymdromeResult1());
+        exam.setDownSymdromeResult2(dto.getDownSymdromeResult2());
+        exam.setDownSymdromeResultOth(dto.getDownSymdromeResultOth());
         exam.setPunctureAppointment(dto.getPunctureAppointment());
         exam.setPunctureAppointmentDate(ConvertUtil.convertDateTime(dto.getPunctureAppointmentDate()));
         exam.setTransplantation(dto.getTransplantation());

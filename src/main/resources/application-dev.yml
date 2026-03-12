@@ -40,5 +40,5 @@ rest:
 # 报告文件存储配置
 file:
   storage:
-    root: D:/fileStorage
+    root: D:/service/BGI/HalosReportFile
 

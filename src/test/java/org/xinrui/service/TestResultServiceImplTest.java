@@ -78,7 +78,7 @@ public class TestResultServiceImplTest {
         testResultDto.setGestationalWeeks("20,5");
         testResultDto.setFetusType("单胎");
         testResultDto.setTubeType("Streck管");
-        testResultDto.setAdditionalReportFlag(1);
+        testResultDto.setAdditionalReportFlag("是");
         testResultDto.setSampleQc(new SampleQcDto());
         testResultDto.setLaneQc(new LaneQcDto());
         TestCnvDto testCnvDto = new TestCnvDto();

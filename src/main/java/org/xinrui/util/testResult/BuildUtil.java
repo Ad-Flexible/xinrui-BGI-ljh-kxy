@@ -24,27 +24,12 @@ public class BuildUtil {
         info.setSlideId(dto.getSlideId());
         info.setLaneId(dto.getLaneId());
         info.setDnbId(dto.getDnbId());
-        //若SampleType字段缺失或者转换失败，默认为0
-        Integer sampleTypeCode = ConvertUtil.convertSampleType(dto.getSampleType());
-        if(sampleTypeCode == null){
-            log.warn("SampleType字段缺失或者转换失败{}，默认值为0", dto.getSampleType());
-        }
-        info.setSampleType(sampleTypeCode==null?0:sampleTypeCode);
-        //若ShipmentCondition字段缺失或者转换失败，默认为0
-        Integer shipmentConditionCode = ConvertUtil.convertShipmentCondition(dto.getShipmentCondition());
-        if(shipmentConditionCode == null){
-            log.warn("ShipmentCondition字段缺失或者转换失败{}，默认值为0", dto.getShipmentCondition());
-        }
-        info.setShipmentCondition(shipmentConditionCode==null?0:shipmentConditionCode);
-        //若TubeType字段缺失或者转换失败，默认为0
-        Integer tubeTypeCode = ConvertUtil.convertTubeType(dto.getTubeType());
-        if(tubeTypeCode == null){
-            log.warn("TubeType字段缺失或者转换失败{}，默认值为0", dto.getTubeType());
-        }
-        info.setTubeType(tubeTypeCode==null?0:tubeTypeCode);
+        info.setSampleType(ConvertUtil.convertSampleType(dto.getSampleType()));
+        info.setShipmentCondition(ConvertUtil.convertShipmentCondition(dto.getShipmentCondition()));
+        info.setTubeType(ConvertUtil.convertTubeType(dto.getTubeType()));
         info.setCollectDate(ConvertUtil.convertDateTime(dto.getCollectDate()));
         info.setReceivedDate(ConvertUtil.convertDateTime(dto.getReceivedDate()));
-        info.setAdditionalReportFlag(dto.getAdditionalReportFlag());
+        info.setAdditionalReportFlag(ConvertUtil.convertAdditionalReportFlag(dto.getAdditionalReportFlag()));
         info.setOldSampleNum(dto.getOldSampleNum());
         info.setRepeatCount(dto.getRepeatCount());
         // 设置缺失字段 - 从diseaseList获取产品信息
@@ -137,10 +122,10 @@ public class BuildUtil {
         exam.setUsCheck(null);// DTO 中无超声检查字段
         exam.setUsResult(null); // DTO 中无超声异常信息字段
         exam.setReduceDate(null); // DTO 中无减胎日期字段
-        exam.setDownSyndromeFlag(null);// DTO 中无唐筛结果字段
-        exam.setDownSyndromeResult1(null); // 使用唐筛结果
-        exam.setDownSyndromeResult2(null); // DTO 中无 18-三体风险值字段
-        exam.setDownSyndromeResultOth(null); // DTO 中无其他风险值字段
+        exam.setDownSymdromeFlag(null);// DTO 中无唐筛结果字段
+        exam.setDownSymdromeResult1(null); // 使用唐筛结果
+        exam.setDownSymdromeResult2(null); // DTO 中无 18-三体风险值字段
+        exam.setDownSymdromeResultOth(null); // DTO 中无其他风险值字段
         exam.setPunctureAppointment(null); // DTO 中无预约穿刺诊断情况字段
         exam.setPunctureAppointmentDate(null); // DTO 中无穿刺诊断预约日期字段
         exam.setTransplantation(null); // DTO 中无移植手术字段

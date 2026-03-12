@@ -18,7 +18,6 @@ import org.xinrui.util.SampleUtil;
 import org.xinrui.util.sample.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -210,10 +209,10 @@ public class SampleServiceImpl implements SampleService {
                                     ExaminationInfo::getUsCheck,
                                     ExaminationInfo::getUsResult,
                                     ExaminationInfo::getReduceDate,
-                                    ExaminationInfo::getDownSyndromeFlag,
-                                    ExaminationInfo::getDownSyndromeResult1,
-                                    ExaminationInfo::getDownSyndromeResult2,
-                                    ExaminationInfo::getDownSyndromeResultOth,
+                                    ExaminationInfo::getDownSymdromeFlag,
+                                    ExaminationInfo::getDownSymdromeResult1,
+                                    ExaminationInfo::getDownSymdromeResult2,
+                                    ExaminationInfo::getDownSymdromeResultOth,
                                     ExaminationInfo::getPunctureAppointment,
                                     ExaminationInfo::getPunctureAppointmentDate,
                                     ExaminationInfo::getTransplantation,
@@ -242,9 +241,9 @@ public class SampleServiceImpl implements SampleService {
 
         // 从 SampleInfo 填充
         dto.setProductName(sampleInfo.getProductNo());
-        dto.setSampleType(sampleInfo.getSampleType().toString());
-        dto.setShipmentCondition(sampleInfo.getShipmentCondition().toString());
-        dto.setTubeType(sampleInfo.getTubeType().toString());
+        dto.setSampleType(sampleInfo.getSampleType()==null?null:sampleInfo.getSampleType().toString());
+        dto.setShipmentCondition(sampleInfo.getShipmentCondition()==null?null:sampleInfo.getShipmentCondition().toString());
+        dto.setTubeType(sampleInfo.getTubeType()==null?null:sampleInfo.getTubeType().toString());
 
         // 从 PatientInfo 填充
         if (patientInfo != null) {
@@ -266,30 +265,30 @@ public class SampleServiceImpl implements SampleService {
             // IVF 和胎儿相关
             dto.setIvfFlag(examinationInfo.getIvfFlag());
             dto.setTubebabyType(examinationInfo.getTubebabyType());
-            dto.setFetusType(examinationInfo.getFetusType().toString());
+            dto.setFetusType(examinationInfo.getFetusType()==null?null:examinationInfo.getFetusType().toString());
             dto.setGestationalWeeks(examinationInfo.getGestationalWeeks());
             dto.setGestationalDays(examinationInfo.getGestationalDays());
             // 超声相关
             dto.setUsCheck(examinationInfo.getUsCheck());
             dto.setUsResult(examinationInfo.getUsResult());
-            dto.setReduceDate(examinationInfo.getReduceDate());
+            dto.setReduceDate(examinationInfo.getReduceDate()==null?null:examinationInfo.getReduceDate().toString());
             // 唐筛相关
-            dto.setDownSyndromeFlag(examinationInfo.getDownSyndromeFlag());
-            dto.setDownSyndromeResult1(examinationInfo.getDownSyndromeResult1());
-            dto.setDownSyndromeResult2(examinationInfo.getDownSyndromeResult2());
-            dto.setDownSyndromeResultOth(examinationInfo.getDownSyndromeResultOth());
+            dto.setDownSymdromeFlag(examinationInfo.getDownSymdromeFlag());
+            dto.setDownSymdromeResult1(examinationInfo.getDownSymdromeResult1());
+            dto.setDownSymdromeResult2(examinationInfo.getDownSymdromeResult2());
+            dto.setDownSymdromeResultOth(examinationInfo.getDownSymdromeResultOth());
             // 预约穿刺
             dto.setPunctureAppointment(examinationInfo.getPunctureAppointment());
-            dto.setPunctureAppointmentDate(examinationInfo.getPunctureAppointmentDate().toString());
+            dto.setPunctureAppointmentDate(examinationInfo.getPunctureAppointmentDate()==null?null:examinationInfo.getPunctureAppointmentDate().toString());
             // 移植手术
             dto.setTransplantation(examinationInfo.getTransplantation());
-            dto.setTransplantationDate(examinationInfo.getTransplantationDate().toString());
+            dto.setTransplantationDate(examinationInfo.getTransplantationDate()==null?null:examinationInfo.getTransplantationDate().toString());
             // 异体输血
             dto.setAllogeneicTransfusion(examinationInfo.getAllogeneicTransfusion());
-            dto.setAllogeneicTransfusionDate(examinationInfo.getAllogeneicTransfusionDate().toString());
+            dto.setAllogeneicTransfusionDate(examinationInfo.getAllogeneicTransfusionDate()==null?null:examinationInfo.getAllogeneicTransfusionDate().toString());
             // 免疫治疗
             dto.setImmunotherapy(examinationInfo.getImmunotherapy());
-            dto.setImmunotherapyDate(examinationInfo.getImmunotherapyDate().toString());
+            dto.setImmunotherapyDate(examinationInfo.getImmunotherapyDate()==null?null:examinationInfo.getImmunotherapyDate().toString());
             dto.setImmunotherapyType(examinationInfo.getImmunotherapyType());
             dto.setSpecialCase(examinationInfo.getSpecialCase());
             dto.setRemark(examinationInfo.getPatientRemark());

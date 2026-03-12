@@ -27,7 +27,7 @@ public class TestReportFileServiceImpl implements TestReportFileService {
     private static final Long UPDATED_BY = 1L; // 固定更新人ID
 
     //todo 待配置
-    @Value("${file.storage.root:D:/fileStorage}")
+    @Value("${file.storage.root:D:/service/BGI/HalosReportFile}")
     private String fileStorageRoot;
 
     @Autowired

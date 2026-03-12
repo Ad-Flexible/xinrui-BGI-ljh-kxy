@@ -24,7 +24,6 @@ public class LaneQcInfo implements Serializable {
 
     @TableId(type = IdType.AUTO) // 数据库自增
     @ApiModelProperty(value = "主键", example = "1001")
-    @TableField("oid")
     private Long oid;
 
     @ApiModelProperty(value = "样本主键", example = "2001")

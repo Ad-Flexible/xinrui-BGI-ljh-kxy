@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.apache.tomcat.jni.Local;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -26,7 +25,6 @@ public class ExaminationInfo implements Serializable {
 
     @TableId(type = IdType.AUTO)
     @ApiModelProperty(value = "主键", example = "1001")
-    @TableField("oid")
     private Long oid;
 
     @ApiModelProperty(value = "样本主键", example = "2001")
@@ -147,20 +145,20 @@ public class ExaminationInfo implements Serializable {
     private LocalDateTime reduceDate;
 
     @ApiModelProperty(value = "是否已做唐筛 1-是 0-否", example = "0")
-    @TableField("down_syndrome_flag")
-    private Integer downSyndromeFlag;
+    @TableField("down_symdrome_flag")
+    private Integer downSymdromeFlag;
 
     @ApiModelProperty(value = "唐筛风险值 21-三体", example = "example_value")
-    @TableField("down_syndrome_result1")
-    private String downSyndromeResult1;
+    @TableField("down_symdrome_result1")
+    private String downSymdromeResult1;
 
     @ApiModelProperty(value = "唐筛风险值 18-三体", example = "example_value")
-    @TableField("down_syndrome_result2")
-    private String downSyndromeResult2;
+    @TableField("down_symdrome_result2")
+    private String downSymdromeResult2;
 
     @ApiModelProperty(value = "唐筛风险值 其他", example = "example_value")
-    @TableField("down_syndrome_result_oth")
-    private String downSyndromeResultOth;
+    @TableField("down_symdrome_result_oth")
+    private String downSymdromeResultOth;
 
     @ApiModelProperty(value = "预约穿刺诊断情况 1-已预约 0-无", example = "0")
     @TableField("puncture_appointment")

@@ -24,7 +24,6 @@ public class PatientInfo implements Serializable {
 
     @TableId(type = IdType.AUTO)
     @ApiModelProperty(value = "患者基本信息id", example = "1001")
-    @TableField("oid")
     private Long oid;
 
     @ApiModelProperty(value = "姓名", example = "张三")

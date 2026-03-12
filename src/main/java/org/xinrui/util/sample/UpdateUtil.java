@@ -51,10 +51,10 @@ public class UpdateUtil {
         exam.setBhParity(dto.getBhParity());
         exam.setBhOther(dto.getBhOther());
         exam.setPatientRemark(dto.getRemark());
-        exam.setDownSyndromeFlag(dto.getDownSyndromeFlag());
-        exam.setDownSyndromeResult1(dto.getDownSyndromeResult1());
-        exam.setDownSyndromeResult2(dto.getDownSyndromeResult2());
-        exam.setDownSyndromeResultOth(dto.getDownSyndromeResultOth());
+        exam.setDownSymdromeFlag(dto.getDownSymdromeFlag());
+        exam.setDownSymdromeResult1(dto.getDownSymdromeResult1());
+        exam.setDownSymdromeResult2(dto.getDownSymdromeResult2());
+        exam.setDownSymdromeResultOth(dto.getDownSymdromeResultOth());
         exam.setPunctureAppointment(dto.getPunctureAppointment());
         exam.setPunctureAppointmentDate(ConvertUtil.convertDateTime(dto.getPunctureAppointmentDate()));
         exam.setTransplantation(dto.getTransplantation());
